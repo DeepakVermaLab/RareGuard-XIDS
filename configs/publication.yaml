@@ -1,0 +1,60 @@
+project:
+  name: RareGuard-XIDS-publication
+  device: cpu
+  seeds: [42, 73, 101, 137, 211]
+
+paths:
+  source_artifact_root: artifacts
+  artifact_root: artifacts/publication
+  dataset_drive_root_id: 1PVuKm_nrBp96kVSaH_qbGDCsqSU40hnb
+  rclone_remote: "gdrive:"
+
+data:
+  remote_window_bytes: 2097152
+  remote_windows_per_file: 4
+  remote_workers: 4
+  max_rows_per_class: 3000
+  max_total_rows: 60000
+  test_size: 0.20
+  validation_size: 0.10
+  min_rare_class_ratio: 0.01
+  duplicate_decimals: 6
+
+training:
+  batch_size: 512
+  epochs: 8
+  early_stop_patience: 3
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  class_balance_beta: 0.999
+  focal_gamma: 2.0
+  contrastive_weight: 0.10
+  prototype_weight: 0.05
+  contrastive_temperature: 0.2
+
+model:
+  latent_dim: 64
+  hidden_dim: 128
+  dropout: 0.20
+
+protocol:
+  models: [NOVA-XIDS, RareGuard-XIDS]
+  ablations: [full, no_focal, no_contrastive, no_prototype]
+  ablation_seeds: [42, 73, 101]
+  confidence_level: 0.95
+  locked_test: true
+  allow_legacy_preprocessed_input: false
+
+federated:
+  seeds: [42, 73, 101]
+  clients: 5
+  rounds: 5
+  local_epochs: 1
+  non_iid_alpha: 0.5
+  dropout_rate: 0.10
+  proximal_mu: 0.01
+
+agent:
+  uncertainty_threshold: 0.35
+  rare_probability_threshold: 0.25
+  drift_threshold: 0.15

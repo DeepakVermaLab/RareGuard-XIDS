@@ -1,0 +1,41 @@
+paper:
+  model: NOVA-XIDS
+  source_pdf: /Volumes/LocalDrive1/OnlyScholar/Projects/DomainTrust-XIDS[DeepakSir]/FirstPaper/access-update.pdf
+  comparison_status: historical_context_only_until_protocol_matched_reproduction
+
+combined_test:
+  samples: 1957876
+  classes: 37
+  accuracy: 0.9711
+  precision_macro: 0.7425
+  recall_macro: 0.6297
+  f1_macro: 0.6398
+  f1_weighted: 0.9614
+  balanced_accuracy: 0.6297
+  mcc: 0.9578
+  roc_auc_macro_ovr: 0.9965
+
+dataset_weighted_results:
+  CIC-IIoT-2025:
+    accuracy: 0.9236
+    f1_weighted: 0.9240
+    balanced_accuracy: 0.9236
+    mcc: 0.9109
+  CIC-BCCC-NRC-IoMT-2024:
+    accuracy: 0.9681
+    f1_weighted: 0.9563
+    balanced_accuracy: 0.3952
+    mcc: 0.9449
+  CSE-CIC-IDS2018:
+    accuracy: 0.9724
+    f1_weighted: 0.9634
+    balanced_accuracy: 0.7272
+    mcc: 0.9414
+
+rare_class_failures:
+  - DDoS UDP Flood
+  - DoS ICMP Flood
+  - Infiltration
+  - MITM ARP Spoofing
+  - Recon Ping Sweep
+  - SQL Injection

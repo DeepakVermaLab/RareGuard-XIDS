@@ -1,0 +1,289 @@
+from __future__ import annotations
+
+import hashlib
+import io
+import json
+import subprocess
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass, asdict
+from pathlib import Path
+
+import joblib
+import numpy as np
+import pandas as pd
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import LabelEncoder, RobustScaler
+
+from rareguard.data.preprocess import label_like_columns
+
+
+IDENTIFIER_TOKENS = (
+    "flow_id",
+    "src_ip",
+    "dst_ip",
+    "ip.src",
+    "ip.dst",
+    "timestamp",
+    "frame.time",
+)
+
+
+@dataclass(frozen=True)
+class RemoteFile:
+    path: str
+    size: int
+
+
+def _run(args: list[str]) -> bytes:
+    completed = subprocess.run(args, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return completed.stdout
+
+
+def list_remote_csvs(remote: str, folder: str, root_id: str, csv_root: str = "") -> list[RemoteFile]:
+    listing_root = "/".join(part.strip("/") for part in [folder, csv_root] if part)
+    output = _run(
+        [
+            "rclone",
+            "lsf",
+            f"{remote}{listing_root}",
+            "--drive-root-folder-id",
+            root_id,
+            "--recursive",
+            "--files-only",
+            "--include",
+            "*.csv",
+            "--format",
+            "sp",
+        ]
+    ).decode("utf-8", errors="replace")
+    files: list[RemoteFile] = []
+    for line in output.splitlines():
+        if ";" not in line:
+            continue
+        size, relative = line.split(";", 1)
+        if Path(relative).name.startswith("._"):
+            continue
+        files.append(RemoteFile(f"{listing_root}/{relative}", int(size)))
+    return files
+
+
+def _cat_range(remote: str, path: str, root_id: str, offset: int, count: int) -> bytes:
+    return _run(
+        [
+            "rclone",
+            "cat",
+            f"{remote}{path}",
+            "--drive-root-folder-id",
+            root_id,
+            "--offset",
+            str(offset),
+            "--count",
+            str(count),
+        ]
+    )
+
+
+def _header(remote: str, path: str, root_id: str) -> bytes:
+    chunk = _cat_range(remote, path, root_id, 0, 262144)
+    return chunk.splitlines()[0]
+
+
+def sample_remote_csv(
+    remote: str,
+    source: RemoteFile,
+    root_id: str,
+    window_bytes: int,
+    windows: int,
+) -> pd.DataFrame:
+    header = _header(remote, source.path, root_id)
+    max_offset = max(0, source.size - window_bytes)
+    offsets = sorted({int(value) for value in np.linspace(0, max_offset, max(1, windows))})
+    frames: list[pd.DataFrame] = []
+    for offset in offsets:
+        payload = _cat_range(remote, source.path, root_id, offset, min(window_bytes, source.size - offset))
+        lines = payload.splitlines()
+        if offset > 0 and lines:
+            lines = lines[1:]
+        if offset + window_bytes < source.size and lines:
+            lines = lines[:-1]
+        if not lines:
+            continue
+        raw = header + b"\n" + b"\n".join(lines)
+        try:
+            frame = pd.read_csv(io.BytesIO(raw), low_memory=False, on_bad_lines="skip")
+        except UnicodeDecodeError:
+            frame = pd.read_csv(io.BytesIO(raw), low_memory=False, on_bad_lines="skip", encoding="latin-1")
+        if frame.empty:
+            continue
+        frame["__source_file__"] = source.path
+        frame["__source_offset__"] = offset
+        frames.append(frame)
+    return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+
+
+def build_remote_sample(
+    remote: str,
+    folder: str,
+    root_id: str,
+    label_candidates: list[str],
+    output_dir: Path,
+    window_bytes: int,
+    windows: int,
+    max_rows_per_class: int,
+    max_total_rows: int,
+    seed: int,
+    csv_root: str = "",
+    workers: int = 4,
+) -> tuple[Path, str, dict[str, object]]:
+    files = list_remote_csvs(remote, folder, root_id, csv_root)
+    if not files:
+        raise FileNotFoundError(f"No remote CSV files found under {folder}")
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
+        frames = list(
+            executor.map(
+                lambda item: sample_remote_csv(remote, item, root_id, window_bytes, windows),
+                files,
+            )
+        )
+    frames = [frame for frame in frames if not frame.empty]
+    if not frames:
+        raise ValueError(f"No CSV rows could be sampled from {folder}")
+    frame = pd.concat(frames, ignore_index=True, sort=False)
+    frame.columns = [str(col).strip().replace(" ", "_") for col in frame.columns]
+    normalized_candidates = [candidate.strip().replace(" ", "_") for candidate in label_candidates]
+    label = next((candidate for candidate in normalized_candidates if candidate in frame.columns), None)
+    if label is None:
+        lowered = {str(col).lower(): col for col in frame.columns}
+        label = next((lowered[name] for name in ["label", "label4", "attack_label", "attack_type"] if name in lowered), None)
+    if label is None:
+        raise ValueError(f"No label column found for {folder}")
+    frame[label] = frame[label].astype(str).str.strip()
+    frame = frame.loc[~frame[label].str.lower().isin({"", "nan", "none", label.lower()})].copy()
+    payload_columns = [col for col in frame.columns if not col.startswith("__")]
+    frame = frame.drop_duplicates(subset=payload_columns).reset_index(drop=True)
+    sampled = []
+    for _, group in frame.groupby(label, dropna=False):
+        sampled.append(group.sample(min(len(group), max_rows_per_class), random_state=seed))
+    frame = pd.concat(sampled, ignore_index=True).sample(frac=1.0, random_state=seed).reset_index(drop=True)
+    if len(frame) > max_total_rows:
+        selected, _ = train_test_split(
+            np.arange(len(frame)),
+            train_size=max_total_rows,
+            random_state=seed,
+            stratify=frame[label].astype(str),
+        )
+        frame = frame.iloc[selected].reset_index(drop=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = output_dir / "raw_sample.parquet"
+    frame.to_parquet(path, index=False)
+    metadata = {
+        "folder": folder,
+        "csv_root": csv_root,
+        "remote_files": len(files),
+        "sampled_files": len(frames),
+        "rows_before_class_cap": int(sum(len(item) for item in frames)),
+        "rows_after_class_cap": int(len(frame)),
+        "classes": int(frame[label].nunique()),
+        "label_column": label,
+        "window_bytes": window_bytes,
+        "windows_per_file": windows,
+        "parallel_workers": workers,
+        "max_rows_per_class": max_rows_per_class,
+        "max_total_rows": max_total_rows,
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "evidence": "remote_range_sample_from_canonical_drive_dataset",
+    }
+    (output_dir / "acquisition_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    return path, str(label), metadata
+
+
+def _numeric_frame(frame: pd.DataFrame, label_column: str) -> tuple[pd.DataFrame, list[str]]:
+    drops = {label_column, *label_like_columns(list(frame.columns), label_column)}
+    drops.update(col for col in frame.columns if col.startswith("__"))
+    drops.update(col for col in frame.columns if any(token in col.lower() for token in IDENTIFIER_TOKENS))
+    numeric: dict[str, pd.Series] = {}
+    rejected: list[str] = []
+    for col in frame.columns:
+        if col in drops:
+            continue
+        converted = pd.to_numeric(frame[col], errors="coerce").replace([np.inf, -np.inf], np.nan)
+        if float(converted.notna().mean()) >= 0.90:
+            numeric[col] = converted
+        else:
+            rejected.append(col)
+    if not numeric:
+        raise ValueError("No stable numeric features remain after leakage-safe filtering.")
+    return pd.DataFrame(numeric, index=frame.index), rejected
+
+
+def prepare_train_only_splits(
+    raw_path: Path,
+    label_column: str,
+    output_dir: Path,
+    seed: int,
+    test_size: float,
+    validation_size: float,
+) -> dict[str, object]:
+    frame = pd.read_parquet(raw_path)
+    payload_columns = [col for col in frame.columns if not col.startswith("__")]
+    frame = frame.drop_duplicates(subset=payload_columns).reset_index(drop=True)
+    labels = frame[label_column].astype(str).str.strip()
+    counts = labels.value_counts()
+    supported = counts[counts >= 5].index
+    frame = frame.loc[labels.isin(supported)].reset_index(drop=True)
+    labels = frame[label_column].astype(str).str.strip()
+    encoder = LabelEncoder().fit(labels)
+    y = encoder.transform(labels).astype(np.int64)
+    numeric, rejected = _numeric_frame(frame, label_column)
+    indices = np.arange(len(frame))
+    train_val, test = train_test_split(indices, test_size=test_size, random_state=seed, stratify=y)
+    val_relative = validation_size / (1.0 - test_size)
+    train, val = train_test_split(train_val, test_size=val_relative, random_state=seed, stratify=y[train_val])
+    transformer = Pipeline([("imputer", SimpleImputer(strategy="median")), ("scaler", RobustScaler(quantile_range=(5.0, 95.0)))])
+    x_train = transformer.fit_transform(numeric.iloc[train]).astype(np.float32)
+    x_val = transformer.transform(numeric.iloc[val]).astype(np.float32)
+    x_test = transformer.transform(numeric.iloc[test]).astype(np.float32)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(
+        output_dir / "splits.npz",
+        X_train=x_train,
+        X_val=x_val,
+        X_test=x_test,
+        y_train=y[train],
+        y_val=y[val],
+        y_test=y[test],
+        train_indices=train,
+        val_indices=val,
+        test_indices=test,
+        feature_names=np.asarray(list(numeric.columns), dtype=object),
+    )
+    joblib.dump(transformer, output_dir / "train_fitted_transformer.joblib")
+    row_hash = pd.util.hash_pandas_object(numeric.round(6), index=False).to_numpy()
+    overlaps = {
+        "train_val": int(len(set(row_hash[train]) & set(row_hash[val]))),
+        "train_test": int(len(set(row_hash[train]) & set(row_hash[test]))),
+        "val_test": int(len(set(row_hash[val]) & set(row_hash[test]))),
+    }
+    metadata = {
+        "seed": seed,
+        "rows": int(len(frame)),
+        "features": int(numeric.shape[1]),
+        "classes": int(len(encoder.classes_)),
+        "class_mapping": {str(label): int(i) for i, label in enumerate(encoder.classes_)},
+        "split_rows": {"train": int(len(train)), "validation": int(len(val)), "test": int(len(test))},
+        "split_class_counts": {
+            "train": np.bincount(y[train], minlength=len(encoder.classes_)).tolist(),
+            "validation": np.bincount(y[val], minlength=len(encoder.classes_)).tolist(),
+            "test": np.bincount(y[test], minlength=len(encoder.classes_)).tolist(),
+        },
+        "rejected_non_numeric_columns": rejected,
+        "duplicate_hash_overlap": overlaps,
+        "transform_fit_scope": "training_only",
+        "test_locked": True,
+        "source_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
+        "ready": all(value == 0 for value in overlaps.values()),
+    }
+    (output_dir / "split_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    return metadata

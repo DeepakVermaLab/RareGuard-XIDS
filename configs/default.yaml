@@ -1,0 +1,61 @@
+project:
+  name: RareGuard-XIDS
+  seed: 42
+  device: cpu
+
+paths:
+  dataset_root: /Volumes/LocalDrive1/Datasets/Security
+  artifact_root: artifacts
+  drive_folder_url: "https://drive.google.com/drive/folders/1Oh9o3ipRfNZmeyOl2uatBSHdGrnvnfUc"
+  drive_folder_id: "1Oh9o3ipRfNZmeyOl2uatBSHdGrnvnfUc"
+  rclone_remote: "gdrive:"
+  drive_project_path: "RareGuard-XIDS[DeepakSir]/IMPLEMENTATION"
+
+data:
+  sample_rows_per_dataset: 50000
+  min_rare_class_ratio: 0.01
+  test_size: 0.20
+  validation_size: 0.10
+  max_columns: 256
+  cache_format: parquet
+
+training:
+  batch_size: 512
+  epochs: 5
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  early_stop_patience: 3
+
+embedding:
+  input_dim: auto
+  latent_dim: 64
+  hidden_dim: 128
+  dropout: 0.20
+  focal_gamma: 2.0
+  contrastive_temperature: 0.2
+  prototype_momentum: 0.90
+
+federated:
+  clients: 5
+  rounds: 5
+  local_epochs: 1
+  non_iid_alpha: 0.5
+  dropout_rate: 0.10
+  methods:
+    - FedAvg
+    - FedProx
+    - CFL
+    - RareGuardFed
+
+agent:
+  uncertainty_threshold: 0.35
+  rare_probability_threshold: 0.25
+  drift_threshold: 0.15
+  heavy_model_budget_ratio: 0.40
+  energy_low_budget_threshold: 0.25
+
+outputs:
+  sync_to_drive: false
+  save_vectors: true
+  save_models: true
+  save_figures: true
