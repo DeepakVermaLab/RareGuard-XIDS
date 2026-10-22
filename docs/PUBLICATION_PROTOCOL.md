@@ -29,6 +29,10 @@ Primary metrics are macro-F1 and rare-class macro-F1. Secondary metrics are weig
 
 The full RareGuard-XIDS model is compared with fixed variants that remove focal loss, supervised contrastive loss, or the prototype head. Results are never modified if an ablation performs better; the audit reports that outcome and fails the superiority gate when appropriate.
 
+## Continual-Learning Controls
+
+Class-incremental tasks introduce frequency-ordered attack groups using training data only. Fine-tuning without memory, fixed-size reservoir replay, and RareGuard class-balanced prototype replay use the same backbone and optimization objective. Validation data measures forgetting after each task, and the locked test is evaluated once after all classes have been introduced.
+
 ## Federated Controls
 
 FedAvg, FedProx, clustered FL, and RareGuardFed all use the RareGuard-XIDS backbone. Communication is reported in bytes. RareGuardFed uses observed client training throughput and rare-class share; it does not use randomized energy values.
@@ -36,6 +40,8 @@ FedAvg, FedProx, clustered FL, and RareGuardFed all use the RareGuard-XIDS backb
 ## Agentic Evidence
 
 NOVA-XIDS is the always-on light detector and RareGuard-XIDS is the escalated detector. The controller is compared with always-light and always-heavy policies using the same locked test predictions. Runtime projections use measured inference times. No energy-in-joules claim is permitted without an external hardware power meter.
+
+The deployable runtime watches an input directory, validates the train-fitted feature schema, applies NOVA first, invokes RareGuard only when uncertainty, rare-class probability, or online drift crosses a configured threshold, and persists decisions, file hashes, errors, and health heartbeats. The offline policy experiment supports routing-quality claims; it does not by itself prove uninterrupted 24/7 field operation.
 
 ## Evidence Boundary
 

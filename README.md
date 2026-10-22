@@ -5,7 +5,7 @@ RareGuard-XIDS is the planned second PhD paper implementation. It is incremental
 - rare-attack-aware embedding;
 - incremental/prototype memory;
 - federated learning with non-IID clients;
-- energy-aware 24/7 agentic monitoring;
+- compute-aware 24/7-capable agentic monitoring;
 - CPU-first experiments with optional GPU.
 
 ## Local Paths
@@ -47,9 +47,10 @@ Publication protocol:
 
 9. `notebooks/08_publication_data.ipynb` (CPU)
 10. `notebooks/09_publication_central.ipynb` (CPU; MPS only if required)
-11. `notebooks/10_publication_federated.ipynb` (CPU; MPS recommended only if CPU is impractical)
-12. `notebooks/11_publication_agentic.ipynb` (CPU)
-13. `notebooks/12_publication_audit.ipynb` (CPU)
+11. `notebooks/10_publication_continual.ipynb` (CPU; MPS allowed if required)
+12. `notebooks/11_publication_federated.ipynb` (CPU; MPS recommended only if CPU is impractical)
+13. `notebooks/12_publication_agentic.ipynb` (CPU)
+14. `notebooks/13_publication_audit.ipynb` (CPU)
 
 Publication outputs are isolated under `artifacts/publication/`. Completed smoke outputs are preserved under `artifacts/smoke/`.
 
@@ -88,3 +89,16 @@ python3 -m rareguard.experiments.dataset_discovery --config configs/default.yaml
 ## Evidence Boundary
 
 The implementation is CPU-first. Only results that pass `artifacts/publication/reports/PUBLICATION_READINESS.json` may be used as paper evidence. The current CPU-feasible acquisition is explicitly reported as an all-file bounded range sample, not a full-corpus reproduction. The audit forbids energy-in-joules claims unless an external hardware power meter supplies real measurements. Ablations are reported exactly as measured, including any case where a reduced model outperforms the full model.
+
+## Continuous Agent Runtime
+
+After central models are trained, the deployment service can process feature batches once or continuously. It writes append-only decisions, a resumable file-hash state, errors, and a health heartbeat under `artifacts/publication/agent_runtime/<dataset>/`.
+
+```bash
+PYTHONPATH=src python -m rareguard.experiments.run_agent_service \
+  --dataset cse_cic_ids2018 \
+  --seed 42 \
+  --inbox /path/to/feature-batches \
+  --device cpu \
+  --continuous
+```

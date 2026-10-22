@@ -12,7 +12,7 @@ paths:
 data:
   remote_window_bytes: 2097152
   remote_windows_per_file: 4
-  remote_workers: 4
+  remote_workers: 2
   max_rows_per_class: 3000
   max_total_rows: 60000
   test_size: 0.20
@@ -53,6 +53,14 @@ federated:
   non_iid_alpha: 0.5
   dropout_rate: 0.10
   proximal_mu: 0.01
+
+continual:
+  seeds: [42, 73, 101]
+  tasks: 4
+  epochs_per_task: 3
+  early_stop_patience: 2
+  memory_size: 1500
+  max_current_samples_per_task: 12000
 
 agent:
   uncertainty_threshold: 0.35

@@ -121,7 +121,66 @@ def paired_statistical_tests(central: pd.DataFrame) -> pd.DataFrame:
     return frame
 
 
-def make_figures(root: Path, central: pd.DataFrame, federated: pd.DataFrame, agentic: pd.DataFrame) -> None:
+def continual_superiority(continual: pd.DataFrame) -> tuple[bool, list[dict[str, object]]]:
+    rows: list[dict[str, object]] = []
+    if continual.empty:
+        return False, rows
+    for dataset in sorted(continual["dataset"].unique()):
+        subset = continual[continual["dataset"] == dataset]
+        full = subset[subset["method"] == "RareGuard-Continual"]
+        for baseline in ("RareGuard-FineTune", "RareGuard-ReservoirReplay"):
+            reduced = subset[subset["method"] == baseline]
+            for metric, direction in (("rare_f1_macro", "higher"), ("mean_validation_forgetting", "lower")):
+                full_mean = float(full[metric].mean()) if not full.empty else float("nan")
+                baseline_mean = float(reduced[metric].mean()) if not reduced.empty else float("nan")
+                gain = full_mean - baseline_mean
+                passed = gain > 0 if direction == "higher" else gain < 0
+                rows.append(
+                    {
+                        "dataset": dataset,
+                        "baseline": baseline,
+                        "metric": metric,
+                        "direction": direction,
+                        "rareguard_continual_mean": full_mean,
+                        "baseline_mean": baseline_mean,
+                        "difference": gain,
+                        "passed": bool(passed),
+                    }
+                )
+    return bool(rows and all(row["passed"] for row in rows)), rows
+
+
+def agent_policy_value(agentic: pd.DataFrame) -> tuple[bool, list[dict[str, object]]]:
+    rows: list[dict[str, object]] = []
+    if agentic.empty:
+        return False, rows
+    for dataset in sorted(agentic["dataset"].unique()):
+        subset = agentic[agentic["dataset"] == dataset]
+        agent = subset[subset["policy"] == "rareguard_agent"]
+        light = subset[subset["policy"] == "always_light_nova"]
+        if agent.empty or light.empty:
+            rows.append({"dataset": dataset, "metric": "required_policies", "passed": False})
+            continue
+        f1_gain = float(agent["f1_macro"].mean() - light["f1_macro"].mean())
+        rare_gain = float(agent["rare_f1_macro"].mean() - light["rare_f1_macro"].mean())
+        heavy_ratio = float(agent["heavy_call_ratio"].mean())
+        rows.extend(
+            [
+                {"dataset": dataset, "metric": "f1_macro_gain_over_light", "value": f1_gain, "passed": f1_gain > 0},
+                {"dataset": dataset, "metric": "rare_f1_gain_over_light", "value": rare_gain, "passed": rare_gain > 0},
+                {"dataset": dataset, "metric": "heavy_call_ratio", "value": heavy_ratio, "passed": 0 < heavy_ratio < 1},
+            ]
+        )
+    return bool(rows and all(bool(row["passed"]) for row in rows)), rows
+
+
+def make_figures(
+    root: Path,
+    central: pd.DataFrame,
+    continual: pd.DataFrame,
+    federated: pd.DataFrame,
+    agentic: pd.DataFrame,
+) -> None:
     figure_dir = root / "figures"
     figure_dir.mkdir(parents=True, exist_ok=True)
     if central.empty or not {"model", "dataset"}.issubset(central.columns):
@@ -156,6 +215,21 @@ def make_figures(root: Path, central: pd.DataFrame, federated: pd.DataFrame, age
         plt.tight_layout()
         plt.savefig(figure_dir / "federated_communication_tradeoff.png", dpi=300)
         plt.close()
+    if not continual.empty:
+        summary = continual.groupby("method").agg(
+            rare_f1_macro=("rare_f1_macro", "mean"),
+            forgetting=("mean_validation_forgetting", "mean"),
+        ).reset_index()
+        fig, ax = plt.subplots(figsize=(7.5, 4.8))
+        ax.scatter(summary["forgetting"], summary["rare_f1_macro"], s=80, color="#8a5a2b")
+        for _, row in summary.iterrows():
+            ax.annotate(row["method"], (row["forgetting"], row["rare_f1_macro"]), xytext=(5, 4), textcoords="offset points", fontsize=8)
+        ax.set_xlabel("Mean validation forgetting (lower is better)")
+        ax.set_ylabel("Final rare-class macro-F1")
+        ax.grid(alpha=0.25)
+        plt.tight_layout()
+        plt.savefig(figure_dir / "continual_memory_tradeoff.png", dpi=300)
+        plt.close()
     if not agentic.empty:
         summary = agentic.groupby("policy").agg(f1_macro=("f1_macro", "mean"), heavy_ratio=("heavy_call_ratio", "mean")).reset_index()
         fig, ax = plt.subplots(figsize=(7.5, 4.8))
@@ -184,18 +258,22 @@ def main(argv: list[str] | None = None) -> int:
     report_dir.mkdir(parents=True, exist_ok=True)
     central_path = result_dir / "central_seed_metrics.csv"
     baseline_path = result_dir / "baseline_seed_metrics.csv"
+    continual_path = result_dir / "continual_seed_metrics.csv"
     federated_path = result_dir / "federated_seed_metrics.csv"
     agentic_path = result_dir / "agentic_policy_metrics.csv"
     central = pd.read_csv(central_path) if central_path.exists() else pd.DataFrame()
     baselines = pd.read_csv(baseline_path) if baseline_path.exists() else pd.DataFrame()
+    continual = pd.read_csv(continual_path) if continual_path.exists() else pd.DataFrame()
     federated = pd.read_csv(federated_path) if federated_path.exists() else pd.DataFrame()
     agentic = pd.read_csv(agentic_path) if agentic_path.exists() else pd.DataFrame()
     datasets = list(load_yaml(args.datasets)["datasets"])
     seeds = [int(value) for value in config["project"]["seeds"]]
     ablation_seeds = [int(value) for value in config["protocol"].get("ablation_seeds", [])]
     federated_seeds = [int(value) for value in config["federated"].get("seeds", seeds)]
+    continual_seeds = [int(value) for value in config["continual"].get("seeds", seeds)]
     expected_central = len(datasets) * (len(seeds) * 2 + len(ablation_seeds) * 3)
     expected_baselines = len(datasets) * len(seeds) * 3
+    expected_continual = len(datasets) * len(continual_seeds) * 3
     expected_federated = len(datasets) * len(federated_seeds) * 4
     expected_agentic = len(datasets) * len(seeds) * 3
     data_checks = []
@@ -222,6 +300,10 @@ def main(argv: list[str] | None = None) -> int:
     superiority = bool(not main_gains.empty and (main_gains["mean_gain_rareguard_minus_nova"] > 0).all())
     ablation_superiority, ablation_comparisons = full_beats_ablations(central)
     pd.DataFrame(ablation_comparisons).to_csv(result_dir / "ablation_paired_gains.csv", index=False)
+    continual_better, continual_comparisons = continual_superiority(continual)
+    pd.DataFrame(continual_comparisons).to_csv(result_dir / "continual_comparisons.csv", index=False)
+    agent_better, agent_comparisons = agent_policy_value(agentic)
+    pd.DataFrame(agent_comparisons).to_csv(result_dir / "agent_policy_comparisons.csv", index=False)
     all_acquisitions_declared = len([item for item in data_checks if item["evidence"] != "missing"]) == len(datasets)
     range_sample_only = all_acquisitions_declared and acquisition_modes == {"remote_range_sample_from_canonical_drive_dataset"}
     full_corpus_reproduction = all_acquisitions_declared and all(
@@ -231,11 +313,20 @@ def main(argv: list[str] | None = None) -> int:
         "all_data_splits_ready": all(item["ready"] for item in data_checks),
         "central_complete": len(central) == expected_central,
         "classical_baselines_complete": len(baselines) == expected_baselines,
+        "continual_complete": len(continual) == expected_continual,
         "federated_complete": len(federated) == expected_federated,
         "agentic_complete": len(agentic) == expected_agentic,
-        "locked_test_once": bool(not central.empty and (central["test_access_count"] == 1).all() and (federated.empty or (federated["test_access_count"] == 1).all())),
+        "locked_test_once": bool(
+            not central.empty
+            and (central["test_access_count"] == 1).all()
+            and not continual.empty
+            and (continual["test_access_count"] == 1).all()
+            and (federated.empty or (federated["test_access_count"] == 1).all())
+        ),
         "rareguard_mean_superiority_macro_and_rare": superiority,
         "full_model_beats_all_ablations_macro_and_rare": ablation_superiority,
+        "continual_memory_beats_replay_controls": continual_better,
+        "agent_improves_over_light_with_partial_escalation": agent_better,
         "joule_energy_claim_supported": False,
         "full_corpus_reproduction": full_corpus_reproduction,
     }
@@ -251,8 +342,8 @@ def main(argv: list[str] | None = None) -> int:
     readiness = {
         "status": status,
         "gates": gates,
-        "expected_rows": {"baselines": expected_baselines, "central": expected_central, "federated": expected_federated, "agentic": expected_agentic},
-        "observed_rows": {"baselines": len(baselines), "central": len(central), "federated": len(federated), "agentic": len(agentic)},
+        "expected_rows": {"baselines": expected_baselines, "central": expected_central, "continual": expected_continual, "federated": expected_federated, "agentic": expected_agentic},
+        "observed_rows": {"baselines": len(baselines), "central": len(central), "continual": len(continual), "federated": len(federated), "agentic": len(agentic)},
         "data_checks": data_checks,
         "evidence_boundary": (
             "Current experiments use bounded deterministic range samples across canonical Drive CSV files, not every source row. "
@@ -274,7 +365,7 @@ def main(argv: list[str] | None = None) -> int:
         "Smoke outputs under `artifacts/smoke` are pipeline evidence only and are excluded from publication claims.",
     ]
     (report_dir / "PUBLICATION_EVIDENCE_AUDIT.md").write_text("\n\n".join(sections), encoding="utf-8")
-    make_figures(root, central, federated, agentic)
+    make_figures(root, central, continual, federated, agentic)
     logger.info("Publication readiness status=%s", readiness["status"])
     return 0 if readiness["status"] != "NOT_READY" else 2
 

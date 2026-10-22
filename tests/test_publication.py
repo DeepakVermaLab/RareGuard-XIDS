@@ -5,7 +5,9 @@ import torch
 
 from rareguard.data.publication import parquet_compatible
 from rareguard.evaluation.metrics import classification_metrics
-from rareguard.experiments.audit_publication import full_beats_ablations, holm_adjust, paired_statistical_tests
+from rareguard.experiments.audit_publication import agent_policy_value, continual_superiority, full_beats_ablations, holm_adjust, paired_statistical_tests
+from rareguard.experiments.run_publication_agentic import projected_seconds
+from rareguard.experiments.run_publication_continual import class_incremental_tasks, update_memory
 from rareguard.models.publication_models import NovaXIDSNet, RareGuardXIDSNet
 
 
@@ -75,3 +77,51 @@ def test_parquet_compatibility_normalizes_mixed_objects() -> None:
     normalized = parquet_compatible(frame)
     assert str(normalized["mixed"].dtype) == "string"
     assert normalized["numeric"].dtype == frame["numeric"].dtype
+
+
+def test_continual_tasks_and_balanced_memory() -> None:
+    labels = np.asarray([0] * 20 + [1] * 10 + [2] * 5 + [3] * 2)
+    tasks = class_incremental_tasks(labels, 3)
+    assert sorted(value for task in tasks for value in task) == [0, 1, 2, 3]
+    memory = update_memory("RareGuard-Continual", np.arange(len(labels)), labels, 8, np.random.default_rng(42))
+    counts = np.bincount(labels[memory], minlength=4)
+    assert counts.tolist() == [2, 2, 2, 2]
+
+
+def test_continual_superiority_requires_better_rare_f1_and_forgetting() -> None:
+    import pandas as pd
+
+    rows = []
+    for method, rare_f1, forgetting in (
+        ("RareGuard-FineTune", 0.4, 0.30),
+        ("RareGuard-ReservoirReplay", 0.5, 0.20),
+        ("RareGuard-Continual", 0.6, 0.10),
+    ):
+        rows.append(
+            {
+                "dataset": "demo",
+                "seed": 42,
+                "method": method,
+                "rare_f1_macro": rare_f1,
+                "mean_validation_forgetting": forgetting,
+            }
+        )
+    passed, comparisons = continual_superiority(pd.DataFrame(rows))
+    assert passed
+    assert len(comparisons) == 4
+
+
+def test_agent_timing_and_policy_gate() -> None:
+    import pandas as pd
+
+    assert projected_seconds("always_light_nova", 10, 0, 0.1, 0.5) == 1.0
+    assert projected_seconds("always_heavy_rareguard", 10, 10, 0.1, 0.5) == 5.0
+    assert projected_seconds("rareguard_agent", 10, 2, 0.1, 0.5) == 2.0
+    rows = [
+        {"dataset": "demo", "policy": "always_light_nova", "f1_macro": 0.7, "rare_f1_macro": 0.4, "heavy_call_ratio": 0.0},
+        {"dataset": "demo", "policy": "always_heavy_rareguard", "f1_macro": 0.9, "rare_f1_macro": 0.8, "heavy_call_ratio": 1.0},
+        {"dataset": "demo", "policy": "rareguard_agent", "f1_macro": 0.8, "rare_f1_macro": 0.6, "heavy_call_ratio": 0.3},
+    ]
+    passed, comparisons = agent_policy_value(pd.DataFrame(rows))
+    assert passed
+    assert len(comparisons) == 3

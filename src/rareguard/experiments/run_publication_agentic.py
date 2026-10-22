@@ -35,6 +35,14 @@ def policy_mask(
     return mask, uncertainty, rare_probability, drift
 
 
+def projected_seconds(policy: str, events: int, heavy_calls: int, light_per_sample: float, heavy_per_sample: float) -> float:
+    if policy == "always_light_nova":
+        return events * light_per_sample
+    if policy == "always_heavy_rareguard":
+        return events * heavy_per_sample
+    return events * light_per_sample + heavy_calls * heavy_per_sample
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Evaluate a measured NOVA-to-RareGuard 24/7 escalation policy.")
     parser.add_argument("--config", default="configs/publication.yaml")
@@ -80,7 +88,13 @@ def main(argv: list[str] | None = None) -> int:
             heavy_per_sample = rare_seconds / len(y)
             for policy, probabilities in policies.items():
                 heavy_calls = len(y) if policy == "always_heavy_rareguard" else (int(mask.sum()) if policy == "rareguard_agent" else 0)
-                measured_time_projection = len(y) * light_per_sample + heavy_calls * heavy_per_sample
+                measured_time_projection = projected_seconds(
+                    policy,
+                    len(y),
+                    heavy_calls,
+                    light_per_sample,
+                    heavy_per_sample,
+                )
                 rows.append(
                     {
                         "dataset": dataset,
@@ -104,12 +118,29 @@ def main(argv: list[str] | None = None) -> int:
                         "uncertainty": uncertainty,
                         "rare_probability": rare_probability,
                         "drift_score": drift,
+                        "trigger_uncertainty": uncertainty >= float(settings["uncertainty_threshold"]),
+                        "trigger_rare_signal": rare_probability >= float(settings["rare_probability_threshold"]),
+                        "trigger_drift": drift >= float(settings["drift_threshold"]),
                         "wake_heavy_detector": mask,
                         "true_class": y,
                         "light_prediction": nova_probabilities.argmax(axis=1),
                         "heavy_prediction": rare_probabilities.argmax(axis=1),
                     }
                 )
+            )
+            current = decisions[-1]
+            current["trigger_reason"] = current.apply(
+                lambda row: ";".join(
+                    reason
+                    for reason, active in (
+                        ("uncertainty", row["trigger_uncertainty"]),
+                        ("rare_attack_signal", row["trigger_rare_signal"]),
+                        ("traffic_drift", row["trigger_drift"]),
+                    )
+                    if active
+                )
+                or "none",
+                axis=1,
             )
             logger.info("%s seed=%d heavy_ratio=%.4f", dataset, seed, mask.mean())
     result_dir = root / "results"

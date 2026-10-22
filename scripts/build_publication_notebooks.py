@@ -43,20 +43,26 @@ NOTEBOOKS = {
         code("DEVICE = 'cpu'  # Change to 'mps' only if CPU runtime is impractical.\n!python -m rareguard.experiments.run_publication_central --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {DEVICE} --resume"),
         code("import pandas as pd\ndisplay(pd.read_csv('artifacts/publication/results/central_summary_ci.csv'))"),
     ],
-    "10_publication_federated.ipynb": [
-        markdown("# 10 - Fair federated experiments\n\nAll methods use the same RareGuard-XIDS backbone. Round selection uses validation data; the locked test is evaluated once."),
+    "10_publication_continual.ipynb": [
+        markdown("# 10 - Continual rare-attack learning\n\nClass-incremental evaluation of fine-tuning, reservoir replay, and RareGuard class-balanced prototype memory. Validation measures forgetting; the locked test is evaluated once after the final task."),
+        code(SETUP),
+        code("DEVICE = 'cpu'  # 'mps' is allowed if the CPU timing check is impractical.\n!python -m rareguard.experiments.run_publication_continual --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {DEVICE} --resume"),
+        code("import pandas as pd\ndisplay(pd.read_csv('artifacts/publication/results/continual_seed_metrics.csv'))"),
+    ],
+    "11_publication_federated.ipynb": [
+        markdown("# 11 - Fair federated experiments\n\nAll methods use the same RareGuard-XIDS backbone. Round selection uses validation data; the locked test is evaluated once."),
         code(SETUP),
         code("DEVICE = 'cpu'  # 'mps' is allowed if needed for this compute-heavy stage.\n!python -m rareguard.experiments.run_publication_federated --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {DEVICE} --resume"),
         code("import pandas as pd\ndisplay(pd.read_csv('artifacts/publication/results/federated_seed_metrics.csv'))"),
     ],
-    "11_publication_agentic.ipynb": [
-        markdown("# 11 - 24/7 agentic escalation evaluation\n\nCPU stage. NOVA-XIDS is the always-on detector and RareGuard-XIDS is invoked only by uncertainty, rare-signal, or drift gates. Runtime projections use measured inference timings; no joule claim is made."),
+    "12_publication_agentic.ipynb": [
+        markdown("# 12 - 24/7 agentic escalation evaluation\n\nCPU stage. NOVA-XIDS is the always-on detector and RareGuard-XIDS is invoked only by uncertainty, rare-signal, or drift gates. Runtime projections use measured inference timings; no joule claim is made."),
         code(SETUP),
         code("!python -m rareguard.experiments.run_publication_agentic --config configs/publication.yaml --dataset all"),
         code("import pandas as pd\ndisplay(pd.read_csv('artifacts/publication/results/agentic_policy_metrics.csv'))"),
     ],
-    "12_publication_audit.ipynb": [
-        markdown("# 12 - Publication evidence audit\n\nCPU stage. Generate figures, paired-seed confidence intervals, completeness checks, and explicit claim gates. This stage never changes model outputs."),
+    "13_publication_audit.ipynb": [
+        markdown("# 13 - Publication evidence audit\n\nCPU stage. Generate figures, paired-seed confidence intervals, statistical tests, completeness checks, and explicit claim gates. This stage never changes model outputs."),
         code(SETUP),
         code("!python -m rareguard.experiments.audit_publication --config configs/publication.yaml --datasets configs/datasets.yaml"),
         code("from pathlib import Path\nprint(Path('artifacts/publication/reports/PUBLICATION_EVIDENCE_AUDIT.md').read_text())"),
