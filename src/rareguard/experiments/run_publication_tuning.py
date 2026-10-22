@@ -148,12 +148,26 @@ def main(argv: list[str] | None = None) -> int:
     history_path = root / "results" / "validation_tuning_history.csv"
     rows = pd.read_csv(result_path).to_dict("records") if args.resume and result_path.exists() else []
     histories = pd.read_csv(history_path).to_dict("records") if args.resume and history_path.exists() else []
-    complete = {(int(row["candidate_id"]), int(row["seed"])) for row in rows}
+    complete = {
+        (
+            float(row["focal_mix"]),
+            float(row["rare_sampler_power"]),
+            float(row["contrastive_weight"]),
+            int(row["seed"]),
+        )
+        for row in rows
+    }
     seeds = [int(value) for value in config["tuning"]["seeds"]]
     candidates = candidate_grid(config)
     for candidate_id, candidate in enumerate(candidates):
         for seed in seeds:
-            if (candidate_id, seed) in complete:
+            candidate_key = (
+                candidate["focal_mix"],
+                candidate["rare_sampler_power"],
+                candidate["contrastive_weight"],
+                seed,
+            )
+            if candidate_key in complete:
                 continue
             candidate_config = copy.deepcopy(config)
             candidate_config["training"].update(candidate)
@@ -181,7 +195,7 @@ def main(argv: list[str] | None = None) -> int:
     if len(frame) != expected:
         raise RuntimeError(f"Tuning incomplete: expected {expected} rows, observed {len(frame)}")
     summary = (
-        frame.groupby(["candidate_id", "focal_mix", "rare_sampler_power", "contrastive_weight"], as_index=False)
+        frame.groupby(["focal_mix", "rare_sampler_power", "contrastive_weight"], as_index=False)
         .agg(
             seeds=("seed", "nunique"),
             validation_selection_score=("validation_selection_score", "mean"),
@@ -189,7 +203,9 @@ def main(argv: list[str] | None = None) -> int:
             validation_rare_f1_macro=("validation_rare_f1_macro", "mean"),
         )
         .sort_values(["validation_selection_score", "validation_f1_macro"], ascending=False)
+        .reset_index(drop=True)
     )
+    summary.insert(0, "candidate_id", np.arange(len(summary), dtype=int))
     summary.to_csv(root / "results" / "validation_tuning_summary.csv", index=False)
     selected = summary.iloc[0].to_dict()
     selected.update(
