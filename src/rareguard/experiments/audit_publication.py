@@ -455,6 +455,7 @@ def main(argv: list[str] | None = None) -> int:
     confirmation_continual_device = continual[continual["dataset"].isin(confirmation_datasets)]
     confirmation_federated_device = federated[federated["dataset"].isin(confirmation_datasets)]
     confirmation_agentic_runs = agentic[agentic["dataset"].isin(confirmation_datasets)]
+    confirmation_robustness_runs = robustness[robustness["dataset"].isin(confirmation_datasets)]
     deterministic_device_match = bool(
         not confirmation_central_device.empty
         and set(confirmation_central_device["device"].astype(str)) == {confirmatory_device}
@@ -462,6 +463,8 @@ def main(argv: list[str] | None = None) -> int:
         and set(confirmation_continual_device["device"].astype(str)) == {confirmatory_device}
         and not confirmation_federated_device.empty
         and set(confirmation_federated_device["device"].astype(str)) == {confirmatory_device}
+        and not confirmation_robustness_runs.empty
+        and set(confirmation_robustness_runs["device"].astype(str)) == {confirmatory_device}
     )
     gates = {
         "all_data_splits_ready": all(item["ready"] for item in data_checks),
@@ -491,6 +494,8 @@ def main(argv: list[str] | None = None) -> int:
             and (confirmation_federated_device["test_access_count"] == 1).all()
             and not confirmation_agentic_runs.empty
             and (confirmation_agentic_runs["test_access_count"] == 1).all()
+            and not confirmation_robustness_runs.empty
+            and (confirmation_robustness_runs["test_access_count"] == 1).all()
         ),
         "confirmation_rareguard_mean_superiority_macro_and_rare": superiority,
         "full_model_beats_all_ablations_primary_composite": ablation_superiority,
