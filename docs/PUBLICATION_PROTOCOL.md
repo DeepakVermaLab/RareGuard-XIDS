@@ -34,7 +34,7 @@ Primary metrics are macro-F1 and rare-class macro-F1. Secondary metrics are weig
 
 ## Ablations
 
-The full RareGuard-XIDS model is compared with fixed variants that remove effective-number class balancing, supervised contrastive loss, or the prototype head. Loss settings are selected by the same validation-only adaptation rule and then frozen per dataset. The preregistered ablation endpoint is the mean of macro-F1 and rare-class macro-F1; both component metrics remain reported. Results are never modified if an ablation performs better; the audit reports that outcome and fails the superiority gate when appropriate.
+The full RareGuard-XIDS model is compared with fixed variants that remove both effective-number weighting and rare-sample reweighting, supervised contrastive loss, or the prototype head. Loss settings are selected by the same validation-only adaptation rule and then frozen per dataset. The preregistered ablation endpoint is the mean of macro-F1 and rare-class macro-F1; both component metrics remain reported. Results are never modified if an ablation performs better; the audit reports that outcome and fails the superiority gate when appropriate.
 
 ## Continual-Learning Controls
 
@@ -46,7 +46,7 @@ FedAvg, FedProx, clustered FL, and RareGuardFed all use the RareGuard-XIDS backb
 
 ## Agentic Evidence
 
-NOVA-XIDS is the always-on light detector and RareGuard-XIDS is the escalated detector. The controller is compared with always-light and always-heavy policies using the same locked test predictions. Runtime projections use measured inference times. No energy-in-joules claim is permitted without an external hardware power meter.
+NOVA-XIDS is the always-on light detector and RareGuard-XIDS is the escalated detector. Uncertainty, rare-signal, and drift thresholds are selected from a fixed grid using saved validation predictions and a preregistered accuracy-compute objective before the locked test is opened. The controller is compared with always-light and always-heavy policies using the same locked test predictions. Runtime projections use measured inference times. No energy-in-joules claim is permitted without an external hardware power meter.
 
 The deployable runtime watches an input directory, validates the train-fitted feature schema, applies NOVA first, invokes RareGuard only when uncertainty, rare-class probability, or online drift crosses a configured threshold, and persists decisions, file hashes, errors, and health heartbeats. The offline policy experiment supports routing-quality claims; it does not by itself prove uninterrupted 24/7 field operation.
 

@@ -347,7 +347,7 @@ def prepare_train_only_splits(
         train_indices=train,
         val_indices=val,
         test_indices=test,
-        feature_names=np.asarray(list(numeric.columns), dtype=object),
+        feature_names=np.asarray(list(numeric.columns), dtype=np.str_),
     )
     joblib.dump(transformer, output_dir / "train_fitted_transformer.joblib")
     row_hash = pd.util.hash_pandas_object(numeric.round(duplicate_decimals), index=False).to_numpy()
@@ -377,6 +377,20 @@ def prepare_train_only_splits(
         "transform_fit_scope": "training_only",
         "test_locked": True,
         "source_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
+        "array_content_sha256": {
+            "X_train": hashlib.sha256(np.ascontiguousarray(x_train).tobytes()).hexdigest(),
+            "X_val": hashlib.sha256(np.ascontiguousarray(x_val).tobytes()).hexdigest(),
+            "X_test": hashlib.sha256(np.ascontiguousarray(x_test).tobytes()).hexdigest(),
+            "y_train": hashlib.sha256(np.ascontiguousarray(y[train]).tobytes()).hexdigest(),
+            "y_val": hashlib.sha256(np.ascontiguousarray(y[val]).tobytes()).hexdigest(),
+            "y_test": hashlib.sha256(np.ascontiguousarray(y[test]).tobytes()).hexdigest(),
+            "train_indices": hashlib.sha256(np.ascontiguousarray(train).tobytes()).hexdigest(),
+            "val_indices": hashlib.sha256(np.ascontiguousarray(val).tobytes()).hexdigest(),
+            "test_indices": hashlib.sha256(np.ascontiguousarray(test).tobytes()).hexdigest(),
+            "feature_names": hashlib.sha256(
+                json.dumps(list(numeric.columns), ensure_ascii=True).encode("utf-8")
+            ).hexdigest(),
+        },
         "ready": all(value == 0 for value in overlaps.values()),
     }
     (output_dir / "split_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")

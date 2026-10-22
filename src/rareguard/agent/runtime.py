@@ -93,7 +93,9 @@ class ContinuousRareGuardRuntime:
             tensor = torch.tensor(features, dtype=torch.float32, device=self.device)
             output = model(tensor)
             logits = output[0] if rareguard else output
-            return torch.softmax(logits, dim=1).cpu().numpy()
+            key = "rareguard_temperature" if rareguard else "nova_temperature"
+            temperature = max(float(self.config["agent"].get(key, 1.0)), 1e-6)
+            return torch.softmax(logits / temperature, dim=1).cpu().numpy()
 
     def _drift(self, probabilities: np.ndarray, decay: float = 0.99) -> np.ndarray:
         scores = np.zeros(len(probabilities), dtype=float)

@@ -314,12 +314,14 @@ def main(argv: list[str] | None = None) -> int:
     continual_path = result_dir / "continual_seed_metrics.csv"
     federated_path = result_dir / "federated_seed_metrics.csv"
     agentic_path = result_dir / "agentic_policy_metrics.csv"
+    agent_selection_path = result_dir / "agentic_validation_selections.csv"
     central = pd.read_csv(central_path) if central_path.exists() else pd.DataFrame()
     baselines = pd.read_csv(baseline_path) if baseline_path.exists() else pd.DataFrame()
     tuning = pd.read_csv(tuning_path) if tuning_path.exists() else pd.DataFrame()
     continual = pd.read_csv(continual_path) if continual_path.exists() else pd.DataFrame()
     federated = pd.read_csv(federated_path) if federated_path.exists() else pd.DataFrame()
     agentic = pd.read_csv(agentic_path) if agentic_path.exists() else pd.DataFrame()
+    agent_selections = pd.read_csv(agent_selection_path) if agent_selection_path.exists() else pd.DataFrame()
     datasets = list(load_yaml(args.datasets)["datasets"])
     development_datasets = set(config["protocol"].get("development_datasets", []))
     confirmation_datasets = set(config["protocol"].get("confirmation_datasets", []))
@@ -332,6 +334,7 @@ def main(argv: list[str] | None = None) -> int:
     expected_continual = len(datasets) * len(continual_seeds) * 3
     expected_federated = len(datasets) * len(federated_seeds) * 4
     expected_agentic = len(datasets) * len(seeds) * 3
+    expected_agent_selections = len(datasets) * len(seeds)
     expected_tuning_per_dataset = (
         len(config["adaptive_tuning"]["seeds"])
         * len(config["adaptive_tuning"]["focal_mix"])
@@ -407,8 +410,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     confirmatory_device = str(config["protocol"].get("confirmatory_device", "cpu"))
     confirmation_central_device = central[central["dataset"].isin(confirmation_datasets)]
+    confirmation_baselines = baselines[baselines["dataset"].isin(confirmation_datasets)]
     confirmation_continual_device = continual[continual["dataset"].isin(confirmation_datasets)]
     confirmation_federated_device = federated[federated["dataset"].isin(confirmation_datasets)]
+    confirmation_agentic_runs = agentic[agentic["dataset"].isin(confirmation_datasets)]
     deterministic_device_match = bool(
         not confirmation_central_device.empty
         and set(confirmation_central_device["device"].astype(str)) == {confirmatory_device}
@@ -427,13 +432,22 @@ def main(argv: list[str] | None = None) -> int:
         "continual_complete": len(continual) == expected_continual,
         "federated_complete": len(federated) == expected_federated,
         "agentic_complete": len(agentic) == expected_agentic,
+        "agent_validation_selection_complete": bool(
+            len(agent_selections) == expected_agent_selections
+            and not agent_selections.empty
+            and (agent_selections["test_access_count"] == 0).all()
+        ),
         "confirmation_locked_test_once_per_preregistered_run": bool(
             not confirmation_central.empty
             and (confirmation_central["test_access_count"] == 1).all()
+            and not confirmation_baselines.empty
+            and (confirmation_baselines["test_access_count"] == 1).all()
             and not confirmation_continual.empty
             and (confirmation_continual["test_access_count"] == 1).all()
             and not confirmation_federated_device.empty
             and (confirmation_federated_device["test_access_count"] == 1).all()
+            and not confirmation_agentic_runs.empty
+            and (confirmation_agentic_runs["test_access_count"] == 1).all()
         ),
         "confirmation_rareguard_mean_superiority_macro_and_rare": superiority,
         "full_model_beats_all_ablations_primary_composite": ablation_superiority,
@@ -454,8 +468,8 @@ def main(argv: list[str] | None = None) -> int:
     readiness = {
         "status": status,
         "gates": gates,
-        "expected_rows": {"tuning": expected_tuning, "baselines": expected_baselines, "central": expected_central, "continual": expected_continual, "federated": expected_federated, "agentic": expected_agentic},
-        "observed_rows": {"tuning": len(tuning), "baselines": len(baselines), "central": len(central), "continual": len(continual), "federated": len(federated), "agentic": len(agentic)},
+        "expected_rows": {"tuning": expected_tuning, "baselines": expected_baselines, "central": expected_central, "continual": expected_continual, "federated": expected_federated, "agentic": expected_agentic, "agent_validation_selections": expected_agent_selections},
+        "observed_rows": {"tuning": len(tuning), "baselines": len(baselines), "central": len(central), "continual": len(continual), "federated": len(federated), "agentic": len(agentic), "agent_validation_selections": len(agent_selections)},
         "dataset_roles": {"development": sorted(development_datasets), "external_confirmation": sorted(confirmation_datasets)},
         "data_checks": data_checks,
         "evidence_boundary": (

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 from pathlib import Path
 
@@ -8,6 +9,7 @@ import numpy as np
 
 from rareguard.agent.runtime import ContinuousRareGuardRuntime, RuntimePaths
 from rareguard.config import load_yaml
+from rareguard.experiments.adaptive_config import apply_dataset_hyperparameters
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -22,6 +24,13 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     config = load_yaml(args.config)
     root = Path(config["paths"]["artifact_root"])
+    config = apply_dataset_hyperparameters(config, root, args.dataset)
+    policy_path = root / "reports" / f"AGENT_POLICY_{args.dataset}.json"
+    if policy_path.exists():
+        policy = json.loads(policy_path.read_text(encoding="utf-8"))
+        selected = policy.get("per_seed", {}).get(str(args.seed), policy.get("deployment_default", {}))
+        config = copy.deepcopy(config)
+        config["agent"].update(selected)
     processed = root / "processed" / args.dataset
     model_dir = root / "models" / args.dataset / f"seed_{args.seed}"
     metadata = json.loads((processed / "split_metadata.json").read_text(encoding="utf-8"))

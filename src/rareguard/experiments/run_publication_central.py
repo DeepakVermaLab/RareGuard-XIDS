@@ -180,7 +180,7 @@ def train_one(
     sampling_weights = rare_sampling_weights(
         y_train,
         classes,
-        float(training.get("rare_sampler_power", 0.0)) if variant.rareguard else 0.0,
+        float(training.get("rare_sampler_power", 0.0)) if variant.rareguard and variant.class_balance else 0.0,
     )
     counts = np.bincount(y_train, minlength=classes)
     rare_cutoff = max(1, int(float(config["data"]["min_rare_class_ratio"]) * len(y_train)))
@@ -240,8 +240,11 @@ def train_one(
     if best_state is None:
         raise RuntimeError("Training produced no validation checkpoint.")
     model.load_state_dict(best_state)
+    training_seconds = time.perf_counter() - started
+    calibration_started = time.perf_counter()
     validation_probabilities, _ = infer(model, x_val, y_val, batch_size, device, variant.rareguard)
     temperature = fit_temperature(validation_probabilities, y_val)
+    calibration_seconds = time.perf_counter() - calibration_started
     test_started = time.perf_counter()
     raw_probabilities, vectors = infer(model, x_test, y_test, batch_size, device, variant.rareguard)
     probabilities = apply_temperature(raw_probabilities, temperature)
@@ -278,6 +281,9 @@ def train_one(
         prediction=predictions,
         vectors=vectors,
         temperature=np.asarray(temperature),
+        validation_y=y_val,
+        validation_probabilities=apply_temperature(validation_probabilities, temperature),
+        validation_raw_probabilities=validation_probabilities,
     )
     raw_metrics = classification_metrics(y_test, raw_probabilities, rare_ids)
     row: dict[str, object] = {
@@ -288,7 +294,8 @@ def train_one(
         "best_validation_selection_score": best_score,
         "best_validation_f1_macro": best_f1,
         "best_validation_rare_f1_macro": best_rare_f1,
-        "training_seconds": time.perf_counter() - started,
+        "training_seconds": training_seconds,
+        "calibration_seconds": calibration_seconds,
         "test_seconds": test_seconds,
         "test_samples_per_second": float(len(y_test) / max(test_seconds, 1e-9)),
         "temperature": temperature,
@@ -302,7 +309,9 @@ def train_one(
             else ("class_balanced_focal" if variant.focal else "class_balanced_cross_entropy")
         ),
         "selected_focal_mix": float(training.get("focal_mix", 1.0)),
-        "rare_sampler_power": float(training.get("rare_sampler_power", 0.0)) if variant.rareguard else 0.0,
+        "rare_sampler_power": (
+            float(training.get("rare_sampler_power", 0.0)) if variant.rareguard and variant.class_balance else 0.0
+        ),
         "selected_contrastive_weight": float(training.get("contrastive_weight", 0.0)),
         "contrastive_objective": bool(variant.rareguard and variant.contrastive),
         "prototype_objective": bool(variant.rareguard and variant.prototypes),

@@ -6,7 +6,7 @@ import torch
 from rareguard.data.publication import parquet_compatible, source_filename_labels
 from rareguard.evaluation.metrics import classification_metrics
 from rareguard.experiments.audit_publication import agent_policy_value, continual_superiority, full_beats_ablations, holm_adjust, paired_statistical_tests, selected_matches_adaptive_tuning
-from rareguard.experiments.run_publication_agentic import projected_seconds
+from rareguard.experiments.run_publication_agentic import projected_seconds, select_policy_thresholds
 from rareguard.experiments.run_publication_central import apply_temperature, fit_temperature
 from rareguard.experiments.run_publication_continual import class_incremental_tasks, update_memory
 from rareguard.models.publication_models import NovaXIDSNet, RareGuardXIDSNet
@@ -194,6 +194,23 @@ def test_agent_timing_and_policy_gate() -> None:
     passed, comparisons = agent_policy_value(pd.DataFrame(rows))
     assert passed
     assert len(comparisons) == 3
+
+
+def test_agent_thresholds_are_selected_from_validation_only() -> None:
+    y = np.asarray([0, 0, 1, 1])
+    light = np.asarray([[0.9, 0.1], [0.55, 0.45], [0.6, 0.4], [0.2, 0.8]])
+    heavy = np.asarray([[0.9, 0.1], [0.8, 0.2], [0.1, 0.9], [0.1, 0.9]])
+    settings = {
+        "uncertainty_grid": [0.2, 0.4],
+        "rare_probability_grid": [0.3, 0.7],
+        "drift_grid": [0.5],
+        "min_heavy_call_ratio": 0.1,
+        "max_heavy_call_ratio": 0.9,
+        "compute_penalty": 0.0,
+    }
+    selected = select_policy_thresholds(y, light, heavy, {1}, settings)
+    assert selected["validation_composite"] >= 0.5
+    assert 0.1 <= selected["validation_heavy_call_ratio"] <= 0.9
 
 
 def test_temperature_scaling_is_validation_only_and_preserves_predictions() -> None:
