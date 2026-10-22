@@ -31,7 +31,7 @@ Primary metrics are macro-F1 and rare-class macro-F1. Secondary metrics are weig
 
 ## Ablations
 
-The full RareGuard-XIDS model is compared with fixed variants that remove focal loss, supervised contrastive loss, or the prototype head. Results are never modified if an ablation performs better; the audit reports that outcome and fails the superiority gate when appropriate.
+The full RareGuard-XIDS model is compared with fixed variants that remove effective-number class balancing, supervised contrastive loss, or the prototype head. The focal/CE mixture is chosen once using development validation and then frozen. Results are never modified if an ablation performs better; the audit reports that outcome and fails the superiority gate when appropriate.
 
 ## Continual-Learning Controls
 

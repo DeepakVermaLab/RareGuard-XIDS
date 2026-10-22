@@ -30,6 +30,7 @@ class Variant:
     focal: bool = True
     contrastive: bool = True
     prototypes: bool = True
+    class_balance: bool = True
 
 
 def resolve_device(requested: str) -> str:
@@ -150,8 +151,9 @@ def train_one(
     model = build_model(variant, x_train.shape[1], classes, config).to(device)
     training = config["training"]
     weights = effective_class_weights(y_train, classes, float(training["class_balance_beta"])).to(device)
-    focal = FocalLoss(float(training["focal_gamma"]), weights)
-    cross_entropy = torch.nn.CrossEntropyLoss(weight=weights)
+    objective_weights = weights if variant.class_balance else None
+    focal = FocalLoss(float(training["focal_gamma"]), objective_weights)
+    cross_entropy = torch.nn.CrossEntropyLoss(weight=objective_weights)
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=float(training["learning_rate"]),
@@ -262,6 +264,7 @@ def train_one(
         "rare_sampler_power": float(training.get("rare_sampler_power", 0.0)) if variant.rareguard else 0.0,
         "contrastive_objective": bool(variant.rareguard and variant.contrastive),
         "prototype_objective": bool(variant.rareguard and variant.prototypes),
+        "class_balanced_objective": bool(variant.class_balance),
         "model_path": str(model_path),
         "prediction_path": str(vector_path),
         "test_access_count": 1,
@@ -273,8 +276,8 @@ def train_one(
 def variants(config: dict) -> list[Variant]:
     result = [Variant("NOVA-XIDS", rareguard=False), Variant("RareGuard-XIDS", rareguard=True)]
     requested = set(config["protocol"].get("ablations", []))
-    if "no_focal" in requested:
-        result.append(Variant("RareGuard-no-focal", True, focal=False))
+    if "no_class_balance" in requested:
+        result.append(Variant("RareGuard-no-class-balance", True, class_balance=False))
     if "no_contrastive" in requested:
         result.append(Variant("RareGuard-no-contrastive", True, contrastive=False))
     if "no_prototype" in requested:
