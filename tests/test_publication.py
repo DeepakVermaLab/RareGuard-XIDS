@@ -5,7 +5,7 @@ import torch
 
 from rareguard.data.publication import parquet_compatible, source_filename_labels
 from rareguard.evaluation.metrics import classification_metrics
-from rareguard.experiments.audit_publication import agent_policy_value, continual_superiority, full_beats_ablations, holm_adjust, paired_statistical_tests
+from rareguard.experiments.audit_publication import agent_policy_value, continual_superiority, full_beats_ablations, holm_adjust, paired_statistical_tests, selected_matches_adaptive_tuning
 from rareguard.experiments.run_publication_agentic import projected_seconds
 from rareguard.experiments.run_publication_central import apply_temperature, fit_temperature
 from rareguard.experiments.run_publication_continual import class_incremental_tasks, update_memory
@@ -69,6 +69,38 @@ def test_paired_statistics_and_holm_adjustment() -> None:
     assert result["holm_adjusted_p"].notna().all()
     adjusted = holm_adjust([0.01, 0.04, 0.03])
     assert adjusted == [0.03, 0.06, 0.06]
+
+
+def test_selected_configuration_must_match_saved_validation_winner() -> None:
+    import pandas as pd
+
+    rows = []
+    for focal_mix, score in ((0.0, 0.75), (0.5, 0.80)):
+        for seed in (42, 73, 101):
+            rows.append(
+                {
+                    "dataset": "demo",
+                    "seed": seed,
+                    "focal_mix": focal_mix,
+                    "rare_sampler_power": 0.0,
+                    "contrastive_weight": 0.1,
+                    "validation_selection_score": score,
+                    "validation_f1_macro": score + 0.05,
+                    "validation_rare_f1_macro": score - 0.05,
+                    "test_access_count": 0,
+                }
+            )
+    selected = {
+        "dataset": "demo",
+        "focal_mix": 0.5,
+        "rare_sampler_power": 0.0,
+        "contrastive_weight": 0.1,
+        "validation_selection_score": 0.80,
+        "test_access_count": 0,
+    }
+    assert selected_matches_adaptive_tuning(pd.DataFrame(rows), {"demo": selected}, ["demo"])
+    selected["focal_mix"] = 0.0
+    assert not selected_matches_adaptive_tuning(pd.DataFrame(rows), {"demo": selected}, ["demo"])
 
 
 def test_parquet_compatibility_normalizes_mixed_objects() -> None:

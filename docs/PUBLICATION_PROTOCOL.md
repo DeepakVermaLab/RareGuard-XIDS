@@ -9,7 +9,7 @@ The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are cont
 ## Confirmatory Design
 
 - CSE-CIC-IDS2018 and Edge-IIoTset are development datasets. TabularIoTAttack-2024 and DataSense 2025 are untouched external confirmations.
-- A prespecified six-candidate adaptation grid is applied independently to each dataset using validation data only. The grid, three selection seeds, primary composite, and tie-break rule are fixed before either confirmation test split is opened.
+- A prespecified six-candidate adaptation grid is applied independently to each dataset using validation data only. It selects the focal/CE mix and rare-sampling strength while keeping the proposed contrastive objective active. The grid, three selection seeds, primary composite, and tie-break rule are fixed before either confirmation test split is opened.
 - MPS is restricted to validation-only tuning and execution smoke tests; reported central, continual, and federated metrics run on CPU with deterministic PyTorch algorithms enabled.
 - Five fixed seeds: 42, 73, 101, 137, and 211.
 - Duplicate removal before splitting.
@@ -17,7 +17,7 @@ The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are cont
 - Identifier and timestamp columns excluded from predictors.
 - Stratified train/validation/test split.
 - Imputation and scaling fitted only on training rows.
-- Validation macro-F1 selects checkpoints and federated rounds.
+- The mean of validation macro-F1 and rare-class macro-F1 selects central checkpoints; validation macro-F1 selects continual checkpoints and federated rounds.
 - Validation-only temperature scaling calibrates NOVA and RareGuard probabilities before the locked test and agent-routing analysis; raw and calibrated probabilities are both retained.
 - The locked test split is evaluated exactly once per trained run.
 - NOVA-XIDS and RareGuard-XIDS use the same input data and core backbone.

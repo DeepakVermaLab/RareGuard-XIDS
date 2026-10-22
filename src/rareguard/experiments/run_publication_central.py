@@ -301,7 +301,9 @@ def train_one(
             if variant.rareguard and variant.focal
             else ("class_balanced_focal" if variant.focal else "class_balanced_cross_entropy")
         ),
+        "selected_focal_mix": float(training.get("focal_mix", 1.0)),
         "rare_sampler_power": float(training.get("rare_sampler_power", 0.0)) if variant.rareguard else 0.0,
+        "selected_contrastive_weight": float(training.get("contrastive_weight", 0.0)),
         "contrastive_objective": bool(variant.rareguard and variant.contrastive),
         "prototype_objective": bool(variant.rareguard and variant.prototypes),
         "class_balanced_objective": bool(variant.class_balance),

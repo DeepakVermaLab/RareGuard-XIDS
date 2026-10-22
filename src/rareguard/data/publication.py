@@ -4,6 +4,7 @@ import hashlib
 import io
 import json
 import subprocess
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, asdict
 from pathlib import Path
@@ -36,9 +37,37 @@ class RemoteFile:
     size: int
 
 
-def _run(args: list[str]) -> bytes:
-    completed = subprocess.run(args, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return completed.stdout
+def _run(args: list[str], attempts: int = 4, timeout_seconds: int = 180) -> bytes:
+    command = list(args)
+    if command and command[0] == "rclone":
+        command.extend(
+            [
+                "--contimeout",
+                "20s",
+                "--timeout",
+                "90s",
+                "--retries",
+                "3",
+                "--low-level-retries",
+                "10",
+            ]
+        )
+    last_error: Exception | None = None
+    for attempt in range(1, attempts + 1):
+        try:
+            completed = subprocess.run(
+                command,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                timeout=timeout_seconds,
+            )
+            return completed.stdout
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+            last_error = exc
+            if attempt < attempts:
+                time.sleep(min(30, 2**attempt))
+    raise RuntimeError(f"Command failed after {attempts} attempts: {' '.join(command)}") from last_error
 
 
 def list_remote_csvs(remote: str, folder: str, root_id: str, csv_root: str = "") -> list[RemoteFile]:
@@ -170,12 +199,13 @@ def build_remote_sample(
 
     with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
         pending = {executor.submit(load_or_sample, item): item for item in files}
-        frames = []
+        loaded_frames: list[tuple[str, pd.DataFrame]] = []
         for future in as_completed(pending):
             item = pending[future]
             frame = future.result()
-            frames.append(frame)
+            loaded_frames.append((item.path, frame))
             print(f"Sampled {item.path}: {len(frame):,} rows")
+    frames = [frame for _, frame in sorted(loaded_frames, key=lambda pair: pair[0])]
     frames = [frame for frame in frames if not frame.empty]
     if not frames:
         raise ValueError(f"No CSV rows could be sampled from {folder}")
@@ -227,6 +257,7 @@ def build_remote_sample(
         "window_bytes": window_bytes,
         "windows_per_file": windows,
         "parallel_workers": workers,
+        "source_concatenation_order": "lexicographic_remote_path",
         "max_rows_per_class": max_rows_per_class,
         "max_total_rows": max_total_rows,
         "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),

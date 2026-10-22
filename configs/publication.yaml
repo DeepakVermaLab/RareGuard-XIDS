@@ -61,8 +61,8 @@ adaptive_tuning:
   device: mps
   seeds: [42, 73, 101]
   focal_mix: [0.0, 0.5, 1.0]
-  rare_sampler_power: [0.0]
-  contrastive_weight: [0.0, 0.1]
+  rare_sampler_power: [0.0, 0.25]
+  contrastive_weight: [0.1]
 
 federated:
   seeds: [42, 73, 101]

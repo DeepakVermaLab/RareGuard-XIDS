@@ -17,6 +17,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--datasets", default="configs/datasets.yaml")
     parser.add_argument("--dataset", default="all")
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--force", action="store_true")
     args = parser.parse_args(argv)
     cfg = load_yaml(args.config)
     datasets = load_yaml(args.datasets)["datasets"]
@@ -28,7 +29,7 @@ def main(argv: list[str] | None = None) -> int:
         destination = root / "processed" / key
         split_path = destination / "splits.npz"
         metadata_path = destination / "split_metadata.json"
-        if args.resume and split_path.exists() and metadata_path.exists():
+        if args.resume and not args.force and split_path.exists() and metadata_path.exists():
             existing_metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
             if existing_metadata.get("ready"):
                 logger.info("Skipping completed publication split %s", key)

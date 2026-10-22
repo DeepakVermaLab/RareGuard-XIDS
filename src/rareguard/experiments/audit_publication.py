@@ -15,6 +15,9 @@ from rareguard.utils.logging import configure_logging
 from rareguard.utils.provenance import write_provenance_manifest
 
 
+SELECTION_FIELDS = ("focal_mix", "rare_sampler_power", "contrastive_weight")
+
+
 def markdown_table(frame: pd.DataFrame) -> str:
     if frame.empty:
         return "No results are available."
@@ -130,6 +133,44 @@ def paired_statistical_tests(central: pd.DataFrame) -> pd.DataFrame:
     if not frame.empty:
         frame["holm_adjusted_p"] = holm_adjust(frame["wilcoxon_p"].tolist())
     return frame
+
+
+def selected_matches_adaptive_tuning(
+    tuning: pd.DataFrame,
+    selected_by_dataset: dict[str, dict[str, object]],
+    datasets: list[str],
+) -> bool:
+    if tuning.empty or set(selected_by_dataset) != set(datasets):
+        return False
+    for dataset in datasets:
+        subset = tuning[tuning["dataset"] == dataset]
+        if subset.empty or (subset["test_access_count"] != 0).any():
+            return False
+        ranked = (
+            subset.groupby(list(SELECTION_FIELDS), as_index=False)
+            .agg(
+                validation_selection_score=("validation_selection_score", "mean"),
+                validation_f1_macro=("validation_f1_macro", "mean"),
+                validation_rare_f1_macro=("validation_rare_f1_macro", "mean"),
+            )
+            .sort_values(
+                ["validation_selection_score", "validation_rare_f1_macro", "validation_f1_macro"],
+                ascending=False,
+            )
+            .reset_index(drop=True)
+        )
+        winner = ranked.iloc[0]
+        selected = selected_by_dataset[dataset]
+        if str(selected.get("dataset")) != dataset or int(selected.get("test_access_count", -1)) != 0:
+            return False
+        if any(not np.isclose(float(selected[field]), float(winner[field])) for field in SELECTION_FIELDS):
+            return False
+        if not np.isclose(
+            float(selected.get("validation_selection_score", float("nan"))),
+            float(winner["validation_selection_score"]),
+        ):
+            return False
+    return True
 
 
 def continual_superiority(continual: pd.DataFrame) -> tuple[bool, list[dict[str, object]]]:
@@ -362,6 +403,7 @@ def main(argv: list[str] | None = None) -> int:
             * len(config["adaptive_tuning"]["contrastive_weight"])
             for selected in selected_by_dataset.values()
         )
+        and selected_matches_adaptive_tuning(tuning, selected_by_dataset, datasets)
     )
     confirmatory_device = str(config["protocol"].get("confirmatory_device", "cpu"))
     confirmation_central_device = central[central["dataset"].isin(confirmation_datasets)]

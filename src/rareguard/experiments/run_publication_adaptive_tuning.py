@@ -150,7 +150,14 @@ def main(argv: list[str] | None = None) -> int:
         )
         selected_path = selected_hyperparameters_path(root, dataset)
         selected_path.parent.mkdir(parents=True, exist_ok=True)
-        selected_path.write_text(json.dumps(selected, indent=2), encoding="utf-8")
+        selected_path.write_text(
+            json.dumps(
+                selected,
+                indent=2,
+                default=lambda value: value.item() if isinstance(value, np.generic) else str(value),
+            ),
+            encoding="utf-8",
+        )
         logger.info(
             "selected dataset=%s validation_score=%.4f settings=(%.3f, %.3f, %.3f)",
             dataset,

@@ -20,6 +20,8 @@ def apply_dataset_hyperparameters(config: dict, artifact_root: Path, dataset: st
             "Run run_publication_adaptive_tuning before locked-test experiments."
         )
     selected = json.loads(path.read_text(encoding="utf-8"))
+    if str(selected.get("dataset")) != dataset:
+        raise RuntimeError(f"Rejected hyperparameters for {dataset}: selection artifact names another dataset.")
     if int(selected.get("test_access_count", -1)) != 0:
         raise RuntimeError(f"Rejected hyperparameters for {dataset}: test data were accessed during selection.")
     missing = [field for field in SELECTED_FIELDS if field not in selected]
