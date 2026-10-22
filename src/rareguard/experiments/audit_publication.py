@@ -340,10 +340,20 @@ def main(argv: list[str] | None = None) -> int:
         and np.isclose(float(selected["rare_sampler_power"]), float(config["training"]["rare_sampler_power"]))
         and np.isclose(float(selected["contrastive_weight"]), float(config["training"]["contrastive_weight"]))
     )
+    confirmatory_device = str(config["protocol"].get("confirmatory_device", "cpu"))
+    deterministic_device_match = bool(
+        not central.empty
+        and set(central["device"].astype(str)) == {confirmatory_device}
+        and not continual.empty
+        and set(continual["device"].astype(str)) == {confirmatory_device}
+        and not federated.empty
+        and set(federated["device"].astype(str)) == {confirmatory_device}
+    )
     gates = {
         "all_data_splits_ready": all(item["ready"] for item in data_checks),
         "validation_only_tuning_complete": tuning_validation_only,
         "selected_hyperparameters_frozen": selected_hyperparameters_frozen,
+        "deterministic_confirmatory_device_match": deterministic_device_match,
         "central_complete": len(central) == expected_central,
         "classical_baselines_complete": len(baselines) == expected_baselines,
         "continual_complete": len(continual) == expected_continual,

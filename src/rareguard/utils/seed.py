@@ -15,6 +15,7 @@ def set_seed(seed: int) -> None:
 
         torch.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)
+        torch.use_deterministic_algorithms(True, warn_only=True)
     except Exception:
         pass
 

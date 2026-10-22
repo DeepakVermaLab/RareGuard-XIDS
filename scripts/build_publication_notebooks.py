@@ -39,9 +39,9 @@ NOTEBOOKS = {
     "09_publication_central.ipynb": [
         markdown("# 09 - Tuning and repeated central experiments\n\nCSE-CIC-IDS2018 is the declared development dataset for validation-only loss and sampling selection. The frozen configuration is then evaluated across five seeds against NOVA-XIDS and component ablations; the other three datasets are untouched external confirmations."),
         code(SETUP),
-        code("DEVICE = 'mps'  # The recurrent-attention sweep has passed the MPS smoke test.\n!python -m rareguard.experiments.run_publication_tuning --config configs/publication.yaml --dataset cse_cic_ids2018 --device {DEVICE} --resume"),
+        code("TUNING_DEVICE = 'mps'  # Accelerator use is restricted to validation-only tuning.\n!python -m rareguard.experiments.run_publication_tuning --config configs/publication.yaml --dataset cse_cic_ids2018 --device {TUNING_DEVICE} --resume"),
         code("!python -m rareguard.experiments.run_publication_baselines --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --resume"),
-        code("!python -m rareguard.experiments.run_publication_central --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {DEVICE} --resume"),
+        code("CONFIRMATORY_DEVICE = 'cpu'\n!python -m rareguard.experiments.run_publication_central --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {CONFIRMATORY_DEVICE} --resume"),
         code("import pandas as pd\ndisplay(pd.read_csv('artifacts/publication/results/central_summary_ci.csv'))"),
     ],
     "10_publication_continual.ipynb": [

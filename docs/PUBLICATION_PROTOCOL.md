@@ -9,6 +9,7 @@ The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are cont
 ## Confirmatory Design
 
 - CSE-CIC-IDS2018 is development-only for validation hyperparameter selection; TabularIoTAttack-2024, DataSense 2025, and Edge-IIoTset remain untouched external confirmations until the configuration is frozen.
+- MPS is restricted to validation-only tuning and execution smoke tests; reported central, continual, and federated metrics run on CPU with deterministic PyTorch algorithms enabled.
 - Five fixed seeds: 42, 73, 101, 137, and 211.
 - Duplicate removal before splitting.
 - Multiclass attack targets are preserved; for TabularIoTAttack-2024, the canonical per-attack CSV filename supplies the class because its internal `Label` field is binary.
