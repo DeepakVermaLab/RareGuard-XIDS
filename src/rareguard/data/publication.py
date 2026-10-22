@@ -98,6 +98,10 @@ def parquet_compatible(frame: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+def source_filename_labels(paths: pd.Series) -> pd.Series:
+    return paths.astype(str).map(lambda value: Path(value).stem.strip())
+
+
 def sample_remote_csv(
     remote: str,
     source: RemoteFile,
@@ -144,6 +148,7 @@ def build_remote_sample(
     seed: int,
     csv_root: str = "",
     workers: int = 4,
+    label_from_source_filename: bool = False,
 ) -> tuple[Path, str, dict[str, object]]:
     files = list_remote_csvs(remote, folder, root_id, csv_root)
     if not files:
@@ -177,7 +182,13 @@ def build_remote_sample(
     frame = pd.concat(frames, ignore_index=True, sort=False)
     frame.columns = [str(col).strip().replace(" ", "_") for col in frame.columns]
     normalized_candidates = [candidate.strip().replace(" ", "_") for candidate in label_candidates]
-    label = next((candidate for candidate in normalized_candidates if candidate in frame.columns), None)
+    if label_from_source_filename:
+        if "__source_file__" not in frame.columns:
+            raise ValueError("Source-file label derivation requested without source provenance.")
+        label = "__derived_source_label__"
+        frame[label] = source_filename_labels(frame["__source_file__"])
+    else:
+        label = next((candidate for candidate in normalized_candidates if candidate in frame.columns), None)
     if label is None:
         lowered = {str(col).lower(): col for col in frame.columns}
         label = next((lowered[name] for name in ["label", "label4", "attack_label", "attack_type"] if name in lowered), None)
@@ -185,7 +196,7 @@ def build_remote_sample(
         raise ValueError(f"No label column found for {folder}")
     frame[label] = frame[label].astype(str).str.strip()
     frame = frame.loc[~frame[label].str.lower().isin({"", "nan", "none", label.lower()})].copy()
-    payload_columns = [col for col in frame.columns if not col.startswith("__")]
+    payload_columns = [col for col in frame.columns if not col.startswith("__") or col == label]
     frame = frame.drop_duplicates(subset=payload_columns).reset_index(drop=True)
     sampled = []
     for _, group in frame.groupby(label, dropna=False):
@@ -212,6 +223,7 @@ def build_remote_sample(
         "rows_after_class_cap": int(len(frame)),
         "classes": int(frame[label].nunique()),
         "label_column": label,
+        "label_source": "source_filename" if label_from_source_filename else "csv_column",
         "window_bytes": window_bytes,
         "windows_per_file": windows,
         "parallel_workers": workers,
@@ -252,7 +264,7 @@ def prepare_train_only_splits(
     validation_size: float,
 ) -> dict[str, object]:
     frame = pd.read_parquet(raw_path)
-    payload_columns = [col for col in frame.columns if not col.startswith("__")]
+    payload_columns = [col for col in frame.columns if not col.startswith("__") or col == label_column]
     frame = frame.drop_duplicates(subset=payload_columns).reset_index(drop=True)
     labels = frame[label_column].astype(str).str.strip()
     counts = labels.value_counts()

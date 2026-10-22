@@ -9,6 +9,7 @@ datasets:
     folder: CIC-BCCC-NRC-TabularIoTAttack-2024
     remote_csv_root: extracted
     source: CIC official form with Kaggle mirror
+    label_from_source_filename: true
     label_candidates: [Label, label, Attack, attack, Class, class]
     priority: high
   cic_iiot_2025_datasense:

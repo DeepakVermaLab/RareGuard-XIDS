@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import torch
 
-from rareguard.data.publication import parquet_compatible
+from rareguard.data.publication import parquet_compatible, source_filename_labels
 from rareguard.evaluation.metrics import classification_metrics
 from rareguard.experiments.audit_publication import agent_policy_value, continual_superiority, full_beats_ablations, holm_adjust, paired_statistical_tests
 from rareguard.experiments.run_publication_agentic import projected_seconds
@@ -77,6 +77,13 @@ def test_parquet_compatibility_normalizes_mixed_objects() -> None:
     normalized = parquet_compatible(frame)
     assert str(normalized["mixed"].dtype) == "string"
     assert normalized["numeric"].dtype == frame["numeric"].dtype
+
+
+def test_source_filename_labels_preserve_attack_types() -> None:
+    import pandas as pd
+
+    labels = source_filename_labels(pd.Series(["root/DoS UDP Flood.csv", "root/Benign Traffic.csv"]))
+    assert labels.tolist() == ["DoS UDP Flood", "Benign Traffic"]
 
 
 def test_continual_tasks_and_balanced_memory() -> None:

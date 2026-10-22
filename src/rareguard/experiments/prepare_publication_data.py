@@ -46,6 +46,7 @@ def main(argv: list[str] | None = None) -> int:
             int(cfg["project"]["seeds"][0]),
             str(dataset.get("remote_csv_root", "")),
             int(cfg["data"].get("remote_workers", 4)),
+            bool(dataset.get("label_from_source_filename", False)),
         )
         split = prepare_train_only_splits(
             raw_path,

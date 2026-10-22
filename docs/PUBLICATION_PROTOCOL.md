@@ -10,6 +10,7 @@ The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are cont
 
 - Five fixed seeds: 42, 73, 101, 137, and 211.
 - Duplicate removal before splitting.
+- Multiclass attack targets are preserved; for TabularIoTAttack-2024, the canonical per-attack CSV filename supplies the class because its internal `Label` field is binary.
 - Identifier and timestamp columns excluded from predictors.
 - Stratified train/validation/test split.
 - Imputation and scaling fitted only on training rows.
