@@ -262,18 +262,40 @@ def prepare_train_only_splits(
     seed: int,
     test_size: float,
     validation_size: float,
+    duplicate_decimals: int = 6,
 ) -> dict[str, object]:
     frame = pd.read_parquet(raw_path)
     payload_columns = [col for col in frame.columns if not col.startswith("__") or col == label_column]
+    rows_before_exact_dedup = len(frame)
     frame = frame.drop_duplicates(subset=payload_columns).reset_index(drop=True)
+    exact_duplicate_rows_removed = rows_before_exact_dedup - len(frame)
     labels = frame[label_column].astype(str).str.strip()
     counts = labels.value_counts()
     supported = counts[counts >= 5].index
     frame = frame.loc[labels.isin(supported)].reset_index(drop=True)
     labels = frame[label_column].astype(str).str.strip()
+    numeric, rejected = _numeric_frame(frame, label_column)
+    rounded_hash = pd.util.hash_pandas_object(numeric.round(duplicate_decimals), index=False).to_numpy()
+    hash_labels = pd.DataFrame({"hash": rounded_hash, "label": labels.to_numpy()})
+    conflicting_hashes = set(hash_labels.groupby("hash")["label"].nunique().loc[lambda values: values > 1].index)
+    conflicting_mask = np.isin(rounded_hash, list(conflicting_hashes))
+    duplicate_mask = pd.Series(rounded_hash).duplicated(keep="first").to_numpy()
+    keep = ~conflicting_mask & ~duplicate_mask
+    conflicting_feature_rows_removed = int(conflicting_mask.sum())
+    feature_duplicate_rows_removed = int((duplicate_mask & ~conflicting_mask).sum())
+    frame = frame.loc[keep].reset_index(drop=True)
+    numeric = numeric.loc[keep].reset_index(drop=True)
+    labels = frame[label_column].astype(str).str.strip()
+    counts = labels.value_counts()
+    supported = counts[counts >= 5].index
+    supported_mask = labels.isin(supported).to_numpy()
+    frame = frame.loc[supported_mask].reset_index(drop=True)
+    numeric = numeric.loc[supported_mask].reset_index(drop=True)
+    labels = frame[label_column].astype(str).str.strip()
+    if labels.nunique() < 2:
+        raise ValueError("At least two supported classes are required after feature deduplication.")
     encoder = LabelEncoder().fit(labels)
     y = encoder.transform(labels).astype(np.int64)
-    numeric, rejected = _numeric_frame(frame, label_column)
     indices = np.arange(len(frame))
     train_val, test = train_test_split(indices, test_size=test_size, random_state=seed, stratify=y)
     val_relative = validation_size / (1.0 - test_size)
@@ -297,7 +319,7 @@ def prepare_train_only_splits(
         feature_names=np.asarray(list(numeric.columns), dtype=object),
     )
     joblib.dump(transformer, output_dir / "train_fitted_transformer.joblib")
-    row_hash = pd.util.hash_pandas_object(numeric.round(6), index=False).to_numpy()
+    row_hash = pd.util.hash_pandas_object(numeric.round(duplicate_decimals), index=False).to_numpy()
     overlaps = {
         "train_val": int(len(set(row_hash[train]) & set(row_hash[val]))),
         "train_test": int(len(set(row_hash[train]) & set(row_hash[test]))),
@@ -316,6 +338,10 @@ def prepare_train_only_splits(
             "test": np.bincount(y[test], minlength=len(encoder.classes_)).tolist(),
         },
         "rejected_non_numeric_columns": rejected,
+        "duplicate_decimals": duplicate_decimals,
+        "exact_duplicate_rows_removed": int(exact_duplicate_rows_removed),
+        "feature_duplicate_rows_removed": feature_duplicate_rows_removed,
+        "conflicting_feature_rows_removed": conflicting_feature_rows_removed,
         "duplicate_hash_overlap": overlaps,
         "transform_fit_scope": "training_only",
         "test_locked": True,

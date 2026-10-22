@@ -86,6 +86,35 @@ def test_source_filename_labels_preserve_attack_types() -> None:
     assert labels.tolist() == ["DoS UDP Flood", "Benign Traffic"]
 
 
+def test_feature_hash_duplicates_are_removed_before_split() -> None:
+    import tempfile
+    from pathlib import Path
+
+    import pandas as pd
+
+    from rareguard.data.publication import prepare_train_only_splits
+
+    rng = np.random.default_rng(12)
+    frame = pd.DataFrame(
+        {
+            "feature_a": np.concatenate([rng.normal(0, 0.1, 20), rng.normal(2, 0.1, 20)]),
+            "feature_b": np.concatenate([rng.normal(0, 0.1, 20), rng.normal(2, 0.1, 20)]),
+            "Label": ["benign"] * 20 + ["attack"] * 20,
+        }
+    )
+    near_duplicate = frame.iloc[[0]].copy()
+    near_duplicate["feature_a"] += 1e-8
+    frame = pd.concat([frame, near_duplicate], ignore_index=True)
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        raw = root / "raw.parquet"
+        frame.to_parquet(raw, index=False)
+        metadata = prepare_train_only_splits(raw, "Label", root, 42, 0.2, 0.1, 6)
+    assert metadata["ready"]
+    assert metadata["feature_duplicate_rows_removed"] == 1
+    assert all(value == 0 for value in metadata["duplicate_hash_overlap"].values())
+
+
 def test_continual_tasks_and_balanced_memory() -> None:
     labels = np.asarray([0] * 20 + [1] * 10 + [2] * 5 + [3] * 2)
     tasks = class_incremental_tasks(labels, 3)

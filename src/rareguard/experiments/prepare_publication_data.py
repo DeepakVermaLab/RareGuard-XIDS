@@ -29,9 +29,12 @@ def main(argv: list[str] | None = None) -> int:
         split_path = destination / "splits.npz"
         metadata_path = destination / "split_metadata.json"
         if args.resume and split_path.exists() and metadata_path.exists():
-            logger.info("Skipping completed publication split %s", key)
-            summaries.append({"dataset": key, **json.loads(metadata_path.read_text(encoding="utf-8"))})
-            continue
+            existing_metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+            if existing_metadata.get("ready"):
+                logger.info("Skipping completed publication split %s", key)
+                summaries.append({"dataset": key, **existing_metadata})
+                continue
+            logger.info("Rebuilding rejected publication split %s", key)
         dataset = datasets[key]
         raw_path, label, acquisition = build_remote_sample(
             cfg["paths"]["rclone_remote"],
@@ -55,6 +58,7 @@ def main(argv: list[str] | None = None) -> int:
             int(cfg["project"]["seeds"][0]),
             float(cfg["data"]["test_size"]),
             float(cfg["data"]["validation_size"]),
+            int(cfg["data"].get("duplicate_decimals", 6)),
         )
         summaries.append({"dataset": key, **acquisition, **split})
         logger.info("%s rows=%d features=%d classes=%d ready=%s", key, split["rows"], split["features"], split["classes"], split["ready"])
@@ -62,7 +66,11 @@ def main(argv: list[str] | None = None) -> int:
     summary_dir.mkdir(parents=True, exist_ok=True)
     for summary in summaries:
         (summary_dir / f"{summary['dataset']}.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    merged = [json.loads(path.read_text(encoding="utf-8")) for path in sorted(summary_dir.glob("*.json"))]
+    merged = [
+        json.loads(path.read_text(encoding="utf-8"))
+        for path in sorted(summary_dir.glob("*.json"))
+        if not path.name.startswith("._")
+    ]
     (root / "results" / "publication_data_summary.json").write_text(json.dumps(merged, indent=2), encoding="utf-8")
     return 0
 
