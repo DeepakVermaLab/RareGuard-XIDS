@@ -87,4 +87,4 @@ python3 -m rareguard.experiments.dataset_discovery --config configs/default.yaml
 
 ## Evidence Boundary
 
-The implementation is CPU-first. Only results that pass `artifacts/publication/reports/PUBLICATION_READINESS.json` may be used as paper evidence. The audit forbids energy-in-joules claims unless an external hardware power meter supplies real measurements. Ablations are reported exactly as measured, including any case where a reduced model outperforms the full model.
+The implementation is CPU-first. Only results that pass `artifacts/publication/reports/PUBLICATION_READINESS.json` may be used as paper evidence. The current CPU-feasible acquisition is explicitly reported as an all-file bounded range sample, not a full-corpus reproduction. The audit forbids energy-in-joules claims unless an external hardware power meter supplies real measurements. Ablations are reported exactly as measured, including any case where a reduced model outperforms the full model.

@@ -57,9 +57,12 @@ def main(argv: list[str] | None = None) -> int:
         )
         summaries.append({"dataset": key, **acquisition, **split})
         logger.info("%s rows=%d features=%d classes=%d ready=%s", key, split["rows"], split["features"], split["classes"], split["ready"])
-    summary_path = root / "results" / "publication_data_summary.json"
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text(json.dumps(summaries, indent=2), encoding="utf-8")
+    summary_dir = root / "results" / "data_summaries"
+    summary_dir.mkdir(parents=True, exist_ok=True)
+    for summary in summaries:
+        (summary_dir / f"{summary['dataset']}.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    merged = [json.loads(path.read_text(encoding="utf-8")) for path in sorted(summary_dir.glob("*.json"))]
+    (root / "results" / "publication_data_summary.json").write_text(json.dumps(merged, indent=2), encoding="utf-8")
     return 0
 
 

@@ -16,8 +16,10 @@ The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are cont
 - Validation macro-F1 selects checkpoints and federated rounds.
 - The locked test split is evaluated exactly once per trained run.
 - NOVA-XIDS and RareGuard-XIDS use the same input data and core backbone.
+- NOVA-XIDS retains the documented class-balanced focal objective; it is not weakened to cross-entropy for comparison.
 - Seed-level predictions, per-class metrics, runtime, memory, and model size are retained.
 - Report mean, standard deviation, 95% confidence interval, and paired seed gains.
+- Report paired Wilcoxon tests, paired effect sizes, and Holm-adjusted p-values across confirmatory metrics.
 
 ## Required Metrics
 
@@ -38,3 +40,5 @@ NOVA-XIDS is the always-on light detector and RareGuard-XIDS is the escalated de
 ## Evidence Boundary
 
 Stages 00-07 and `artifacts/smoke/` validate execution only. Paper claims must come from `artifacts/publication/` and must pass `PUBLICATION_READINESS.json`.
+
+The CPU-feasible protocol samples deterministic byte ranges from every canonical Drive CSV, caps each class, and records the source manifest and hashes. It is an all-file bounded range-sample study, not a full-corpus reproduction. The audit labels that evidence separately and forbids wording that implies every source row was processed.

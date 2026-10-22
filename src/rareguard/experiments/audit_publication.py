@@ -8,9 +8,21 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy.stats import wilcoxon
 
 from rareguard.config import load_yaml
 from rareguard.utils.logging import configure_logging
+
+
+def markdown_table(frame: pd.DataFrame) -> str:
+    if frame.empty:
+        return "No results are available."
+    columns = [str(column) for column in frame.columns]
+    rows = [[str(value) for value in row] for row in frame.itertuples(index=False, name=None)]
+    header = "| " + " | ".join(columns) + " |"
+    separator = "| " + " | ".join("---" for _ in columns) + " |"
+    body = ["| " + " | ".join(value.replace("|", "\\|") for value in row) + " |" for row in rows]
+    return "\n".join([header, separator, *body])
 
 
 def paired_gains(central: pd.DataFrame) -> pd.DataFrame:
@@ -35,9 +47,85 @@ def paired_gains(central: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def full_beats_ablations(central: pd.DataFrame) -> tuple[bool, list[dict[str, object]]]:
+    ablations = sorted(model for model in central.get("model", pd.Series(dtype=str)).unique() if str(model).startswith("RareGuard-no-"))
+    comparisons: list[dict[str, object]] = []
+    if central.empty or not ablations:
+        return False, comparisons
+    for dataset in sorted(central["dataset"].unique()):
+        full = central[(central["dataset"] == dataset) & (central["model"] == "RareGuard-XIDS")].set_index("seed")
+        for ablation in ablations:
+            reduced = central[(central["dataset"] == dataset) & (central["model"] == ablation)].set_index("seed")
+            common = sorted(set(full.index) & set(reduced.index))
+            for metric in ("f1_macro", "rare_f1_macro"):
+                gain = float((full.loc[common, metric] - reduced.loc[common, metric]).mean()) if common else float("nan")
+                comparisons.append(
+                    {
+                        "dataset": dataset,
+                        "ablation": ablation,
+                        "metric": metric,
+                        "paired_seeds": len(common),
+                        "mean_gain_full_minus_ablation": gain,
+                    }
+                )
+    frame = pd.DataFrame(comparisons)
+    passed = bool(not frame.empty and frame["mean_gain_full_minus_ablation"].notna().all() and (frame["mean_gain_full_minus_ablation"] > 0).all())
+    return passed, comparisons
+
+
+def holm_adjust(p_values: list[float]) -> list[float]:
+    adjusted = [float("nan")] * len(p_values)
+    valid = sorted((value, index) for index, value in enumerate(p_values) if np.isfinite(value))
+    running = 0.0
+    total = len(valid)
+    for rank, (value, index) in enumerate(valid):
+        running = max(running, min(1.0, (total - rank) * value))
+        adjusted[index] = running
+    return adjusted
+
+
+def paired_statistical_tests(central: pd.DataFrame) -> pd.DataFrame:
+    rows: list[dict[str, object]] = []
+    if central.empty:
+        return pd.DataFrame()
+    for dataset in sorted(central["dataset"].unique()):
+        base = central[(central["dataset"] == dataset) & (central["model"] == "NOVA-XIDS")].set_index("seed")
+        full = central[(central["dataset"] == dataset) & (central["model"] == "RareGuard-XIDS")].set_index("seed")
+        common = sorted(set(base.index) & set(full.index))
+        for metric in ("f1_macro", "rare_f1_macro", "balanced_accuracy", "mcc", "ece_15"):
+            differences = (full.loc[common, metric] - base.loc[common, metric]).dropna().to_numpy(dtype=float) if common else np.asarray([])
+            if len(differences) and not np.allclose(differences, 0.0):
+                p_value = float(wilcoxon(differences, zero_method="wilcox", alternative="two-sided", method="auto").pvalue)
+            elif len(differences):
+                p_value = 1.0
+            else:
+                p_value = float("nan")
+            standard_deviation = float(np.std(differences, ddof=1)) if len(differences) > 1 else float("nan")
+            effect = float(np.mean(differences) / standard_deviation) if np.isfinite(standard_deviation) and standard_deviation > 0 else float("nan")
+            nonzero = differences[~np.isclose(differences, 0.0)]
+            rank_biserial = float((np.sum(nonzero > 0) - np.sum(nonzero < 0)) / len(nonzero)) if len(nonzero) else 0.0
+            rows.append(
+                {
+                    "dataset": dataset,
+                    "metric": metric,
+                    "paired_seeds": len(differences),
+                    "mean_difference_rareguard_minus_nova": float(np.mean(differences)) if len(differences) else float("nan"),
+                    "paired_cohen_dz": effect,
+                    "paired_sign_effect": rank_biserial,
+                    "wilcoxon_p": p_value,
+                }
+            )
+    frame = pd.DataFrame(rows)
+    if not frame.empty:
+        frame["holm_adjusted_p"] = holm_adjust(frame["wilcoxon_p"].tolist())
+    return frame
+
+
 def make_figures(root: Path, central: pd.DataFrame, federated: pd.DataFrame, agentic: pd.DataFrame) -> None:
     figure_dir = root / "figures"
     figure_dir.mkdir(parents=True, exist_ok=True)
+    if central.empty or not {"model", "dataset"}.issubset(central.columns):
+        return
     main = central[central["model"].isin(["NOVA-XIDS", "RareGuard-XIDS"])]
     for metric, filename, label in [
         ("f1_macro", "central_macro_f1_ci.png", "Macro-F1"),
@@ -92,11 +180,14 @@ def main(argv: list[str] | None = None) -> int:
     logger = configure_logging(root / "logs" / "audit_publication.log")
     result_dir = root / "results"
     report_dir = root / "reports"
+    result_dir.mkdir(parents=True, exist_ok=True)
     report_dir.mkdir(parents=True, exist_ok=True)
     central_path = result_dir / "central_seed_metrics.csv"
+    baseline_path = result_dir / "baseline_seed_metrics.csv"
     federated_path = result_dir / "federated_seed_metrics.csv"
     agentic_path = result_dir / "agentic_policy_metrics.csv"
     central = pd.read_csv(central_path) if central_path.exists() else pd.DataFrame()
+    baselines = pd.read_csv(baseline_path) if baseline_path.exists() else pd.DataFrame()
     federated = pd.read_csv(federated_path) if federated_path.exists() else pd.DataFrame()
     agentic = pd.read_csv(agentic_path) if agentic_path.exists() else pd.DataFrame()
     datasets = list(load_yaml(args.datasets)["datasets"])
@@ -104,47 +195,80 @@ def main(argv: list[str] | None = None) -> int:
     ablation_seeds = [int(value) for value in config["protocol"].get("ablation_seeds", [])]
     federated_seeds = [int(value) for value in config["federated"].get("seeds", seeds)]
     expected_central = len(datasets) * (len(seeds) * 2 + len(ablation_seeds) * 3)
+    expected_baselines = len(datasets) * len(seeds) * 3
     expected_federated = len(datasets) * len(federated_seeds) * 4
     expected_agentic = len(datasets) * len(seeds) * 3
     data_checks = []
+    acquisition_modes: set[str] = set()
     for dataset in datasets:
         path = root / "processed" / dataset / "split_metadata.json"
+        acquisition_path = root / "processed" / dataset / "acquisition_metadata.json"
         ready = False
         detail = "missing"
+        evidence = "missing"
         if path.exists():
             metadata = json.loads(path.read_text(encoding="utf-8"))
             ready = bool(metadata.get("ready")) and metadata.get("transform_fit_scope") == "training_only"
             detail = str(metadata.get("duplicate_hash_overlap"))
-        data_checks.append({"dataset": dataset, "ready": ready, "detail": detail})
+        if acquisition_path.exists():
+            evidence = str(json.loads(acquisition_path.read_text(encoding="utf-8")).get("evidence", "unknown"))
+            acquisition_modes.add(evidence)
+        data_checks.append({"dataset": dataset, "ready": ready, "detail": detail, "evidence": evidence})
     gains = paired_gains(central) if not central.empty else pd.DataFrame()
     gains.to_csv(result_dir / "paired_gain_ci.csv", index=False)
+    statistical_tests = paired_statistical_tests(central)
+    statistical_tests.to_csv(result_dir / "paired_statistical_tests.csv", index=False)
     main_gains = gains[gains["metric"].isin(["f1_macro", "rare_f1_macro"])] if not gains.empty else gains
     superiority = bool(not main_gains.empty and (main_gains["mean_gain_rareguard_minus_nova"] > 0).all())
+    ablation_superiority, ablation_comparisons = full_beats_ablations(central)
+    pd.DataFrame(ablation_comparisons).to_csv(result_dir / "ablation_paired_gains.csv", index=False)
+    all_acquisitions_declared = len([item for item in data_checks if item["evidence"] != "missing"]) == len(datasets)
+    range_sample_only = all_acquisitions_declared and acquisition_modes == {"remote_range_sample_from_canonical_drive_dataset"}
+    full_corpus_reproduction = all_acquisitions_declared and all(
+        item["evidence"] == "full_corpus_from_canonical_drive_dataset" for item in data_checks
+    )
     gates = {
         "all_data_splits_ready": all(item["ready"] for item in data_checks),
         "central_complete": len(central) == expected_central,
+        "classical_baselines_complete": len(baselines) == expected_baselines,
         "federated_complete": len(federated) == expected_federated,
         "agentic_complete": len(agentic) == expected_agentic,
         "locked_test_once": bool(not central.empty and (central["test_access_count"] == 1).all() and (federated.empty or (federated["test_access_count"] == 1).all())),
         "rareguard_mean_superiority_macro_and_rare": superiority,
+        "full_model_beats_all_ablations_macro_and_rare": ablation_superiority,
         "joule_energy_claim_supported": False,
+        "full_corpus_reproduction": full_corpus_reproduction,
     }
+    core_gates = {
+        key: value
+        for key, value in gates.items()
+        if key not in {"joule_energy_claim_supported", "full_corpus_reproduction"}
+    }
+    if all(core_gates.values()):
+        status = "RANGE_SAMPLE_READY_WITHOUT_ENERGY_CLAIM" if range_sample_only else "READY_WITHOUT_ENERGY_CLAIM"
+    else:
+        status = "NOT_READY"
     readiness = {
-        "status": "READY_WITHOUT_ENERGY_CLAIM" if all(value for key, value in gates.items() if key != "joule_energy_claim_supported") else "NOT_READY",
+        "status": status,
         "gates": gates,
-        "expected_rows": {"central": expected_central, "federated": expected_federated, "agentic": expected_agentic},
-        "observed_rows": {"central": len(central), "federated": len(federated), "agentic": len(agentic)},
+        "expected_rows": {"baselines": expected_baselines, "central": expected_central, "federated": expected_federated, "agentic": expected_agentic},
+        "observed_rows": {"baselines": len(baselines), "central": len(central), "federated": len(federated), "agentic": len(agentic)},
         "data_checks": data_checks,
-        "evidence_boundary": "No energy-in-joules claim is permitted without an external hardware power meter.",
+        "evidence_boundary": (
+            "Current experiments use bounded deterministic range samples across canonical Drive CSV files, not every source row. "
+            "No full-corpus claim is permitted. No energy-in-joules claim is permitted without an external hardware power meter."
+        ),
     }
     (report_dir / "PUBLICATION_READINESS.json").write_text(json.dumps(readiness, indent=2), encoding="utf-8")
     sections = [
         "# RareGuard-XIDS Publication Evidence Audit",
         f"Status: **{readiness['status']}**",
         "## Readiness Gates",
-        pd.DataFrame([{"gate": key, "passed": value} for key, value in gates.items()]).to_markdown(index=False),
+        markdown_table(pd.DataFrame([{"gate": key, "passed": value} for key, value in gates.items()])),
         "## Paired Seed Gains",
-        gains.to_markdown(index=False) if not gains.empty else "Central experiments are incomplete.",
+        markdown_table(gains) if not gains.empty else "Central experiments are incomplete.",
+        "## Paired Statistical Tests",
+        markdown_table(statistical_tests) if not statistical_tests.empty else "Central experiments are incomplete.",
         "## Evidence Boundary",
         readiness["evidence_boundary"],
         "Smoke outputs under `artifacts/smoke` are pipeline evidence only and are excluded from publication claims.",

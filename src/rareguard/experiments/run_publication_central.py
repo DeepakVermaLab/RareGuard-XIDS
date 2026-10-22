@@ -144,7 +144,7 @@ def train_one(
                     )
             else:
                 logits = model(xb)
-                loss = cross_entropy(logits, yb)
+                loss = focal(logits, yb) if variant.focal else cross_entropy(logits, yb)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
             optimizer.step()
@@ -208,6 +208,9 @@ def train_one(
         "peak_rss_mb": float(peak_rss / (1024 * 1024)),
         "parameters": int(sum(parameter.numel() for parameter in model.parameters())),
         "device": device,
+        "classification_objective": "class_balanced_focal" if variant.focal else "class_balanced_cross_entropy",
+        "contrastive_objective": bool(variant.rareguard and variant.contrastive),
+        "prototype_objective": bool(variant.rareguard and variant.prototypes),
         "model_path": str(model_path),
         "prediction_path": str(vector_path),
         "test_access_count": 1,

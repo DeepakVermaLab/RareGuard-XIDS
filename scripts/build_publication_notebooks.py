@@ -39,6 +39,7 @@ NOTEBOOKS = {
     "09_publication_central.ipynb": [
         markdown("# 09 - Repeated central experiments\n\nCPU by default. Five deterministic seeds, validation-only checkpoint selection, one locked-test evaluation, NOVA-XIDS baseline, RareGuard-XIDS, and real component ablations."),
         code(SETUP),
+        code("!python -m rareguard.experiments.run_publication_baselines --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --resume"),
         code("DEVICE = 'cpu'  # Change to 'mps' only if CPU runtime is impractical.\n!python -m rareguard.experiments.run_publication_central --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {DEVICE} --resume"),
         code("import pandas as pd\ndisplay(pd.read_csv('artifacts/publication/results/central_summary_ci.csv'))"),
     ],

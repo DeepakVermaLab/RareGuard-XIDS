@@ -8,7 +8,7 @@ venv/
 build/
 dist/
 *.egg-info/
-artifacts/logs/*.log
+artifacts/logs/*
 artifacts/processed/*
 artifacts/features/*
 artifacts/models/*

@@ -4,7 +4,7 @@ import hashlib
 import io
 import json
 import subprocess
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
@@ -90,6 +90,14 @@ def _header(remote: str, path: str, root_id: str) -> bytes:
     return chunk.splitlines()[0]
 
 
+def parquet_compatible(frame: pd.DataFrame) -> pd.DataFrame:
+    """Normalize mixed object columns so Arrow never guesses conflicting scalar types."""
+    result = frame.copy()
+    for column in result.select_dtypes(include=["object"]).columns:
+        result[column] = result[column].astype("string")
+    return result
+
+
 def sample_remote_csv(
     remote: str,
     source: RemoteFile,
@@ -140,13 +148,29 @@ def build_remote_sample(
     files = list_remote_csvs(remote, folder, root_id, csv_root)
     if not files:
         raise FileNotFoundError(f"No remote CSV files found under {folder}")
+    part_dir = output_dir / "range_parts"
+    part_dir.mkdir(parents=True, exist_ok=True)
+
+    def load_or_sample(item: RemoteFile) -> pd.DataFrame:
+        cache_key = hashlib.sha1(
+            f"{item.path}|{item.size}|{window_bytes}|{windows}".encode("utf-8")
+        ).hexdigest()
+        cache_path = part_dir / f"{cache_key}.parquet"
+        if cache_path.exists():
+            return pd.read_parquet(cache_path)
+        sampled_frame = sample_remote_csv(remote, item, root_id, window_bytes, windows)
+        sampled_frame = parquet_compatible(sampled_frame)
+        sampled_frame.to_parquet(cache_path, index=False)
+        return sampled_frame
+
     with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
-        frames = list(
-            executor.map(
-                lambda item: sample_remote_csv(remote, item, root_id, window_bytes, windows),
-                files,
-            )
-        )
+        pending = {executor.submit(load_or_sample, item): item for item in files}
+        frames = []
+        for future in as_completed(pending):
+            item = pending[future]
+            frame = future.result()
+            frames.append(frame)
+            print(f"Sampled {item.path}: {len(frame):,} rows")
     frames = [frame for frame in frames if not frame.empty]
     if not frames:
         raise ValueError(f"No CSV rows could be sampled from {folder}")
@@ -177,6 +201,7 @@ def build_remote_sample(
         frame = frame.iloc[selected].reset_index(drop=True)
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / "raw_sample.parquet"
+    frame = parquet_compatible(frame)
     frame.to_parquet(path, index=False)
     metadata = {
         "folder": folder,
