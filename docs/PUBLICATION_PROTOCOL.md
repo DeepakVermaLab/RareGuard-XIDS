@@ -16,6 +16,7 @@ The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are cont
 - Stratified train/validation/test split.
 - Imputation and scaling fitted only on training rows.
 - Validation macro-F1 selects checkpoints and federated rounds.
+- Validation-only temperature scaling calibrates NOVA and RareGuard probabilities before the locked test and agent-routing analysis; raw and calibrated probabilities are both retained.
 - The locked test split is evaluated exactly once per trained run.
 - NOVA-XIDS and RareGuard-XIDS use the same input data and core backbone.
 - NOVA-XIDS retains the documented class-balanced focal objective; it is not weakened to cross-entropy for comparison.

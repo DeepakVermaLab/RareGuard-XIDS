@@ -18,10 +18,12 @@ from rareguard.config import load_yaml
 from rareguard.evaluation.metrics import classification_metrics
 from rareguard.experiments.run_publication_central import (
     Variant,
+    apply_temperature,
     build_model,
     classification_objective,
     data_loader,
     effective_class_weights,
+    fit_temperature,
     infer,
     load_splits,
     rare_sampling_weights,
@@ -192,7 +194,11 @@ def run_method(dataset: str, seed: int, method: str, arrays: dict[str, np.ndarra
             best_validation = score
             best_state = {name: value.clone() for name, value in state.items()}
     model.load_state_dict(best_state)
-    test_probabilities, _ = infer(model, arrays["X_test"], arrays["y_test"], int(config["training"]["batch_size"]), device, True)
+    validation_probabilities, _ = infer(model, arrays["X_val"], arrays["y_val"], int(config["training"]["batch_size"]), device, True)
+    temperature = fit_temperature(validation_probabilities, arrays["y_val"])
+    raw_test_probabilities, _ = infer(model, arrays["X_test"], arrays["y_test"], int(config["training"]["batch_size"]), device, True)
+    test_probabilities = apply_temperature(raw_test_probabilities, temperature)
+    raw_ece = classification_metrics(arrays["y_test"], raw_test_probabilities, rare_ids)["ece_15"]
     summary: dict[str, object] = {
         "dataset": dataset,
         "seed": seed,
@@ -206,6 +212,8 @@ def run_method(dataset: str, seed: int, method: str, arrays: dict[str, np.ndarra
         "wall_seconds": time.perf_counter() - started,
         "test_access_count": 1,
         "device": device,
+        "temperature": temperature,
+        "raw_ece_15": raw_ece,
         **classification_metrics(arrays["y_test"], test_probabilities, rare_ids),
     }
     return summary, rows

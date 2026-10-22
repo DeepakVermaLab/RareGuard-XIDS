@@ -7,6 +7,7 @@ from rareguard.data.publication import parquet_compatible, source_filename_label
 from rareguard.evaluation.metrics import classification_metrics
 from rareguard.experiments.audit_publication import agent_policy_value, continual_superiority, full_beats_ablations, holm_adjust, paired_statistical_tests
 from rareguard.experiments.run_publication_agentic import projected_seconds
+from rareguard.experiments.run_publication_central import apply_temperature, fit_temperature
 from rareguard.experiments.run_publication_continual import class_incremental_tasks, update_memory
 from rareguard.models.publication_models import NovaXIDSNet, RareGuardXIDSNet
 
@@ -161,3 +162,13 @@ def test_agent_timing_and_policy_gate() -> None:
     passed, comparisons = agent_policy_value(pd.DataFrame(rows))
     assert passed
     assert len(comparisons) == 3
+
+
+def test_temperature_scaling_is_validation_only_and_preserves_predictions() -> None:
+    probabilities = np.asarray([[0.99, 0.01], [0.90, 0.10], [0.10, 0.90], [0.01, 0.99]])
+    labels = np.asarray([0, 1, 1, 1])
+    temperature = fit_temperature(probabilities, labels)
+    scaled = apply_temperature(probabilities, temperature)
+    assert temperature > 1.0
+    assert np.array_equal(probabilities.argmax(axis=1), scaled.argmax(axis=1))
+    assert np.allclose(scaled.sum(axis=1), 1.0)

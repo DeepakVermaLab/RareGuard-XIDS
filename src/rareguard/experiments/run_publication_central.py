@@ -121,6 +121,22 @@ def infer(model: torch.nn.Module, x: np.ndarray, y: np.ndarray, batch_size: int,
     return np.concatenate(probabilities), np.concatenate(vectors)
 
 
+def apply_temperature(probabilities: np.ndarray, temperature: float) -> np.ndarray:
+    log_probability = np.log(np.clip(probabilities, 1e-12, 1.0)) / max(float(temperature), 1e-6)
+    log_probability -= log_probability.max(axis=1, keepdims=True)
+    scaled = np.exp(log_probability)
+    return scaled / scaled.sum(axis=1, keepdims=True)
+
+
+def fit_temperature(probabilities: np.ndarray, labels: np.ndarray) -> float:
+    candidates = np.geomspace(0.25, 4.0, 81)
+    losses = []
+    for temperature in candidates:
+        scaled = apply_temperature(probabilities, float(temperature))
+        losses.append(float(-np.log(np.clip(scaled[np.arange(len(labels)), labels], 1e-12, 1.0)).mean()))
+    return float(candidates[int(np.argmin(losses))])
+
+
 def build_model(variant: Variant, input_dim: int, classes: int, config: dict) -> torch.nn.Module:
     common = {
         "input_dim": input_dim,
@@ -213,8 +229,11 @@ def train_one(
     if best_state is None:
         raise RuntimeError("Training produced no validation checkpoint.")
     model.load_state_dict(best_state)
+    validation_probabilities, _ = infer(model, x_val, y_val, batch_size, device, variant.rareguard)
+    temperature = fit_temperature(validation_probabilities, y_val)
     test_started = time.perf_counter()
-    probabilities, vectors = infer(model, x_test, y_test, batch_size, device, variant.rareguard)
+    raw_probabilities, vectors = infer(model, x_test, y_test, batch_size, device, variant.rareguard)
+    probabilities = apply_temperature(raw_probabilities, temperature)
     test_seconds = time.perf_counter() - test_started
     counts = np.bincount(y_train, minlength=classes)
     rare_cutoff = max(1, int(float(config["data"]["min_rare_class_ratio"]) * len(y_train)))
@@ -243,7 +262,16 @@ def train_one(
     model_path = model_dir / f"{variant.label}.pt"
     vector_path = model_dir / f"{variant.label}_locked_test.npz"
     torch.save(best_state, model_path)
-    np.savez_compressed(vector_path, y=y_test, probabilities=probabilities, prediction=predictions, vectors=vectors)
+    np.savez_compressed(
+        vector_path,
+        y=y_test,
+        probabilities=probabilities,
+        raw_probabilities=raw_probabilities,
+        prediction=predictions,
+        vectors=vectors,
+        temperature=np.asarray(temperature),
+    )
+    raw_metrics = classification_metrics(y_test, raw_probabilities, rare_ids)
     row: dict[str, object] = {
         "dataset": dataset,
         "seed": seed,
@@ -253,6 +281,8 @@ def train_one(
         "training_seconds": time.perf_counter() - started,
         "test_seconds": test_seconds,
         "test_samples_per_second": float(len(y_test) / max(test_seconds, 1e-9)),
+        "temperature": temperature,
+        "raw_ece_15": raw_metrics["ece_15"],
         "peak_rss_mb": float(peak_rss / (1024 * 1024)),
         "parameters": int(sum(parameter.numel() for parameter in model.parameters())),
         "device": device,

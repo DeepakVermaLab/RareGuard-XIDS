@@ -16,10 +16,12 @@ from rareguard.config import load_yaml
 from rareguard.evaluation.metrics import classification_metrics
 from rareguard.experiments.run_publication_central import (
     Variant,
+    apply_temperature,
     build_model,
     classification_objective,
     data_loader,
     effective_class_weights,
+    fit_temperature,
     infer,
     load_splits,
     rare_sampling_weights,
@@ -310,8 +312,17 @@ def run_method(
         )
         peak_rss = max(peak_rss, process.memory_info().rss)
         model.load_state_dict(state)
+    validation_probabilities, _ = infer(
+        model,
+        arrays["X_val"],
+        arrays["y_val"],
+        int(config["training"]["batch_size"]),
+        device,
+        True,
+    )
+    temperature = fit_temperature(validation_probabilities, arrays["y_val"])
     test_started = time.perf_counter()
-    probabilities, _ = infer(
+    raw_probabilities, _ = infer(
         model,
         arrays["X_test"],
         arrays["y_test"],
@@ -319,6 +330,7 @@ def run_method(
         device,
         True,
     )
+    probabilities = apply_temperature(raw_probabilities, temperature)
     test_seconds = time.perf_counter() - test_started
     counts = np.bincount(y_train, minlength=classes)
     cutoff = max(1, int(float(config["data"]["min_rare_class_ratio"]) * len(y_train)))
@@ -333,6 +345,7 @@ def run_method(
         prediction_path,
         y=arrays["y_test"],
         probabilities=probabilities,
+        raw_probabilities=raw_probabilities,
         prediction=probabilities.argmax(axis=1),
     )
     summary: dict[str, object] = {
@@ -348,6 +361,8 @@ def run_method(
         "test_samples_per_second": float(len(arrays["y_test"]) / max(test_seconds, 1e-9)),
         "peak_rss_mb": float(peak_rss / (1024 * 1024)),
         "device": device,
+        "temperature": temperature,
+        "raw_ece_15": classification_metrics(arrays["y_test"], raw_probabilities, rare_ids)["ece_15"],
         "model_path": str(model_path),
         "prediction_path": str(prediction_path),
         "test_access_count": 1,
