@@ -16,10 +16,12 @@ def test_publication_models_share_output_contract() -> None:
     x = torch.randn(6, 12)
     nova = NovaXIDSNet(12, 3)
     rareguard = RareGuardXIDSNet(12, 3)
+    rareguard_without_direct_path = RareGuardXIDSNet(12, 3, use_direct_path=False)
     assert nova(x).shape == (6, 3)
     logits, vectors = rareguard(x)
     assert logits.shape == (6, 3)
     assert vectors.shape == (6, 64)
+    assert rareguard_without_direct_path(x)[0].shape == (6, 3)
 
 
 def test_publication_metrics_include_rare_and_calibration() -> None:
@@ -142,10 +144,12 @@ def test_feature_hash_duplicates_are_removed_before_split() -> None:
         root = Path(tmp)
         raw = root / "raw.parquet"
         frame.to_parquet(raw, index=False)
-        metadata = prepare_train_only_splits(raw, "Label", root, 42, 0.2, 0.1, 6)
+        metadata = prepare_train_only_splits(raw, "Label", root, 42, 0.2, 0.1, 6, 10.0)
+        arrays = np.load(root / "splits.npz")
     assert metadata["ready"]
     assert metadata["feature_duplicate_rows_removed"] == 1
     assert all(value == 0 for value in metadata["duplicate_hash_overlap"].values())
+    assert max(float(np.abs(arrays[name]).max()) for name in ("X_train", "X_val", "X_test")) <= 10.0
 
 
 def test_continual_tasks_and_balanced_memory() -> None:

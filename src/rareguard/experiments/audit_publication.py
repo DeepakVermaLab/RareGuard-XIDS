@@ -329,7 +329,10 @@ def main(argv: list[str] | None = None) -> int:
     ablation_seeds = [int(value) for value in config["protocol"].get("ablation_seeds", [])]
     federated_seeds = [int(value) for value in config["federated"].get("seeds", seeds)]
     continual_seeds = [int(value) for value in config["continual"].get("seeds", seeds)]
-    expected_central = len(datasets) * (len(seeds) * 2 + len(ablation_seeds) * 3)
+    ablation_count = len(
+        [name for name in config["protocol"].get("ablations", []) if name != "full"]
+    )
+    expected_central = len(datasets) * (len(seeds) * 2 + len(ablation_seeds) * ablation_count)
     expected_baselines = len(datasets) * len(seeds) * 3
     expected_continual = len(datasets) * len(continual_seeds) * 3
     expected_federated = len(datasets) * len(federated_seeds) * 4

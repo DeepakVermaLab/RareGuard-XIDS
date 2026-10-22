@@ -60,6 +60,7 @@ def main(argv: list[str] | None = None) -> int:
             float(cfg["data"]["test_size"]),
             float(cfg["data"]["validation_size"]),
             int(cfg["data"].get("duplicate_decimals", 6)),
+            float(cfg["data"].get("feature_clip_value", 10.0)),
         )
         summaries.append({"dataset": key, **acquisition, **split})
         logger.info("%s rows=%d features=%d classes=%d ready=%s", key, split["rows"], split["features"], split["classes"], split["ready"])

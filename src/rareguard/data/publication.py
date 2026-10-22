@@ -294,6 +294,7 @@ def prepare_train_only_splits(
     test_size: float,
     validation_size: float,
     duplicate_decimals: int = 6,
+    feature_clip_value: float = 10.0,
 ) -> dict[str, object]:
     frame = pd.read_parquet(raw_path)
     payload_columns = [col for col in frame.columns if not col.startswith("__") or col == label_column]
@@ -335,6 +336,10 @@ def prepare_train_only_splits(
     x_train = transformer.fit_transform(numeric.iloc[train]).astype(np.float32)
     x_val = transformer.transform(numeric.iloc[val]).astype(np.float32)
     x_test = transformer.transform(numeric.iloc[test]).astype(np.float32)
+    clip_value = float(feature_clip_value)
+    x_train = np.clip(x_train, -clip_value, clip_value)
+    x_val = np.clip(x_val, -clip_value, clip_value)
+    x_test = np.clip(x_test, -clip_value, clip_value)
     output_dir.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(
         output_dir / "splits.npz",
@@ -375,6 +380,7 @@ def prepare_train_only_splits(
         "conflicting_feature_rows_removed": conflicting_feature_rows_removed,
         "duplicate_hash_overlap": overlaps,
         "transform_fit_scope": "training_only",
+        "post_transform_clip": [-clip_value, clip_value],
         "test_locked": True,
         "source_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
         "array_content_sha256": {

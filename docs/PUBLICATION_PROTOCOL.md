@@ -2,7 +2,7 @@
 
 ## Incremental Positioning
 
-The predecessor is NOVA-XIDS, which used a 64-dimensional latent representation, CBAM residual convolution, LSTM temporal modeling, self-attention pooling, focal loss, explainability, and ONNX deployment. RareGuard-XIDS retains a NOVA-compatible backbone and adds a normalized rare-class embedding, prototype memory, supervised contrastive learning, rare-aware federated aggregation, and a NOVA-to-RareGuard escalation controller.
+The predecessor is NOVA-XIDS, which used a 64-dimensional latent representation, CBAM residual convolution, LSTM temporal modeling, self-attention pooling, focal loss, explainability, and ONNX deployment. RareGuard-XIDS retains a NOVA-compatible backbone and adds a learned dual-path embedding that fuses the inherited contextual encoder with a direct tabular residual path, scaled class-prototype memory, supervised contrastive learning, rare-aware federated aggregation, and a NOVA-to-RareGuard escalation controller.
 
 The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are context only. A direct claim of improvement requires a protocol-matched rerun on the same full split or paired evaluation against the implemented NOVA-XIDS baseline.
 
@@ -16,7 +16,7 @@ The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are cont
 - Multiclass attack targets are preserved; for TabularIoTAttack-2024, the canonical per-attack CSV filename supplies the class because its internal `Label` field is binary.
 - Identifier and timestamp columns excluded from predictors.
 - Stratified train/validation/test split.
-- Imputation and scaling fitted only on training rows.
+- Imputation and robust scaling are fitted only on training rows, followed by a fixed `[-10, 10]` clip to bound extreme flow-rate outliers for stable neural optimization.
 - The mean of validation macro-F1 and rare-class macro-F1 selects central checkpoints; validation macro-F1 selects continual checkpoints and federated rounds.
 - Validation-only temperature scaling calibrates NOVA and RareGuard probabilities before the locked test and agent-routing analysis; raw and calibrated probabilities are both retained.
 - The locked test split is evaluated exactly once per trained run.
@@ -34,7 +34,7 @@ Primary metrics are macro-F1 and rare-class macro-F1. Secondary metrics are weig
 
 ## Ablations
 
-The full RareGuard-XIDS model is compared with fixed variants that remove both effective-number weighting and rare-sample reweighting, supervised contrastive loss, or the prototype head. Loss settings are selected by the same validation-only adaptation rule and then frozen per dataset. The preregistered ablation endpoint is the mean of macro-F1 and rare-class macro-F1; both component metrics remain reported. Results are never modified if an ablation performs better; the audit reports that outcome and fails the superiority gate when appropriate.
+The full RareGuard-XIDS model is compared with fixed variants that remove both effective-number weighting and rare-sample reweighting, supervised contrastive loss, the prototype head, or the direct tabular residual path. Loss settings are selected by the same validation-only adaptation rule and then frozen per dataset. The preregistered ablation endpoint is the mean of macro-F1 and rare-class macro-F1; both component metrics remain reported. Results are never modified if an ablation performs better; the audit reports that outcome and fails the superiority gate when appropriate.
 
 ## Continual-Learning Controls
 

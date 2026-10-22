@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -122,27 +124,55 @@ class RareGuardXIDSNet(nn.Module):
         hidden_dim: int = 128,
         dropout: float = 0.2,
         use_prototypes: bool = True,
+        use_direct_path: bool = True,
         **encoder_flags,
     ):
         super().__init__()
         self.encoder = NovaEncoder(input_dim, latent_dim, hidden_dim, dropout, **encoder_flags)
         representation_dim = self.encoder.output_dim
         self.embedding = nn.Sequential(nn.Linear(representation_dim, latent_dim), nn.LayerNorm(latent_dim))
+        self.direct_path = (
+            nn.Sequential(
+                nn.Linear(input_dim, hidden_dim),
+                nn.GELU(),
+                nn.Dropout(dropout),
+                nn.Linear(hidden_dim, latent_dim),
+                nn.LayerNorm(latent_dim),
+            )
+            if use_direct_path
+            else None
+        )
+        self.fusion = (
+            nn.Sequential(
+                nn.Linear(latent_dim * 2, latent_dim),
+                nn.GELU(),
+                nn.LayerNorm(latent_dim),
+            )
+            if use_direct_path
+            else None
+        )
         self.classifier = nn.Linear(latent_dim, num_classes)
         self.use_prototypes = use_prototypes
         self.prototype_layer = nn.Linear(latent_dim, num_classes, bias=False) if use_prototypes else None
+        self.prototype_log_scale = (
+            nn.Parameter(torch.tensor(math.log(10.0), dtype=torch.float32)) if use_prototypes else None
+        )
         self.gate = nn.Sequential(nn.Linear(latent_dim, 1), nn.Sigmoid())
 
     def encode(self, x: torch.Tensor) -> torch.Tensor:
-        return F.normalize(self.embedding(self.encoder(x)), dim=1)
+        embedding = self.embedding(self.encoder(x))
+        if self.direct_path is not None:
+            embedding = self.fusion(torch.cat([embedding, self.direct_path(x)], dim=1))
+        return embedding
 
     def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         z = self.encode(x)
         logits = self.classifier(z)
         if self.prototype_layer is not None:
-            prototype_logits = F.linear(z, F.normalize(self.prototype_layer.weight, dim=1))
+            prototype_logits = F.linear(F.normalize(z, dim=1), F.normalize(self.prototype_layer.weight, dim=1))
             gate = self.gate(z)
-            logits = logits + gate * prototype_logits
+            scale = self.prototype_log_scale.exp().clamp(1.0, 100.0)
+            logits = logits + gate * scale * prototype_logits
         return logits, z
 
 

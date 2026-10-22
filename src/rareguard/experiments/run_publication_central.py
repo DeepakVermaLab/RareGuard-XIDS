@@ -32,6 +32,7 @@ class Variant:
     contrastive: bool = True
     prototypes: bool = True
     class_balance: bool = True
+    direct_path: bool = True
 
 
 def resolve_device(requested: str) -> str:
@@ -147,7 +148,11 @@ def build_model(variant: Variant, input_dim: int, classes: int, config: dict) ->
         "dropout": float(config["model"]["dropout"]),
     }
     if variant.rareguard:
-        return RareGuardXIDSNet(**common, use_prototypes=variant.prototypes)
+        return RareGuardXIDSNet(
+            **common,
+            use_prototypes=variant.prototypes,
+            use_direct_path=variant.direct_path,
+        )
     return NovaXIDSNet(**common)
 
 
@@ -316,6 +321,7 @@ def train_one(
         "contrastive_objective": bool(variant.rareguard and variant.contrastive),
         "prototype_objective": bool(variant.rareguard and variant.prototypes),
         "class_balanced_objective": bool(variant.class_balance),
+        "direct_tabular_path": bool(variant.rareguard and variant.direct_path),
         "model_path": str(model_path),
         "prediction_path": str(vector_path),
         "test_access_count": 1,
@@ -333,6 +339,8 @@ def variants(config: dict) -> list[Variant]:
         result.append(Variant("RareGuard-no-contrastive", True, contrastive=False))
     if "no_prototype" in requested:
         result.append(Variant("RareGuard-no-prototype", True, prototypes=False))
+    if "no_direct_path" in requested:
+        result.append(Variant("RareGuard-no-direct-path", True, direct_path=False))
     return result
 
 
