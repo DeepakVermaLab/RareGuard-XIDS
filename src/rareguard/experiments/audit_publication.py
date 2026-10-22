@@ -259,15 +259,19 @@ def main(argv: list[str] | None = None) -> int:
     report_dir.mkdir(parents=True, exist_ok=True)
     central_path = result_dir / "central_seed_metrics.csv"
     baseline_path = result_dir / "baseline_seed_metrics.csv"
+    tuning_path = result_dir / "validation_tuning_candidates.csv"
     continual_path = result_dir / "continual_seed_metrics.csv"
     federated_path = result_dir / "federated_seed_metrics.csv"
     agentic_path = result_dir / "agentic_policy_metrics.csv"
     central = pd.read_csv(central_path) if central_path.exists() else pd.DataFrame()
     baselines = pd.read_csv(baseline_path) if baseline_path.exists() else pd.DataFrame()
+    tuning = pd.read_csv(tuning_path) if tuning_path.exists() else pd.DataFrame()
     continual = pd.read_csv(continual_path) if continual_path.exists() else pd.DataFrame()
     federated = pd.read_csv(federated_path) if federated_path.exists() else pd.DataFrame()
     agentic = pd.read_csv(agentic_path) if agentic_path.exists() else pd.DataFrame()
     datasets = list(load_yaml(args.datasets)["datasets"])
+    development_datasets = set(config["protocol"].get("development_datasets", []))
+    confirmation_datasets = set(config["protocol"].get("confirmation_datasets", []))
     seeds = [int(value) for value in config["project"]["seeds"]]
     ablation_seeds = [int(value) for value in config["protocol"].get("ablation_seeds", [])]
     federated_seeds = [int(value) for value in config["federated"].get("seeds", seeds)]
@@ -277,6 +281,12 @@ def main(argv: list[str] | None = None) -> int:
     expected_continual = len(datasets) * len(continual_seeds) * 3
     expected_federated = len(datasets) * len(federated_seeds) * 4
     expected_agentic = len(datasets) * len(seeds) * 3
+    expected_tuning = (
+        len(config["tuning"]["seeds"])
+        * len(config["tuning"]["focal_mix"])
+        * len(config["tuning"]["rare_sampler_power"])
+        * len(config["tuning"]["contrastive_weight"])
+    )
     data_checks = []
     acquisition_modes: set[str] = set()
     for dataset in datasets:
@@ -297,21 +307,43 @@ def main(argv: list[str] | None = None) -> int:
     gains.to_csv(result_dir / "paired_gain_ci.csv", index=False)
     statistical_tests = paired_statistical_tests(central)
     statistical_tests.to_csv(result_dir / "paired_statistical_tests.csv", index=False)
-    main_gains = gains[gains["metric"].isin(["f1_macro", "rare_f1_macro"])] if not gains.empty else gains
+    main_gains = gains[
+        gains["metric"].isin(["f1_macro", "rare_f1_macro"])
+        & gains["dataset"].isin(confirmation_datasets)
+    ] if not gains.empty else gains
     superiority = bool(not main_gains.empty and (main_gains["mean_gain_rareguard_minus_nova"] > 0).all())
-    ablation_superiority, ablation_comparisons = full_beats_ablations(central)
+    confirmation_central = central[central["dataset"].isin(confirmation_datasets)] if not central.empty else central
+    ablation_superiority, ablation_comparisons = full_beats_ablations(confirmation_central)
     pd.DataFrame(ablation_comparisons).to_csv(result_dir / "ablation_paired_gains.csv", index=False)
-    continual_better, continual_comparisons = continual_superiority(continual)
+    confirmation_continual = continual[continual["dataset"].isin(confirmation_datasets)] if not continual.empty else continual
+    continual_better, continual_comparisons = continual_superiority(confirmation_continual)
     pd.DataFrame(continual_comparisons).to_csv(result_dir / "continual_comparisons.csv", index=False)
-    agent_better, agent_comparisons = agent_policy_value(agentic)
+    confirmation_agentic = agentic[agentic["dataset"].isin(confirmation_datasets)] if not agentic.empty else agentic
+    agent_better, agent_comparisons = agent_policy_value(confirmation_agentic)
     pd.DataFrame(agent_comparisons).to_csv(result_dir / "agent_policy_comparisons.csv", index=False)
     all_acquisitions_declared = len([item for item in data_checks if item["evidence"] != "missing"]) == len(datasets)
     range_sample_only = all_acquisitions_declared and acquisition_modes == {"remote_range_sample_from_canonical_drive_dataset"}
     full_corpus_reproduction = all_acquisitions_declared and all(
         item["evidence"] == "full_corpus_from_canonical_drive_dataset" for item in data_checks
     )
+    selected_path = root / "reports" / "SELECTED_HYPERPARAMETERS.json"
+    selected = json.loads(selected_path.read_text(encoding="utf-8")) if selected_path.exists() else {}
+    tuning_validation_only = bool(
+        len(tuning) == expected_tuning
+        and not tuning.empty
+        and (tuning["test_access_count"] == 0).all()
+        and set(tuning["dataset"].astype(str)).issubset(development_datasets)
+    )
+    selected_hyperparameters_frozen = bool(
+        selected
+        and np.isclose(float(selected["focal_mix"]), float(config["training"]["focal_mix"]))
+        and np.isclose(float(selected["rare_sampler_power"]), float(config["training"]["rare_sampler_power"]))
+        and np.isclose(float(selected["contrastive_weight"]), float(config["training"]["contrastive_weight"]))
+    )
     gates = {
         "all_data_splits_ready": all(item["ready"] for item in data_checks),
+        "validation_only_tuning_complete": tuning_validation_only,
+        "selected_hyperparameters_frozen": selected_hyperparameters_frozen,
         "central_complete": len(central) == expected_central,
         "classical_baselines_complete": len(baselines) == expected_baselines,
         "continual_complete": len(continual) == expected_continual,
@@ -324,7 +356,7 @@ def main(argv: list[str] | None = None) -> int:
             and (continual["test_access_count"] == 1).all()
             and (federated.empty or (federated["test_access_count"] == 1).all())
         ),
-        "rareguard_mean_superiority_macro_and_rare": superiority,
+        "confirmation_rareguard_mean_superiority_macro_and_rare": superiority,
         "full_model_beats_all_ablations_macro_and_rare": ablation_superiority,
         "continual_memory_beats_replay_controls": continual_better,
         "agent_improves_over_light_with_partial_escalation": agent_better,
@@ -343,8 +375,9 @@ def main(argv: list[str] | None = None) -> int:
     readiness = {
         "status": status,
         "gates": gates,
-        "expected_rows": {"baselines": expected_baselines, "central": expected_central, "continual": expected_continual, "federated": expected_federated, "agentic": expected_agentic},
-        "observed_rows": {"baselines": len(baselines), "central": len(central), "continual": len(continual), "federated": len(federated), "agentic": len(agentic)},
+        "expected_rows": {"tuning": expected_tuning, "baselines": expected_baselines, "central": expected_central, "continual": expected_continual, "federated": expected_federated, "agentic": expected_agentic},
+        "observed_rows": {"tuning": len(tuning), "baselines": len(baselines), "central": len(central), "continual": len(continual), "federated": len(federated), "agentic": len(agentic)},
+        "dataset_roles": {"development": sorted(development_datasets), "external_confirmation": sorted(confirmation_datasets)},
         "data_checks": data_checks,
         "evidence_boundary": (
             "Current experiments use bounded deterministic range samples across canonical Drive CSV files, not every source row. "

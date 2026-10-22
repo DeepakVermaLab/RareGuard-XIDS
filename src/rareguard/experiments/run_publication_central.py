@@ -13,7 +13,7 @@ import pandas as pd
 import psutil
 import torch
 from sklearn.metrics import f1_score, precision_recall_fscore_support
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import DataLoader, TensorDataset, WeightedRandomSampler
 
 from rareguard.config import load_yaml
 from rareguard.evaluation.metrics import classification_metrics
@@ -45,13 +45,54 @@ def load_splits(path: Path) -> dict[str, np.ndarray]:
     return {name: values[name] for name in values.files}
 
 
-def data_loader(x: np.ndarray, y: np.ndarray, batch_size: int, shuffle: bool) -> DataLoader:
+def data_loader(
+    x: np.ndarray,
+    y: np.ndarray,
+    batch_size: int,
+    shuffle: bool,
+    sample_weights: np.ndarray | None = None,
+    seed: int | None = None,
+) -> DataLoader:
+    sampler = None
+    if sample_weights is not None:
+        generator = torch.Generator().manual_seed(int(seed or 0))
+        sampler = WeightedRandomSampler(
+            torch.tensor(sample_weights, dtype=torch.double),
+            num_samples=len(sample_weights),
+            replacement=True,
+            generator=generator,
+        )
     return DataLoader(
         TensorDataset(torch.tensor(x, dtype=torch.float32), torch.tensor(y, dtype=torch.long)),
         batch_size=batch_size,
-        shuffle=shuffle,
+        shuffle=shuffle if sampler is None else False,
+        sampler=sampler,
         num_workers=0,
     )
+
+
+def rare_sampling_weights(y: np.ndarray, classes: int, power: float) -> np.ndarray | None:
+    if power <= 0:
+        return None
+    counts = np.bincount(y, minlength=classes).astype(float)
+    weights = np.power(np.maximum(counts[y], 1.0), -power)
+    return weights / weights.mean()
+
+
+def classification_objective(
+    logits: torch.Tensor,
+    targets: torch.Tensor,
+    variant: Variant,
+    focal: FocalLoss,
+    cross_entropy: torch.nn.CrossEntropyLoss,
+    training: dict,
+) -> torch.Tensor:
+    if not variant.focal:
+        return cross_entropy(logits, targets)
+    if not variant.rareguard:
+        return focal(logits, targets)
+    focal_mix = float(training.get("focal_mix", 1.0))
+    return focal_mix * focal(logits, targets) + (1.0 - focal_mix) * cross_entropy(logits, targets)
 
 
 def effective_class_weights(y: np.ndarray, classes: int, beta: float) -> torch.Tensor:
@@ -117,6 +158,11 @@ def train_one(
         weight_decay=float(training["weight_decay"]),
     )
     batch_size = int(training["batch_size"])
+    sampling_weights = rare_sampling_weights(
+        y_train,
+        classes,
+        float(training.get("rare_sampler_power", 0.0)) if variant.rareguard else 0.0,
+    )
     best_f1 = -1.0
     best_epoch = 0
     best_state: dict[str, torch.Tensor] | None = None
@@ -128,12 +174,12 @@ def train_one(
     for epoch in range(1, int(training["epochs"]) + 1):
         model.train()
         losses: list[float] = []
-        for xb, yb in data_loader(x_train, y_train, batch_size, True):
+        for xb, yb in data_loader(x_train, y_train, batch_size, True, sampling_weights, seed + epoch):
             xb, yb = xb.to(device), yb.to(device)
             optimizer.zero_grad(set_to_none=True)
             if variant.rareguard:
                 logits, z = model(xb)
-                loss = focal(logits, yb) if variant.focal else cross_entropy(logits, yb)
+                loss = classification_objective(logits, yb, variant, focal, cross_entropy, training)
                 if variant.contrastive:
                     loss = loss + float(training["contrastive_weight"]) * supervised_contrastive_loss(
                         z, yb, float(training["contrastive_temperature"])
@@ -144,7 +190,7 @@ def train_one(
                     )
             else:
                 logits = model(xb)
-                loss = focal(logits, yb) if variant.focal else cross_entropy(logits, yb)
+                loss = classification_objective(logits, yb, variant, focal, cross_entropy, training)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
             optimizer.step()
@@ -208,7 +254,12 @@ def train_one(
         "peak_rss_mb": float(peak_rss / (1024 * 1024)),
         "parameters": int(sum(parameter.numel() for parameter in model.parameters())),
         "device": device,
-        "classification_objective": "class_balanced_focal" if variant.focal else "class_balanced_cross_entropy",
+        "classification_objective": (
+            f"hybrid_focal_ce_{float(training.get('focal_mix', 1.0)):.3f}"
+            if variant.rareguard and variant.focal
+            else ("class_balanced_focal" if variant.focal else "class_balanced_cross_entropy")
+        ),
+        "rare_sampler_power": float(training.get("rare_sampler_power", 0.0)) if variant.rareguard else 0.0,
         "contrastive_objective": bool(variant.rareguard and variant.contrastive),
         "prototype_objective": bool(variant.rareguard and variant.prototypes),
         "model_path": str(model_path),

@@ -46,7 +46,7 @@ Stages 00-07 are retained as pipeline smoke tests. They are not publication evid
 Publication protocol:
 
 9. `notebooks/08_publication_data.ipynb` (CPU)
-10. `notebooks/09_publication_central.ipynb` (CPU; MPS only if required)
+10. `notebooks/09_publication_central.ipynb` (validation-only tuning plus MPS central training)
 11. `notebooks/10_publication_continual.ipynb` (CPU; MPS allowed if required)
 12. `notebooks/11_publication_federated.ipynb` (CPU; MPS recommended only if CPU is impractical)
 13. `notebooks/12_publication_agentic.ipynb` (CPU)

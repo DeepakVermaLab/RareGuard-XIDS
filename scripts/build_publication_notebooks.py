@@ -37,10 +37,11 @@ NOTEBOOKS = {
         code("from pathlib import Path\nimport json\nfor path in sorted(Path('artifacts/publication/processed').glob('*/split_metadata.json')):\n    data=json.loads(path.read_text())\n    print(path.parent.name, data['split_rows'], 'features=', data['features'], 'classes=', data['classes'], 'ready=', data['ready'])"),
     ],
     "09_publication_central.ipynb": [
-        markdown("# 09 - Repeated central experiments\n\nCPU by default. Five deterministic seeds, validation-only checkpoint selection, one locked-test evaluation, NOVA-XIDS baseline, RareGuard-XIDS, and real component ablations."),
+        markdown("# 09 - Tuning and repeated central experiments\n\nCSE-CIC-IDS2018 is the declared development dataset for validation-only loss and sampling selection. The frozen configuration is then evaluated across five seeds against NOVA-XIDS and component ablations; the other three datasets are untouched external confirmations."),
         code(SETUP),
+        code("DEVICE = 'mps'  # The recurrent-attention sweep has passed the MPS smoke test.\n!python -m rareguard.experiments.run_publication_tuning --config configs/publication.yaml --dataset cse_cic_ids2018 --device {DEVICE} --resume"),
         code("!python -m rareguard.experiments.run_publication_baselines --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --resume"),
-        code("DEVICE = 'cpu'  # Change to 'mps' only if CPU runtime is impractical.\n!python -m rareguard.experiments.run_publication_central --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {DEVICE} --resume"),
+        code("!python -m rareguard.experiments.run_publication_central --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {DEVICE} --resume"),
         code("import pandas as pd\ndisplay(pd.read_csv('artifacts/publication/results/central_summary_ci.csv'))"),
     ],
     "10_publication_continual.ipynb": [

@@ -19,10 +19,12 @@ from rareguard.evaluation.metrics import classification_metrics
 from rareguard.experiments.run_publication_central import (
     Variant,
     build_model,
+    classification_objective,
     data_loader,
     effective_class_weights,
     infer,
     load_splits,
+    rare_sampling_weights,
     resolve_device,
 )
 from rareguard.federated.partition import dirichlet_non_iid_partition
@@ -80,15 +82,17 @@ def train_client(
     training = config["training"]
     weights = effective_class_weights(y, classes, float(training["class_balance_beta"])).to(device)
     criterion = FocalLoss(float(training["focal_gamma"]), weights)
+    cross_entropy = torch.nn.CrossEntropyLoss(weight=weights)
+    sampling_weights = rare_sampling_weights(y, classes, float(training.get("rare_sampler_power", 0.0)))
     optimizer = torch.optim.AdamW(model.parameters(), lr=float(training["learning_rate"]), weight_decay=float(training["weight_decay"]))
     started = time.perf_counter()
     for _ in range(int(config["federated"]["local_epochs"])):
         model.train()
-        for xb, yb in data_loader(x, y, int(training["batch_size"]), True):
+        for xb, yb in data_loader(x, y, int(training["batch_size"]), True, sampling_weights, 0):
             xb, yb = xb.to(device), yb.to(device)
             optimizer.zero_grad(set_to_none=True)
             logits, z = model(xb)
-            loss = criterion(logits, yb)
+            loss = classification_objective(logits, yb, variant, criterion, cross_entropy, training)
             loss = loss + float(training["contrastive_weight"]) * supervised_contrastive_loss(
                 z, yb, float(training["contrastive_temperature"])
             )

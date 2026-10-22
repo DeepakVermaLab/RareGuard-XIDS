@@ -17,10 +17,12 @@ from rareguard.evaluation.metrics import classification_metrics
 from rareguard.experiments.run_publication_central import (
     Variant,
     build_model,
+    classification_objective,
     data_loader,
     effective_class_weights,
     infer,
     load_splits,
+    rare_sampling_weights,
     resolve_device,
 )
 from rareguard.models.publication_models import prototype_compactness_loss
@@ -143,6 +145,12 @@ def train_episode(
     classes = int(max(arrays["y_train"].max(), arrays["y_val"].max(), arrays["y_test"].max())) + 1
     weights = effective_class_weights(y[indices], classes, float(training["class_balance_beta"])).to(device)
     criterion = FocalLoss(float(training["focal_gamma"]), weights)
+    cross_entropy = torch.nn.CrossEntropyLoss(weight=weights)
+    sampling_weights = rare_sampling_weights(
+        y[indices],
+        classes,
+        float(training.get("rare_sampler_power", 0.0)),
+    )
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=float(training["learning_rate"]),
@@ -153,11 +161,25 @@ def train_episode(
     patience = 0
     for _ in range(int(continual["epochs_per_task"])):
         model.train()
-        for xb, yb in data_loader(x[indices], y[indices], int(training["batch_size"]), True):
+        for xb, yb in data_loader(
+            x[indices],
+            y[indices],
+            int(training["batch_size"]),
+            True,
+            sampling_weights,
+            0,
+        ):
             xb, yb = xb.to(device), yb.to(device)
             optimizer.zero_grad(set_to_none=True)
             logits, vectors = model(xb)
-            loss = criterion(logits, yb)
+            loss = classification_objective(
+                logits,
+                yb,
+                Variant("RareGuard-XIDS", True),
+                criterion,
+                cross_entropy,
+                training,
+            )
             loss = loss + float(training["contrastive_weight"]) * supervised_contrastive_loss(
                 vectors, yb, float(training["contrastive_temperature"])
             )
