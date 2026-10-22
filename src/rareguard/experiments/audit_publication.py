@@ -226,6 +226,35 @@ def agent_policy_value(agentic: pd.DataFrame) -> tuple[bool, list[dict[str, obje
     return bool(rows and all(bool(row["passed"]) for row in rows)), rows
 
 
+def robustness_superiority(robustness: pd.DataFrame) -> tuple[bool, list[dict[str, object]]]:
+    rows: list[dict[str, object]] = []
+    if robustness.empty:
+        return False, rows
+    for (dataset, perturbation, strength), subset in robustness.groupby(
+        ["dataset", "perturbation", "strength"]
+    ):
+        base = subset[subset["model"] == "NOVA-XIDS"].set_index("seed")
+        full = subset[subset["model"] == "RareGuard-XIDS"].set_index("seed")
+        common = sorted(set(base.index) & set(full.index))
+        if common:
+            base_composite = 0.5 * (base.loc[common, "f1_macro"] + base.loc[common, "rare_f1_macro"])
+            full_composite = 0.5 * (full.loc[common, "f1_macro"] + full.loc[common, "rare_f1_macro"])
+            gain = float((full_composite - base_composite).mean())
+        else:
+            gain = float("nan")
+        rows.append(
+            {
+                "dataset": dataset,
+                "perturbation": perturbation,
+                "strength": float(strength),
+                "paired_seeds": len(common),
+                "mean_primary_composite_gain": gain,
+                "passed": bool(np.isfinite(gain) and gain > 0),
+            }
+        )
+    return bool(rows and all(row["passed"] for row in rows)), rows
+
+
 def make_figures(
     root: Path,
     central: pd.DataFrame,
@@ -315,6 +344,7 @@ def main(argv: list[str] | None = None) -> int:
     federated_path = result_dir / "federated_seed_metrics.csv"
     agentic_path = result_dir / "agentic_policy_metrics.csv"
     agent_selection_path = result_dir / "agentic_validation_selections.csv"
+    robustness_path = result_dir / "robustness_seed_metrics.csv"
     central = pd.read_csv(central_path) if central_path.exists() else pd.DataFrame()
     baselines = pd.read_csv(baseline_path) if baseline_path.exists() else pd.DataFrame()
     tuning = pd.read_csv(tuning_path) if tuning_path.exists() else pd.DataFrame()
@@ -322,6 +352,7 @@ def main(argv: list[str] | None = None) -> int:
     federated = pd.read_csv(federated_path) if federated_path.exists() else pd.DataFrame()
     agentic = pd.read_csv(agentic_path) if agentic_path.exists() else pd.DataFrame()
     agent_selections = pd.read_csv(agent_selection_path) if agent_selection_path.exists() else pd.DataFrame()
+    robustness = pd.read_csv(robustness_path) if robustness_path.exists() else pd.DataFrame()
     datasets = list(load_yaml(args.datasets)["datasets"])
     development_datasets = set(config["protocol"].get("development_datasets", []))
     confirmation_datasets = set(config["protocol"].get("confirmation_datasets", []))
@@ -338,6 +369,10 @@ def main(argv: list[str] | None = None) -> int:
     expected_federated = len(datasets) * len(federated_seeds) * 4
     expected_agentic = len(datasets) * len(seeds) * 3
     expected_agent_selections = len(datasets) * len(seeds)
+    expected_robustness = len(datasets) * len(seeds) * 2 * (
+        len(config["robustness"]["feature_mask_fraction"])
+        + len(config["robustness"]["gaussian_noise_std"])
+    )
     expected_tuning_per_dataset = (
         len(config["adaptive_tuning"]["seeds"])
         * len(config["adaptive_tuning"]["focal_mix"])
@@ -379,6 +414,9 @@ def main(argv: list[str] | None = None) -> int:
     confirmation_agentic = agentic[agentic["dataset"].isin(confirmation_datasets)] if not agentic.empty else agentic
     agent_better, agent_comparisons = agent_policy_value(confirmation_agentic)
     pd.DataFrame(agent_comparisons).to_csv(result_dir / "agent_policy_comparisons.csv", index=False)
+    confirmation_robustness = robustness[robustness["dataset"].isin(confirmation_datasets)] if not robustness.empty else robustness
+    robust_better, robustness_comparisons = robustness_superiority(confirmation_robustness)
+    pd.DataFrame(robustness_comparisons).to_csv(result_dir / "robustness_comparisons.csv", index=False)
     all_acquisitions_declared = len([item for item in data_checks if item["evidence"] != "missing"]) == len(datasets)
     range_sample_only = all_acquisitions_declared and acquisition_modes == {"remote_range_sample_from_canonical_drive_dataset"}
     full_corpus_reproduction = all_acquisitions_declared and all(
@@ -440,6 +478,8 @@ def main(argv: list[str] | None = None) -> int:
             and not agent_selections.empty
             and (agent_selections["test_access_count"] == 0).all()
         ),
+        "robustness_complete": len(robustness) == expected_robustness,
+        "confirmation_rareguard_robustness_superiority": robust_better,
         "confirmation_locked_test_once_per_preregistered_run": bool(
             not confirmation_central.empty
             and (confirmation_central["test_access_count"] == 1).all()
@@ -471,8 +511,8 @@ def main(argv: list[str] | None = None) -> int:
     readiness = {
         "status": status,
         "gates": gates,
-        "expected_rows": {"tuning": expected_tuning, "baselines": expected_baselines, "central": expected_central, "continual": expected_continual, "federated": expected_federated, "agentic": expected_agentic, "agent_validation_selections": expected_agent_selections},
-        "observed_rows": {"tuning": len(tuning), "baselines": len(baselines), "central": len(central), "continual": len(continual), "federated": len(federated), "agentic": len(agentic), "agent_validation_selections": len(agent_selections)},
+        "expected_rows": {"tuning": expected_tuning, "baselines": expected_baselines, "central": expected_central, "continual": expected_continual, "federated": expected_federated, "agentic": expected_agentic, "agent_validation_selections": expected_agent_selections, "robustness": expected_robustness},
+        "observed_rows": {"tuning": len(tuning), "baselines": len(baselines), "central": len(central), "continual": len(continual), "federated": len(federated), "agentic": len(agentic), "agent_validation_selections": len(agent_selections), "robustness": len(robustness)},
         "dataset_roles": {"development": sorted(development_datasets), "external_confirmation": sorted(confirmation_datasets)},
         "data_checks": data_checks,
         "evidence_boundary": (

@@ -50,7 +50,8 @@ Publication protocol:
 11. `notebooks/10_publication_continual.ipynb` (CPU; MPS allowed if required)
 12. `notebooks/11_publication_federated.ipynb` (CPU; MPS recommended only if CPU is impractical)
 13. `notebooks/12_publication_agentic.ipynb` (CPU)
-14. `notebooks/13_publication_audit.ipynb` (CPU)
+14. `notebooks/13_publication_robustness.ipynb` (CPU)
+15. `notebooks/14_publication_audit.ipynb` (CPU)
 
 Publication outputs are isolated under `artifacts/publication/`. Completed smoke outputs are preserved under `artifacts/smoke/`.
 

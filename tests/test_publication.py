@@ -5,10 +5,11 @@ import torch
 
 from rareguard.data.publication import parquet_compatible, source_filename_labels
 from rareguard.evaluation.metrics import classification_metrics
-from rareguard.experiments.audit_publication import agent_policy_value, continual_superiority, full_beats_ablations, holm_adjust, paired_statistical_tests, selected_matches_adaptive_tuning
+from rareguard.experiments.audit_publication import agent_policy_value, continual_superiority, full_beats_ablations, holm_adjust, paired_statistical_tests, robustness_superiority, selected_matches_adaptive_tuning
 from rareguard.experiments.run_publication_agentic import projected_seconds, select_policy_thresholds
 from rareguard.experiments.run_publication_central import apply_temperature, fit_temperature
 from rareguard.experiments.run_publication_continual import class_incremental_tasks, update_memory
+from rareguard.experiments.run_publication_robustness import perturb_features
 from rareguard.models.publication_models import NovaXIDSNet, RareGuardXIDSNet
 
 
@@ -215,6 +216,29 @@ def test_agent_thresholds_are_selected_from_validation_only() -> None:
     selected = select_policy_thresholds(y, light, heavy, {1}, settings)
     assert selected["validation_composite"] >= 0.5
     assert 0.1 <= selected["validation_heavy_call_ratio"] <= 0.9
+
+
+def test_robustness_perturbations_are_deterministic_and_bounded() -> None:
+    x = np.ones((10, 5), dtype=np.float32)
+    first = perturb_features(x, "feature_mask", 0.2, 42, 10.0)
+    second = perturb_features(x, "feature_mask", 0.2, 42, 10.0)
+    noisy = perturb_features(x, "gaussian_noise", 50.0, 42, 10.0)
+    assert np.array_equal(first, second)
+    assert (first == 0).any()
+    assert float(np.abs(noisy).max()) <= 10.0
+
+    import pandas as pd
+
+    rows = []
+    for seed in (42, 73):
+        rows.extend(
+            [
+                {"dataset": "demo", "seed": seed, "model": "NOVA-XIDS", "perturbation": "feature_mask", "strength": 0.1, "f1_macro": 0.7, "rare_f1_macro": 0.5},
+                {"dataset": "demo", "seed": seed, "model": "RareGuard-XIDS", "perturbation": "feature_mask", "strength": 0.1, "f1_macro": 0.8, "rare_f1_macro": 0.6},
+            ]
+        )
+    passed, comparisons = robustness_superiority(pd.DataFrame(rows))
+    assert passed and len(comparisons) == 1
 
 
 def test_temperature_scaling_is_validation_only_and_preserves_predictions() -> None:

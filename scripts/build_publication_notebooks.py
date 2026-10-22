@@ -62,8 +62,14 @@ NOTEBOOKS = {
         code("!python -m rareguard.experiments.run_publication_agentic --config configs/publication.yaml --dataset all"),
         code("import pandas as pd\ndisplay(pd.read_csv('artifacts/publication/results/agentic_policy_metrics.csv'))"),
     ],
-    "13_publication_audit.ipynb": [
-        markdown("# 13 - Publication evidence audit\n\nCPU stage. Generate figures, paired-seed confidence intervals, statistical tests, completeness checks, and explicit claim gates. This stage never changes model outputs."),
+    "13_publication_robustness.ipynb": [
+        markdown("# 13 - Robustness stress tests\n\nCPU stage. Evaluate paired NOVA-XIDS and RareGuard-XIDS models under deterministic feature masking and bounded Gaussian perturbations."),
+        code(SETUP),
+        code("DEVICE = 'cpu'\n!python -m rareguard.experiments.run_publication_robustness --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {DEVICE} --resume"),
+        code("import pandas as pd\ndisplay(pd.read_csv('artifacts/publication/results/robustness_summary.csv'))"),
+    ],
+    "14_publication_audit.ipynb": [
+        markdown("# 14 - Publication evidence audit\n\nCPU stage. Generate figures, paired-seed confidence intervals, statistical tests, completeness checks, and explicit claim gates. This stage never changes model outputs."),
         code(SETUP),
         code("!python -m rareguard.experiments.audit_publication --config configs/publication.yaml --datasets configs/datasets.yaml"),
         code("from pathlib import Path\nprint(Path('artifacts/publication/reports/PUBLICATION_EVIDENCE_AUDIT.md').read_text())"),
