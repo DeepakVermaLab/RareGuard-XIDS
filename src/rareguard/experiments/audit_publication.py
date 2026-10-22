@@ -12,6 +12,7 @@ from scipy.stats import wilcoxon
 
 from rareguard.config import load_yaml
 from rareguard.utils.logging import configure_logging
+from rareguard.utils.provenance import write_provenance_manifest
 
 
 def markdown_table(frame: pd.DataFrame) -> str:
@@ -366,6 +367,7 @@ def main(argv: list[str] | None = None) -> int:
     ]
     (report_dir / "PUBLICATION_EVIDENCE_AUDIT.md").write_text("\n\n".join(sections), encoding="utf-8")
     make_figures(root, central, continual, federated, agentic)
+    write_provenance_manifest(Path(__file__).resolve().parents[3], root)
     logger.info("Publication readiness status=%s", readiness["status"])
     return 0 if readiness["status"] != "NOT_READY" else 2
 

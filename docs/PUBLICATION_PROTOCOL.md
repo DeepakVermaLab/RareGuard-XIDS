@@ -21,6 +21,7 @@ The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are cont
 - Seed-level predictions, per-class metrics, runtime, memory, and model size are retained.
 - Report mean, standard deviation, 95% confidence interval, and paired seed gains.
 - Report paired Wilcoxon tests, paired effect sizes, and Holm-adjusted p-values across confirmatory metrics.
+- Freeze a provenance manifest containing the Git state, runtime versions, config hashes, and SHA-256 inventory of publication artifacts.
 
 ## Required Metrics
 
