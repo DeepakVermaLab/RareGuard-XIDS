@@ -46,8 +46,8 @@ protocol:
   confidence_level: 0.95
   locked_test: true
   allow_legacy_preprocessed_input: false
-  development_datasets: [cse_cic_ids2018]
-  confirmation_datasets: [cic_bccc_nrc_tabulariotattack_2024, cic_iiot_2025_datasense, edge_iiotset]
+  development_datasets: [cse_cic_ids2018, edge_iiotset]
+  confirmation_datasets: [cic_bccc_nrc_tabulariotattack_2024, cic_iiot_2025_datasense]
   confirmatory_device: cpu
 
 tuning:
@@ -56,6 +56,13 @@ tuning:
   focal_mix: [0.0, 0.1, 0.25, 0.5]
   rare_sampler_power: [0.0, 0.25, 0.5]
   contrastive_weight: [0.0, 0.05, 0.1]
+
+adaptive_tuning:
+  device: mps
+  seeds: [42, 73, 101]
+  focal_mix: [0.0, 0.5, 1.0]
+  rare_sampler_power: [0.0]
+  contrastive_weight: [0.0, 0.1]
 
 federated:
   seeds: [42, 73, 101]

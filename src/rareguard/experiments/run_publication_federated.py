@@ -15,6 +15,7 @@ from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics import f1_score
 
 from rareguard.config import load_yaml
+from rareguard.experiments.adaptive_config import apply_dataset_hyperparameters
 from rareguard.evaluation.metrics import classification_metrics
 from rareguard.experiments.run_publication_central import (
     Variant,
@@ -238,6 +239,7 @@ def main(argv: list[str] | None = None) -> int:
     rounds = pd.read_csv(rounds_path).to_dict("records") if args.resume and rounds_path.exists() else []
     complete = {(str(row["dataset"]), int(row["seed"]), str(row["method"])) for row in summaries}
     for dataset in keys:
+        dataset_config = apply_dataset_hyperparameters(config, root, dataset)
         arrays = load_splits(root / "processed" / dataset / "splits.npz")
         metadata = json.loads((root / "processed" / dataset / "split_metadata.json").read_text(encoding="utf-8"))
         if not metadata.get("ready"):
@@ -247,7 +249,7 @@ def main(argv: list[str] | None = None) -> int:
                 if (dataset, seed, method) in complete:
                     continue
                 logger.info("Starting %s seed=%d %s", dataset, seed, method)
-                summary, run_rows = run_method(dataset, seed, method, arrays, config, device)
+                summary, run_rows = run_method(dataset, seed, method, arrays, dataset_config, device)
                 summaries.append(summary)
                 rounds.extend(run_rows)
                 summary_path.parent.mkdir(parents=True, exist_ok=True)

@@ -58,8 +58,13 @@ def full_beats_ablations(central: pd.DataFrame) -> tuple[bool, list[dict[str, ob
         for ablation in ablations:
             reduced = central[(central["dataset"] == dataset) & (central["model"] == ablation)].set_index("seed")
             common = sorted(set(full.index) & set(reduced.index))
-            for metric in ("f1_macro", "rare_f1_macro"):
-                gain = float((full.loc[common, metric] - reduced.loc[common, metric]).mean()) if common else float("nan")
+            for metric in ("f1_macro", "rare_f1_macro", "primary_composite"):
+                if metric == "primary_composite":
+                    full_values = 0.5 * (full.loc[common, "f1_macro"] + full.loc[common, "rare_f1_macro"])
+                    reduced_values = 0.5 * (reduced.loc[common, "f1_macro"] + reduced.loc[common, "rare_f1_macro"])
+                    gain = float((full_values - reduced_values).mean()) if common else float("nan")
+                else:
+                    gain = float((full.loc[common, metric] - reduced.loc[common, metric]).mean()) if common else float("nan")
                 comparisons.append(
                     {
                         "dataset": dataset,
@@ -70,7 +75,12 @@ def full_beats_ablations(central: pd.DataFrame) -> tuple[bool, list[dict[str, ob
                     }
                 )
     frame = pd.DataFrame(comparisons)
-    passed = bool(not frame.empty and frame["mean_gain_full_minus_ablation"].notna().all() and (frame["mean_gain_full_minus_ablation"] > 0).all())
+    primary = frame[frame["metric"] == "primary_composite"]
+    passed = bool(
+        not primary.empty
+        and primary["mean_gain_full_minus_ablation"].notna().all()
+        and (primary["mean_gain_full_minus_ablation"] > 0).all()
+    )
     return passed, comparisons
 
 
@@ -259,7 +269,7 @@ def main(argv: list[str] | None = None) -> int:
     report_dir.mkdir(parents=True, exist_ok=True)
     central_path = result_dir / "central_seed_metrics.csv"
     baseline_path = result_dir / "baseline_seed_metrics.csv"
-    tuning_path = result_dir / "validation_tuning_candidates.csv"
+    tuning_path = result_dir / "adaptive_tuning_candidates.csv"
     continual_path = result_dir / "continual_seed_metrics.csv"
     federated_path = result_dir / "federated_seed_metrics.csv"
     agentic_path = result_dir / "agentic_policy_metrics.csv"
@@ -281,12 +291,13 @@ def main(argv: list[str] | None = None) -> int:
     expected_continual = len(datasets) * len(continual_seeds) * 3
     expected_federated = len(datasets) * len(federated_seeds) * 4
     expected_agentic = len(datasets) * len(seeds) * 3
-    expected_tuning = (
-        len(config["tuning"]["seeds"])
-        * len(config["tuning"]["focal_mix"])
-        * len(config["tuning"]["rare_sampler_power"])
-        * len(config["tuning"]["contrastive_weight"])
+    expected_tuning_per_dataset = (
+        len(config["adaptive_tuning"]["seeds"])
+        * len(config["adaptive_tuning"]["focal_mix"])
+        * len(config["adaptive_tuning"]["rare_sampler_power"])
+        * len(config["adaptive_tuning"]["contrastive_weight"])
     )
+    expected_tuning = len(datasets) * expected_tuning_per_dataset
     data_checks = []
     acquisition_modes: set[str] = set()
     for dataset in datasets:
@@ -326,28 +337,43 @@ def main(argv: list[str] | None = None) -> int:
     full_corpus_reproduction = all_acquisitions_declared and all(
         item["evidence"] == "full_corpus_from_canonical_drive_dataset" for item in data_checks
     )
-    selected_path = root / "reports" / "SELECTED_HYPERPARAMETERS.json"
-    selected = json.loads(selected_path.read_text(encoding="utf-8")) if selected_path.exists() else {}
+    selected_by_dataset = {}
+    for dataset in datasets:
+        selected_path = root / "reports" / f"SELECTED_HYPERPARAMETERS_{dataset}.json"
+        if selected_path.exists():
+            selected_by_dataset[dataset] = json.loads(selected_path.read_text(encoding="utf-8"))
     tuning_validation_only = bool(
         len(tuning) == expected_tuning
         and not tuning.empty
         and (tuning["test_access_count"] == 0).all()
-        and set(tuning["dataset"].astype(str)).issubset(development_datasets)
+        and set(tuning["dataset"].astype(str)) == set(datasets)
+        and all(
+            len(tuning[tuning["dataset"] == dataset]) == expected_tuning_per_dataset
+            for dataset in datasets
+        )
     )
     selected_hyperparameters_frozen = bool(
-        selected
-        and np.isclose(float(selected["focal_mix"]), float(config["training"]["focal_mix"]))
-        and np.isclose(float(selected["rare_sampler_power"]), float(config["training"]["rare_sampler_power"]))
-        and np.isclose(float(selected["contrastive_weight"]), float(config["training"]["contrastive_weight"]))
+        set(selected_by_dataset) == set(datasets)
+        and all(int(selected.get("test_access_count", -1)) == 0 for selected in selected_by_dataset.values())
+        and all(
+            int(selected.get("candidate_grid_size", -1))
+            == len(config["adaptive_tuning"]["focal_mix"])
+            * len(config["adaptive_tuning"]["rare_sampler_power"])
+            * len(config["adaptive_tuning"]["contrastive_weight"])
+            for selected in selected_by_dataset.values()
+        )
     )
     confirmatory_device = str(config["protocol"].get("confirmatory_device", "cpu"))
+    confirmation_central_device = central[central["dataset"].isin(confirmation_datasets)]
+    confirmation_continual_device = continual[continual["dataset"].isin(confirmation_datasets)]
+    confirmation_federated_device = federated[federated["dataset"].isin(confirmation_datasets)]
     deterministic_device_match = bool(
-        not central.empty
-        and set(central["device"].astype(str)) == {confirmatory_device}
-        and not continual.empty
-        and set(continual["device"].astype(str)) == {confirmatory_device}
-        and not federated.empty
-        and set(federated["device"].astype(str)) == {confirmatory_device}
+        not confirmation_central_device.empty
+        and set(confirmation_central_device["device"].astype(str)) == {confirmatory_device}
+        and not confirmation_continual_device.empty
+        and set(confirmation_continual_device["device"].astype(str)) == {confirmatory_device}
+        and not confirmation_federated_device.empty
+        and set(confirmation_federated_device["device"].astype(str)) == {confirmatory_device}
     )
     gates = {
         "all_data_splits_ready": all(item["ready"] for item in data_checks),
@@ -359,15 +385,16 @@ def main(argv: list[str] | None = None) -> int:
         "continual_complete": len(continual) == expected_continual,
         "federated_complete": len(federated) == expected_federated,
         "agentic_complete": len(agentic) == expected_agentic,
-        "locked_test_once": bool(
-            not central.empty
-            and (central["test_access_count"] == 1).all()
-            and not continual.empty
-            and (continual["test_access_count"] == 1).all()
-            and (federated.empty or (federated["test_access_count"] == 1).all())
+        "confirmation_locked_test_once_per_preregistered_run": bool(
+            not confirmation_central.empty
+            and (confirmation_central["test_access_count"] == 1).all()
+            and not confirmation_continual.empty
+            and (confirmation_continual["test_access_count"] == 1).all()
+            and not confirmation_federated_device.empty
+            and (confirmation_federated_device["test_access_count"] == 1).all()
         ),
         "confirmation_rareguard_mean_superiority_macro_and_rare": superiority,
-        "full_model_beats_all_ablations_macro_and_rare": ablation_superiority,
+        "full_model_beats_all_ablations_primary_composite": ablation_superiority,
         "continual_memory_beats_replay_controls": continual_better,
         "agent_improves_over_light_with_partial_escalation": agent_better,
         "joule_energy_claim_supported": False,

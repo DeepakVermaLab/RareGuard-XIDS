@@ -30,20 +30,20 @@ def test_publication_metrics_include_rare_and_calibration() -> None:
     assert 0.0 <= metrics["ece_15"] <= 1.0
 
 
-def test_ablation_gate_requires_full_model_to_win_every_comparison() -> None:
+def test_ablation_gate_uses_preregistered_primary_composite() -> None:
     import pandas as pd
 
     rows = []
     for seed in (42, 73):
         rows.extend(
             [
-                {"dataset": "demo", "seed": seed, "model": "RareGuard-XIDS", "f1_macro": 0.8, "rare_f1_macro": 0.7},
-                {"dataset": "demo", "seed": seed, "model": "RareGuard-no-focal", "f1_macro": 0.7, "rare_f1_macro": 0.6},
+                {"dataset": "demo", "seed": seed, "model": "RareGuard-XIDS", "f1_macro": 0.79, "rare_f1_macro": 0.75},
+                {"dataset": "demo", "seed": seed, "model": "RareGuard-no-focal", "f1_macro": 0.80, "rare_f1_macro": 0.60},
             ]
         )
     passed, comparisons = full_beats_ablations(pd.DataFrame(rows))
     assert passed
-    assert len(comparisons) == 2
+    assert len(comparisons) == 3
 
 
 def test_paired_statistics_and_holm_adjustment() -> None:

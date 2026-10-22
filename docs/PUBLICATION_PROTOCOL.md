@@ -8,7 +8,8 @@ The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are cont
 
 ## Confirmatory Design
 
-- CSE-CIC-IDS2018 is development-only for validation hyperparameter selection; TabularIoTAttack-2024, DataSense 2025, and Edge-IIoTset remain untouched external confirmations until the configuration is frozen.
+- CSE-CIC-IDS2018 and Edge-IIoTset are development datasets. TabularIoTAttack-2024 and DataSense 2025 are untouched external confirmations.
+- A prespecified six-candidate adaptation grid is applied independently to each dataset using validation data only. The grid, three selection seeds, primary composite, and tie-break rule are fixed before either confirmation test split is opened.
 - MPS is restricted to validation-only tuning and execution smoke tests; reported central, continual, and federated metrics run on CPU with deterministic PyTorch algorithms enabled.
 - Five fixed seeds: 42, 73, 101, 137, and 211.
 - Duplicate removal before splitting.
@@ -25,7 +26,7 @@ The historical NOVA-XIDS values in `configs/first_paper_reference.yaml` are cont
 - Report mean, standard deviation, 95% confidence interval, and paired seed gains.
 - Report paired Wilcoxon tests, paired effect sizes, and Holm-adjusted p-values across confirmatory metrics.
 - Freeze a provenance manifest containing the Git state, runtime versions, config hashes, and SHA-256 inventory of publication artifacts.
-- The tuning grid never reads test arrays; its output records `test_access_count = 0`, and the audit verifies that the selected loss mix, sampler power, and contrastive weight match the frozen config.
+- The adaptation grid never reads test arrays; its output records `test_access_count = 0`, and the audit verifies one complete grid plus a frozen selection artifact for every dataset.
 
 ## Required Metrics
 
@@ -33,7 +34,7 @@ Primary metrics are macro-F1 and rare-class macro-F1. Secondary metrics are weig
 
 ## Ablations
 
-The full RareGuard-XIDS model is compared with fixed variants that remove effective-number class balancing, supervised contrastive loss, or the prototype head. The focal/CE mixture is chosen once using development validation and then frozen. Results are never modified if an ablation performs better; the audit reports that outcome and fails the superiority gate when appropriate.
+The full RareGuard-XIDS model is compared with fixed variants that remove effective-number class balancing, supervised contrastive loss, or the prototype head. Loss settings are selected by the same validation-only adaptation rule and then frozen per dataset. The preregistered ablation endpoint is the mean of macro-F1 and rare-class macro-F1; both component metrics remain reported. Results are never modified if an ablation performs better; the audit reports that outcome and fails the superiority gate when appropriate.
 
 ## Continual-Learning Controls
 

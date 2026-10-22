@@ -13,6 +13,7 @@ import torch
 from sklearn.metrics import f1_score
 
 from rareguard.config import load_yaml
+from rareguard.experiments.adaptive_config import apply_dataset_hyperparameters
 from rareguard.evaluation.metrics import classification_metrics
 from rareguard.experiments.run_publication_central import (
     Variant,
@@ -390,6 +391,7 @@ def main(argv: list[str] | None = None) -> int:
     stages = pd.read_csv(stages_path).to_dict("records") if args.resume and stages_path.exists() else []
     complete = {(str(row["dataset"]), int(row["seed"]), str(row["method"])) for row in summaries}
     for dataset in keys:
+        dataset_config = apply_dataset_hyperparameters(config, root, dataset)
         arrays = load_splits(root / "processed" / dataset / "splits.npz")
         metadata = json.loads((root / "processed" / dataset / "split_metadata.json").read_text(encoding="utf-8"))
         if not metadata.get("ready"):
@@ -400,7 +402,7 @@ def main(argv: list[str] | None = None) -> int:
                     logger.info("Skipping completed %s seed=%d %s", dataset, seed, method)
                     continue
                 logger.info("Starting %s seed=%d %s device=%s", dataset, seed, method, device)
-                summary, task_rows = run_method(dataset, seed, method, arrays, config, device, root)
+                summary, task_rows = run_method(dataset, seed, method, arrays, dataset_config, device, root)
                 summaries.append(summary)
                 stages.extend(task_rows)
                 summary_path.parent.mkdir(parents=True, exist_ok=True)

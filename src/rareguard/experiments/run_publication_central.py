@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import psutil
 import torch
-from sklearn.metrics import f1_score, precision_recall_fscore_support
+from sklearn.metrics import precision_recall_fscore_support
 from torch.utils.data import DataLoader, TensorDataset, WeightedRandomSampler
 
 from rareguard.config import load_yaml
@@ -21,6 +21,7 @@ from rareguard.models.publication_models import NovaXIDSNet, RareGuardXIDSNet, p
 from rareguard.models.torch_models import FocalLoss, supervised_contrastive_loss
 from rareguard.utils.logging import configure_logging
 from rareguard.utils.seed import set_seed
+from rareguard.experiments.adaptive_config import apply_dataset_hyperparameters
 
 
 @dataclass(frozen=True)
@@ -181,7 +182,12 @@ def train_one(
         classes,
         float(training.get("rare_sampler_power", 0.0)) if variant.rareguard else 0.0,
     )
+    counts = np.bincount(y_train, minlength=classes)
+    rare_cutoff = max(1, int(float(config["data"]["min_rare_class_ratio"]) * len(y_train)))
+    rare_ids = {int(i) for i, count in enumerate(counts) if count <= rare_cutoff}
+    best_score = -1.0
     best_f1 = -1.0
+    best_rare_f1 = float("nan")
     best_epoch = 0
     best_state: dict[str, torch.Tensor] | None = None
     patience = 0
@@ -214,11 +220,16 @@ def train_one(
             optimizer.step()
             losses.append(float(loss.detach().cpu()))
         val_probabilities, _ = infer(model, x_val, y_val, batch_size, device, variant.rareguard)
-        val_f1 = float(f1_score(y_val, val_probabilities.argmax(axis=1), average="macro", zero_division=0))
-        history.append({"dataset": dataset, "seed": seed, "model": variant.label, "epoch": epoch, "loss": float(np.mean(losses)), "val_f1_macro": val_f1})
+        validation_metrics = classification_metrics(y_val, val_probabilities, rare_ids)
+        val_f1 = float(validation_metrics["f1_macro"])
+        val_rare_f1 = float(validation_metrics["rare_f1_macro"])
+        selection_score = val_f1 if np.isnan(val_rare_f1) else 0.5 * (val_f1 + val_rare_f1)
+        history.append({"dataset": dataset, "seed": seed, "model": variant.label, "epoch": epoch, "loss": float(np.mean(losses)), "validation_selection_score": selection_score, "val_f1_macro": val_f1, "val_rare_f1_macro": val_rare_f1})
         peak_rss = max(peak_rss, process.memory_info().rss)
-        if val_f1 > best_f1 + 1e-6:
+        if selection_score > best_score + 1e-6:
+            best_score = selection_score
             best_f1 = val_f1
+            best_rare_f1 = val_rare_f1
             best_epoch = epoch
             best_state = {name: value.detach().cpu().clone() for name, value in model.state_dict().items()}
             patience = 0
@@ -235,9 +246,6 @@ def train_one(
     raw_probabilities, vectors = infer(model, x_test, y_test, batch_size, device, variant.rareguard)
     probabilities = apply_temperature(raw_probabilities, temperature)
     test_seconds = time.perf_counter() - test_started
-    counts = np.bincount(y_train, minlength=classes)
-    rare_cutoff = max(1, int(float(config["data"]["min_rare_class_ratio"]) * len(y_train)))
-    rare_ids = {int(i) for i, count in enumerate(counts) if count <= rare_cutoff}
     metrics = classification_metrics(y_test, probabilities, rare_ids)
     predictions = probabilities.argmax(axis=1)
     precision, recall, f1, support = precision_recall_fscore_support(
@@ -277,7 +285,9 @@ def train_one(
         "seed": seed,
         "model": variant.label,
         "best_epoch": best_epoch,
+        "best_validation_selection_score": best_score,
         "best_validation_f1_macro": best_f1,
+        "best_validation_rare_f1_macro": best_rare_f1,
         "training_seconds": time.perf_counter() - started,
         "test_seconds": test_seconds,
         "test_samples_per_second": float(len(y_test) / max(test_seconds, 1e-9)),
@@ -357,6 +367,7 @@ def main(argv: list[str] | None = None) -> int:
     class_rows = pd.read_csv(class_path).to_dict("records") if args.resume and class_path.exists() else []
     complete = {(str(row["dataset"]), int(row["seed"]), str(row["model"])) for row in results}
     for dataset in keys:
+        dataset_config = apply_dataset_hyperparameters(config, output_root, dataset)
         split_path = output_root / "processed" / dataset / "splits.npz"
         metadata_path = split_path.with_name("split_metadata.json")
         if not split_path.exists() or not metadata_path.exists():
@@ -376,7 +387,12 @@ def main(argv: list[str] | None = None) -> int:
                     logger.info("Skipping completed %s seed=%d %s", dataset, seed, variant.label)
                     continue
                 logger.info("Starting %s seed=%d %s device=%s", dataset, seed, variant.label, device)
-                row, run_history, per_class = train_one(dataset, seed, variant, arrays, config, output_root, device)
+                row, run_history, per_class = train_one(dataset, seed, variant, arrays, dataset_config, output_root, device)
+                row["dataset_role"] = (
+                    "external_confirmation"
+                    if dataset in set(config["protocol"].get("confirmation_datasets", []))
+                    else "development"
+                )
                 results.append(row)
                 histories.extend(run_history)
                 class_rows.extend(per_class.to_dict("records"))
