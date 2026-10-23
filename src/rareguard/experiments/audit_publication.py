@@ -258,9 +258,11 @@ def robustness_superiority(robustness: pd.DataFrame) -> tuple[bool, list[dict[st
 def make_figures(
     root: Path,
     central: pd.DataFrame,
+    baselines: pd.DataFrame,
     continual: pd.DataFrame,
     federated: pd.DataFrame,
     agentic: pd.DataFrame,
+    robustness: pd.DataFrame,
 ) -> None:
     figure_dir = root / "figures"
     figure_dir.mkdir(parents=True, exist_ok=True)
@@ -270,6 +272,7 @@ def make_figures(
     for metric, filename, label in [
         ("f1_macro", "central_macro_f1_ci.png", "Macro-F1"),
         ("rare_f1_macro", "central_rare_f1_ci.png", "Rare-class macro-F1"),
+        ("ece_15", "central_calibration_ece_ci.png", "ECE (lower is better)"),
     ]:
         summary = main.groupby(["dataset", "model"])[metric].agg(["mean", "std", "count"]).reset_index()
         summary["half"] = 1.96 * summary["std"] / np.sqrt(summary["count"])
@@ -278,11 +281,44 @@ def make_figures(
         ax = pivot.plot(kind="bar", yerr=errors, capsize=3, figsize=(9, 4.8), color=["#3b6c8e", "#b64c3c"])
         ax.set_ylabel(label)
         ax.set_xlabel("")
-        ax.set_ylim(0, 1.03)
+        if metric == "ece_15":
+            upper = float((summary["mean"] + summary["half"].fillna(0.0)).max())
+            ax.set_ylim(0, max(0.05, upper * 1.25))
+        else:
+            ax.set_ylim(0, 1.03)
         ax.grid(axis="y", alpha=0.25)
         plt.xticks(rotation=20, ha="right")
         plt.tight_layout()
         plt.savefig(figure_dir / filename, dpi=300)
+        plt.close()
+    if not baselines.empty:
+        classical = baselines[["dataset", "seed", "model", "f1_macro"]].copy()
+        neural = main[["dataset", "seed", "model", "f1_macro"]].copy()
+        comparison = pd.concat([classical, neural], ignore_index=True)
+        summary = comparison.groupby(["dataset", "model"])["f1_macro"].mean().unstack("model")
+        ax = summary.plot(kind="bar", figsize=(10.5, 5.2), width=0.82)
+        ax.set_ylabel("Mean macro-F1")
+        ax.set_xlabel("")
+        ax.set_ylim(0, 1.03)
+        ax.grid(axis="y", alpha=0.25)
+        plt.xticks(rotation=20, ha="right")
+        plt.legend(fontsize=8, ncol=3)
+        plt.tight_layout()
+        plt.savefig(figure_dir / "all_model_baseline_comparison.png", dpi=300)
+        plt.close()
+    ablations = central[central["model"].astype(str).str.startswith("RareGuard")].copy()
+    if not ablations.empty:
+        ablations["primary_composite"] = 0.5 * (ablations["f1_macro"] + ablations["rare_f1_macro"])
+        summary = ablations.groupby(["dataset", "model"])["primary_composite"].mean().unstack("model")
+        ax = summary.plot(kind="bar", figsize=(11, 5.2), width=0.82)
+        ax.set_ylabel("Mean primary composite")
+        ax.set_xlabel("")
+        ax.set_ylim(0, 1.03)
+        ax.grid(axis="y", alpha=0.25)
+        plt.xticks(rotation=20, ha="right")
+        plt.legend(fontsize=7, ncol=2)
+        plt.tight_layout()
+        plt.savefig(figure_dir / "ablation_primary_composite.png", dpi=300)
         plt.close()
     if not federated.empty:
         summary = federated.groupby("method").agg(f1_macro=("f1_macro", "mean"), communication_mb=("communication_bytes", lambda x: x.mean() / 1e6)).reset_index()
@@ -323,6 +359,37 @@ def make_figures(
         plt.tight_layout()
         plt.savefig(figure_dir / "agentic_accuracy_compute_tradeoff.png", dpi=300)
         plt.close()
+    if not robustness.empty:
+        rows = []
+        for (dataset, perturbation, strength), subset in robustness.groupby(
+            ["dataset", "perturbation", "strength"]
+        ):
+            base = subset[subset["model"] == "NOVA-XIDS"].set_index("seed")
+            full = subset[subset["model"] == "RareGuard-XIDS"].set_index("seed")
+            common = sorted(set(base.index) & set(full.index))
+            if not common:
+                continue
+            base_score = 0.5 * (base.loc[common, "f1_macro"] + base.loc[common, "rare_f1_macro"])
+            full_score = 0.5 * (full.loc[common, "f1_macro"] + full.loc[common, "rare_f1_macro"])
+            rows.append(
+                {
+                    "dataset": dataset,
+                    "scenario": f"{perturbation} {float(strength):g}",
+                    "gain": float((full_score - base_score).mean()),
+                }
+            )
+        if rows:
+            summary = pd.DataFrame(rows).pivot(index="scenario", columns="dataset", values="gain")
+            ax = summary.plot(kind="bar", figsize=(10, 5.2), width=0.82)
+            ax.axhline(0.0, color="black", linewidth=0.8)
+            ax.set_ylabel("RareGuard minus NOVA primary composite")
+            ax.set_xlabel("")
+            ax.grid(axis="y", alpha=0.25)
+            plt.xticks(rotation=20, ha="right")
+            plt.legend(fontsize=8)
+            plt.tight_layout()
+            plt.savefig(figure_dir / "robustness_primary_composite_gain.png", dpi=300)
+            plt.close()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -540,7 +607,7 @@ def main(argv: list[str] | None = None) -> int:
         "Smoke outputs under `artifacts/smoke` are pipeline evidence only and are excluded from publication claims.",
     ]
     (report_dir / "PUBLICATION_EVIDENCE_AUDIT.md").write_text("\n\n".join(sections), encoding="utf-8")
-    make_figures(root, central, continual, federated, agentic)
+    make_figures(root, central, baselines, continual, federated, agentic, robustness)
     write_provenance_manifest(Path(__file__).resolve().parents[3], root)
     logger.info("Publication readiness status=%s", readiness["status"])
     return 0 if readiness["status"] != "NOT_READY" else 2

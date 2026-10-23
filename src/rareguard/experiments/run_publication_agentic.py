@@ -7,6 +7,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import f1_score
 
 from rareguard.config import load_yaml
 from rareguard.evaluation.metrics import classification_metrics
@@ -44,23 +45,58 @@ def projected_seconds(policy: str, events: int, heavy_calls: int, light_per_samp
     return events * light_per_sample + heavy_calls * heavy_per_sample
 
 
+def adaptive_threshold_grid(values: np.ndarray, configured: list[float], quantiles: list[float]) -> list[float]:
+    finite = np.asarray(values, dtype=float)
+    finite = finite[np.isfinite(finite)]
+    if not len(finite):
+        raise ValueError("Agent threshold selection received no finite validation scores.")
+    candidates = [float(value) for value in configured]
+    candidates.extend(float(np.quantile(finite, quantile)) for quantile in quantiles)
+    candidates.append(float(np.nextafter(finite.max(), math.inf)))
+    return sorted(set(candidates))
+
+
+def selection_f1_metrics(y_true: np.ndarray, prediction: np.ndarray, rare_ids: set[int]) -> tuple[float, float]:
+    macro = float(f1_score(y_true, prediction, average="macro", zero_division=0))
+    labels = np.arange(max(int(y_true.max()), int(prediction.max())) + 1)
+    per_class = f1_score(y_true, prediction, labels=labels, average=None, zero_division=0)
+    rare = [class_id for class_id in sorted(rare_ids) if class_id < len(per_class)]
+    rare_macro = float(per_class[rare].mean()) if rare else float("nan")
+    return macro, rare_macro
+
+
 def select_policy_thresholds(
     y_validation: np.ndarray,
     light_probabilities: np.ndarray,
     heavy_probabilities: np.ndarray,
     rare_ids: set[int],
     settings: dict,
-) -> dict[str, float]:
-    candidates: list[dict[str, float]] = []
-    for uncertainty_threshold in settings["uncertainty_grid"]:
-        for rare_probability_threshold in settings["rare_probability_grid"]:
-            for drift_threshold in settings["drift_grid"]:
-                mask, _, _, _ = policy_mask(
-                    light_probabilities,
-                    rare_ids,
-                    float(uncertainty_threshold),
-                    float(rare_probability_threshold),
-                    float(drift_threshold),
+) -> dict[str, object]:
+    uncertainty = 1.0 - light_probabilities.max(axis=1)
+    rare_probability = (
+        light_probabilities[:, sorted(rare_ids)].max(axis=1)
+        if rare_ids
+        else np.zeros(len(light_probabilities))
+    )
+    drift = drift_scores(light_probabilities)
+    quantiles = [float(value) for value in settings.get("adaptive_quantiles", [0.50, 0.70, 0.85, 0.95])]
+    uncertainty_grid = adaptive_threshold_grid(uncertainty, settings["uncertainty_grid"], quantiles)
+    rare_probability_grid = adaptive_threshold_grid(
+        rare_probability,
+        settings["rare_probability_grid"],
+        quantiles,
+    )
+    drift_grid = adaptive_threshold_grid(drift, settings["drift_grid"], quantiles)
+    light_prediction = light_probabilities.argmax(axis=1)
+    heavy_prediction = heavy_probabilities.argmax(axis=1)
+    candidates: list[dict[str, object]] = []
+    for uncertainty_threshold in uncertainty_grid:
+        for rare_probability_threshold in rare_probability_grid:
+            for drift_threshold in drift_grid:
+                mask = (
+                    (uncertainty >= uncertainty_threshold)
+                    | (rare_probability >= rare_probability_threshold)
+                    | (drift >= drift_threshold)
                 )
                 heavy_ratio = float(mask.mean())
                 if not (
@@ -69,21 +105,21 @@ def select_policy_thresholds(
                     <= float(settings["max_heavy_call_ratio"])
                 ):
                     continue
-                probabilities = np.where(mask[:, None], heavy_probabilities, light_probabilities)
-                metrics = classification_metrics(y_validation, probabilities, rare_ids)
-                rare_f1 = float(metrics["rare_f1_macro"])
-                composite = float(metrics["f1_macro"] if math.isnan(rare_f1) else 0.5 * (metrics["f1_macro"] + rare_f1))
+                prediction = np.where(mask, heavy_prediction, light_prediction)
+                macro_f1, rare_f1 = selection_f1_metrics(y_validation, prediction, rare_ids)
+                composite = float(macro_f1 if math.isnan(rare_f1) else 0.5 * (macro_f1 + rare_f1))
                 objective = composite - float(settings["compute_penalty"]) * heavy_ratio
                 candidates.append(
                     {
                         "uncertainty_threshold": float(uncertainty_threshold),
                         "rare_probability_threshold": float(rare_probability_threshold),
                         "drift_threshold": float(drift_threshold),
-                        "validation_f1_macro": float(metrics["f1_macro"]),
+                        "validation_f1_macro": macro_f1,
                         "validation_rare_f1_macro": rare_f1,
                         "validation_composite": composite,
                         "validation_heavy_call_ratio": heavy_ratio,
                         "validation_selection_objective": objective,
+                        "threshold_grid_source": "configured_plus_validation_quantiles",
                     }
                 )
     if not candidates:

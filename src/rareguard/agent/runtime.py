@@ -163,7 +163,11 @@ class ContinuousRareGuardRuntime:
 
     def run_once(self) -> dict[str, int | str]:
         self.paths.inbox.mkdir(parents=True, exist_ok=True)
-        files = sorted([*self.paths.inbox.glob("*.csv"), *self.paths.inbox.glob("*.parquet")])
+        files = sorted(
+            path
+            for path in [*self.paths.inbox.glob("*.csv"), *self.paths.inbox.glob("*.parquet")]
+            if not path.name.startswith("._")
+        )
         processed_files = 0
         processed_rows = 0
         failures = 0

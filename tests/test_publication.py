@@ -218,6 +218,34 @@ def test_agent_thresholds_are_selected_from_validation_only() -> None:
     assert 0.1 <= selected["validation_heavy_call_ratio"] <= 0.9
 
 
+def test_agent_thresholds_adapt_when_fixed_grid_over_escalates() -> None:
+    y = np.asarray([0, 0, 0, 1, 1, 1, 1, 0])
+    light = np.asarray(
+        [
+            [0.51, 0.49], [0.55, 0.45], [0.60, 0.40], [0.45, 0.55],
+            [0.40, 0.60], [0.35, 0.65], [0.30, 0.70], [0.80, 0.20],
+        ]
+    )
+    heavy = np.asarray(
+        [
+            [0.90, 0.10], [0.85, 0.15], [0.80, 0.20], [0.10, 0.90],
+            [0.15, 0.85], [0.20, 0.80], [0.10, 0.90], [0.90, 0.10],
+        ]
+    )
+    settings = {
+        "uncertainty_grid": [0.0],
+        "rare_probability_grid": [0.0],
+        "drift_grid": [0.0],
+        "adaptive_quantiles": [0.50, 0.75, 0.90],
+        "min_heavy_call_ratio": 0.1,
+        "max_heavy_call_ratio": 0.9,
+        "compute_penalty": 0.0,
+    }
+    selected = select_policy_thresholds(y, light, heavy, {1}, settings)
+    assert selected["threshold_grid_source"] == "configured_plus_validation_quantiles"
+    assert 0.1 <= selected["validation_heavy_call_ratio"] <= 0.9
+
+
 def test_robustness_perturbations_are_deterministic_and_bounded() -> None:
     x = np.ones((10, 5), dtype=np.float32)
     first = perturb_features(x, "feature_mask", 0.2, 42, 10.0)

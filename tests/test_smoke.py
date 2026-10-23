@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 
 from rareguard.agent.controller import RareGuardAgent
+from rareguard.agent.runtime import ContinuousRareGuardRuntime, RuntimePaths
 from rareguard.config import load_config
 
 
@@ -27,3 +28,17 @@ def test_agent_decision_shape() -> None:
     )
     assert len(decisions) == 2
     assert decisions[1].action == "wake_heavy_detector"
+
+
+def test_runtime_ignores_appledouble_inbox_files(tmp_path) -> None:
+    runtime = object.__new__(ContinuousRareGuardRuntime)
+    runtime.paths = RuntimePaths(
+        inbox=tmp_path / "inbox",
+        decisions=tmp_path / "decisions.jsonl",
+        state=tmp_path / "state.json",
+        heartbeat=tmp_path / "heartbeat.json",
+    )
+    runtime.device = "cpu"
+    runtime.paths.inbox.mkdir()
+    (runtime.paths.inbox / "._shadow.csv").write_bytes(b"\x00\x05AppleDouble")
+    assert runtime.run_once()["status"] == "healthy"

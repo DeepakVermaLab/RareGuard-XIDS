@@ -93,6 +93,7 @@ agent:
   uncertainty_grid: [0.15, 0.25, 0.35, 0.45]
   rare_probability_grid: [0.10, 0.20, 0.30, 0.40]
   drift_grid: [0.10, 0.15, 0.25]
+  adaptive_quantiles: [0.50, 0.70, 0.80, 0.90, 0.95, 0.975]
   min_heavy_call_ratio: 0.05
   max_heavy_call_ratio: 0.90
   compute_penalty: 0.02
