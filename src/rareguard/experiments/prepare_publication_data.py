@@ -24,6 +24,13 @@ def main(argv: list[str] | None = None) -> int:
     keys = list(datasets) if args.dataset == "all" else [args.dataset]
     root = Path(cfg["paths"]["artifact_root"])
     logger = configure_logging(root / "logs" / "prepare_publication_data.log")
+    source_remote = cfg["paths"]["rclone_remote"]
+    for candidate in cfg["paths"].get("dataset_mount_candidates", []):
+        mounted_root = Path(candidate)
+        if mounted_root.is_dir():
+            source_remote = mounted_root.as_uri()
+            logger.info("Using mounted Google Drive dataset root %s", mounted_root)
+            break
     summaries = []
     for key in keys:
         destination = root / "processed" / key
@@ -38,7 +45,7 @@ def main(argv: list[str] | None = None) -> int:
             logger.info("Rebuilding rejected publication split %s", key)
         dataset = datasets[key]
         raw_path, label, acquisition = build_remote_sample(
-            cfg["paths"]["rclone_remote"],
+            source_remote,
             dataset["folder"],
             cfg["paths"]["dataset_drive_root_id"],
             dataset.get("label_candidates", []),
@@ -51,6 +58,8 @@ def main(argv: list[str] | None = None) -> int:
             str(dataset.get("remote_csv_root", "")),
             int(cfg["data"].get("remote_workers", 4)),
             bool(dataset.get("label_from_source_filename", False)),
+            int(cfg["data"].get("max_rows_per_source_file", 0)),
+            bool(dataset.get("full_file", False)),
         )
         split = prepare_train_only_splits(
             raw_path,

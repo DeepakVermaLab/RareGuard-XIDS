@@ -91,7 +91,7 @@ def update_memory(
     return rng.permutation(np.concatenate(parts))
 
 
-def seen_validation_f1(
+def seen_validation_selection_score(
     model: torch.nn.Module,
     arrays: dict[str, np.ndarray],
     seen_classes: set[int],
@@ -112,7 +112,28 @@ def seen_validation_f1(
     unseen = sorted(set(range(probabilities.shape[1])) - seen_classes)
     probabilities[:, unseen] = 0.0
     probabilities /= np.maximum(probabilities.sum(axis=1, keepdims=True), 1e-12)
-    return float(f1_score(arrays["y_val"][mask], probabilities.argmax(axis=1), average="macro", zero_division=0))
+    labels = arrays["y_val"][mask]
+    predictions = probabilities.argmax(axis=1)
+    macro = float(f1_score(labels, predictions, average="macro", zero_division=0))
+    train_labels = arrays["y_train"]
+    cutoff = max(1, int(float(config["data"]["min_rare_class_ratio"]) * len(train_labels)))
+    counts = np.bincount(train_labels, minlength=probabilities.shape[1])
+    rare_ids = sorted(class_id for class_id in seen_classes if counts[class_id] <= cutoff)
+    if not rare_ids:
+        return macro
+    rare_mask = np.isin(labels, rare_ids)
+    if not rare_mask.any():
+        return macro
+    rare = float(
+        f1_score(
+            labels[rare_mask],
+            predictions[rare_mask],
+            labels=rare_ids,
+            average="macro",
+            zero_division=0,
+        )
+    )
+    return 0.5 * (macro + rare)
 
 
 def imprint_prototypes(
@@ -131,6 +152,37 @@ def imprint_prototypes(
         for class_id in np.unique(y[indices]):
             centroid = torch.tensor(vectors[y[indices] == class_id].mean(axis=0), dtype=torch.float32, device=device)
             model.prototype_layer.weight[int(class_id)].copy_(torch.nn.functional.normalize(centroid, dim=0))
+
+
+def prototype_herding_memory(
+    model: torch.nn.Module,
+    x: np.ndarray,
+    y: np.ndarray,
+    seen_indices: np.ndarray,
+    memory_size: int,
+    batch_size: int,
+    device: str,
+) -> np.ndarray:
+    """Select a balanced, deterministic memory nearest to each class prototype."""
+    if memory_size <= 0 or not len(seen_indices):
+        return np.asarray([], dtype=int)
+    classes = np.unique(y[seen_indices])
+    base, remainder = divmod(int(memory_size), len(classes))
+    with torch.no_grad():
+        _, vectors = infer(model, x[seen_indices], y[seen_indices], batch_size, device, True)
+    normalized = vectors / np.maximum(np.linalg.norm(vectors, axis=1, keepdims=True), 1e-12)
+    selected: list[np.ndarray] = []
+    for position, class_id in enumerate(classes):
+        local = np.flatnonzero(y[seen_indices] == class_id)
+        quota = min(len(local), base + (1 if position < remainder else 0))
+        if quota <= 0:
+            continue
+        centroid = normalized[local].mean(axis=0)
+        centroid /= max(float(np.linalg.norm(centroid)), 1e-12)
+        similarities = normalized[local] @ centroid
+        order = np.lexsort((seen_indices[local], -similarities))
+        selected.append(seen_indices[local[order[:quota]]])
+    return np.concatenate(selected) if selected else np.asarray([], dtype=int)
 
 
 def train_episode(
@@ -193,7 +245,7 @@ def train_episode(
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
             optimizer.step()
-        score = seen_validation_f1(model, arrays, seen_classes, config, device)
+        score = seen_validation_selection_score(model, arrays, seen_classes, config, device)
         if score > best_score + 1e-6:
             best_score = score
             best_state = {name: value.detach().cpu().clone() for name, value in model.state_dict().items()}
@@ -278,14 +330,28 @@ def run_method(
             device,
         )
         seen_indices = np.unique(np.concatenate([seen_indices, current]))
-        memory = update_memory(
-            method,
-            seen_indices,
-            y_train,
-            int(config["continual"]["memory_size"]),
-            rng,
-        )
         if method == "RareGuard-Continual":
+            memory = prototype_herding_memory(
+                model,
+                x_train,
+                y_train,
+                seen_indices,
+                int(config["continual"]["memory_size"]),
+                int(config["training"]["batch_size"]),
+                device,
+            )
+        else:
+            memory = update_memory(
+                method,
+                seen_indices,
+                y_train,
+                int(config["continual"]["memory_size"]),
+                rng,
+            )
+        imprint_accepted: bool | None = None
+        if method == "RareGuard-Continual":
+            before_imprint = {name: value.detach().cpu().clone() for name, value in model.state_dict().items()}
+            before_score = seen_validation_selection_score(model, arrays, seen_classes, config, device)
             imprint_prototypes(
                 model,
                 x_train,
@@ -294,7 +360,13 @@ def run_method(
                 int(config["training"]["batch_size"]),
                 device,
             )
-            state = {name: value.detach().cpu().clone() for name, value in model.state_dict().items()}
+            after_score = seen_validation_selection_score(model, arrays, seen_classes, config, device)
+            imprint_accepted = after_score + 1e-6 >= before_score
+            if imprint_accepted:
+                state = {name: value.detach().cpu().clone() for name, value in model.state_dict().items()}
+            else:
+                model.load_state_dict(before_imprint)
+                state = before_imprint
         scores = task_validation_scores(model, arrays, tasks, task_id, seen_classes, config, device)
         for observed_task, score in enumerate(scores):
             trajectories[observed_task].append(score)
@@ -308,7 +380,8 @@ def run_method(
                 "seen_classes": len(seen_classes),
                 "task_train_rows": len(train_indices),
                 "memory_rows": len(memory),
-                "seen_validation_f1_macro": validation_score,
+                "seen_validation_selection_score": validation_score,
+                "prototype_imprint_accepted": imprint_accepted,
             }
         )
         peak_rss = max(peak_rss, process.memory_info().rss)

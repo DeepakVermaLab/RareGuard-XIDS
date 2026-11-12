@@ -1,0 +1,6 @@
+ROBUSTNESS_GPU_START=2026-10-24T02:09:55+00:00
+2026-10-24 02:10:11,898 | INFO | rareguard | Completed robustness scenarios for cse_cic_ids2018
+2026-10-24 02:10:26,362 | INFO | rareguard | Completed robustness scenarios for edge_iiotset
+2026-10-24 02:10:43,244 | INFO | rareguard | Completed robustness scenarios for cic_bccc_nrc_tabulariotattack_2024
+2026-10-24 02:10:58,227 | INFO | rareguard | Completed robustness scenarios for cic_iiot_2025_datasense
+ROBUSTNESS_GPU_EXIT=0 time=2026-10-24T02:10:58+00:00

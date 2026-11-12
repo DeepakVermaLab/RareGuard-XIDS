@@ -1,0 +1,101 @@
+{
+  "dataset": "edge_iiotset",
+  "seed": 42,
+  "rows": 17412,
+  "features": 53,
+  "classes": 11,
+  "class_mapping": {
+    "Backdoor": 0,
+    "DDoS_ICMP": 1,
+    "DDoS_TCP": 2,
+    "DDoS_UDP": 3,
+    "Fingerprinting": 4,
+    "MITM": 5,
+    "Normal": 6,
+    "Password": 7,
+    "Port_Scanning": 8,
+    "Ransomware": 9,
+    "Vulnerability_scanner": 10
+  },
+  "split_rows": {
+    "train": 12187,
+    "validation": 1742,
+    "test": 3483
+  },
+  "split_class_counts": {
+    "train": [
+      2027,
+      2059,
+      620,
+      1074,
+      595,
+      250,
+      1994,
+      2096,
+      178,
+      1277,
+      17
+    ],
+    "validation": [
+      290,
+      294,
+      89,
+      154,
+      85,
+      36,
+      285,
+      299,
+      25,
+      183,
+      2
+    ],
+    "test": [
+      579,
+      589,
+      177,
+      307,
+      170,
+      71,
+      570,
+      599,
+      51,
+      365,
+      5
+    ]
+  },
+  "rejected_non_numeric_columns": [
+    "tcp.checksum",
+    "tcp.flags",
+    "tcp.options",
+    "tcp.payload"
+  ],
+  "duplicate_decimals": 6,
+  "exact_duplicate_rows_removed": 0,
+  "feature_duplicate_rows_removed": 299,
+  "conflicting_feature_rows_removed": 553,
+  "duplicate_hash_overlap": {
+    "train_val": 0,
+    "train_test": 0,
+    "val_test": 0
+  },
+  "transform_fit_scope": "training_only",
+  "post_transform_clip": [
+    -10.0,
+    10.0
+  ],
+  "test_locked": true,
+  "source_sha256": "0c36a5319c464d06419de0419a42f8994f61dce14cdbeae11c142571958947b9",
+  "array_content_sha256": {
+    "X_train": "58187010fd7c41d43190f8f92ded5d9cb531dc28114252e2124915d1dccd412f",
+    "X_val": "8efb0d327f636a2f079d50d53d22beab381f7d50805513c6094a2182249e6289",
+    "X_test": "4d8b4dd8c5dee85bb1d4df419437fd06f83c6dd566f24c4a2bfd1b92af3535c0",
+    "y_train": "01bb2a65d9b6ac5b5728da851f2aa5fc426de59b26cfca2a26699c97421b3b77",
+    "y_val": "bd8ad9bf03f320d34fd453262b0caf462fcd0a6abd9f32fd88d39197a8d6dd4f",
+    "y_test": "6924900e7e6199967a2e2ed5b07ac2f8faf036c9f6336971344b78284801c691",
+    "train_indices": "ba29ce940b1bbc16efbece61f253eaf85893dbea89e0ba3413bcd2a93d500afd",
+    "val_indices": "d9d38e866a92026a22c2c169f79a98288c96f6dd7715b6e19a8d31e5a8fd006f",
+    "test_indices": "702463fa44d02b36a31a116699175521fd62edeeec411d27acbe157e71eb55ae",
+    "feature_names": "a11780c83449c601ddfb60b7c46cbf58500c78fdea4760ef788d45a1553890b9"
+  },
+  "ready": true
+}

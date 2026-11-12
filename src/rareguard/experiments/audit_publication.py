@@ -139,10 +139,18 @@ def selected_matches_adaptive_tuning(
     tuning: pd.DataFrame,
     selected_by_dataset: dict[str, dict[str, object]],
     datasets: list[str],
+    development_datasets: set[str] | None = None,
+    confirmation_datasets: set[str] | None = None,
 ) -> bool:
     if tuning.empty or set(selected_by_dataset) != set(datasets):
         return False
-    for dataset in datasets:
+    development = set(datasets) if development_datasets is None else set(development_datasets)
+    confirmation = set() if confirmation_datasets is None else set(confirmation_datasets)
+    if development | confirmation != set(datasets) or development & confirmation:
+        return False
+    if set(tuning["dataset"].astype(str)) != development:
+        return False
+    for dataset in development:
         subset = tuning[tuning["dataset"] == dataset]
         if subset.empty or (subset["test_access_count"] != 0).any():
             return False
@@ -170,6 +178,37 @@ def selected_matches_adaptive_tuning(
             float(winner["validation_selection_score"]),
         ):
             return False
+    if confirmation:
+        ranked = (
+            tuning.groupby(list(SELECTION_FIELDS), as_index=False)
+            .agg(
+                validation_selection_score=("validation_selection_score", "mean"),
+                validation_f1_macro=("validation_f1_macro", "mean"),
+                validation_rare_f1_macro=("validation_rare_f1_macro", "mean"),
+            )
+            .sort_values(
+                ["validation_selection_score", "validation_rare_f1_macro", "validation_f1_macro"],
+                ascending=False,
+            )
+            .reset_index(drop=True)
+        )
+        winner = ranked.iloc[0]
+        for dataset in confirmation:
+            selected = selected_by_dataset[dataset]
+            if (
+                str(selected.get("dataset")) != dataset
+                or str(selected.get("selection_source")) != "development_datasets_only_global_mean"
+                or int(selected.get("test_access_count", -1)) != 0
+                or set(selected.get("selection_datasets", [])) != development
+            ):
+                return False
+            if any(not np.isclose(float(selected[field]), float(winner[field])) for field in SELECTION_FIELDS):
+                return False
+            if not np.isclose(
+                float(selected.get("validation_selection_score", float("nan"))),
+                float(winner["validation_selection_score"]),
+            ):
+                return False
     return True
 
 
@@ -446,7 +485,7 @@ def main(argv: list[str] | None = None) -> int:
         * len(config["adaptive_tuning"]["rare_sampler_power"])
         * len(config["adaptive_tuning"]["contrastive_weight"])
     )
-    expected_tuning = len(datasets) * expected_tuning_per_dataset
+    expected_tuning = len(development_datasets) * expected_tuning_per_dataset
     data_checks = []
     acquisition_modes: set[str] = set()
     for dataset in datasets:
@@ -498,10 +537,10 @@ def main(argv: list[str] | None = None) -> int:
         len(tuning) == expected_tuning
         and not tuning.empty
         and (tuning["test_access_count"] == 0).all()
-        and set(tuning["dataset"].astype(str)) == set(datasets)
+        and set(tuning["dataset"].astype(str)) == development_datasets
         and all(
             len(tuning[tuning["dataset"] == dataset]) == expected_tuning_per_dataset
-            for dataset in datasets
+            for dataset in development_datasets
         )
     )
     selected_hyperparameters_frozen = bool(
@@ -514,7 +553,13 @@ def main(argv: list[str] | None = None) -> int:
             * len(config["adaptive_tuning"]["contrastive_weight"])
             for selected in selected_by_dataset.values()
         )
-        and selected_matches_adaptive_tuning(tuning, selected_by_dataset, datasets)
+        and selected_matches_adaptive_tuning(
+            tuning,
+            selected_by_dataset,
+            datasets,
+            development_datasets,
+            confirmation_datasets,
+        )
     )
     confirmatory_device = str(config["protocol"].get("confirmatory_device", "cpu"))
     confirmation_central_device = central[central["dataset"].isin(confirmation_datasets)]

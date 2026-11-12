@@ -1,0 +1,17 @@
+{
+  "dataset": "cse_cic_ids2018",
+  "focal_mix": 0.5,
+  "rare_sampler_power": 0.25,
+  "contrastive_weight": 0.1,
+  "seeds": 3,
+  "validation_selection_score": 0.6428554291238789,
+  "validation_f1_macro": 0.7993732559681264,
+  "validation_rare_f1_macro": 0.4863376022796313,
+  "dataset_role": "development",
+  "selection_source": "dataset_validation_only",
+  "candidate_grid_size": 6,
+  "selection_seed_count": 3,
+  "selection_rule": "highest mean validation composite; tie-break rare-class macro-F1 then macro-F1",
+  "validation_composite": "0.5 * (macro_f1 + rare_class_macro_f1)",
+  "test_access_count": 0
+}

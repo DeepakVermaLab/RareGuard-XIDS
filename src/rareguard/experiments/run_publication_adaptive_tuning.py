@@ -48,10 +48,22 @@ def main(argv: list[str] | None = None) -> int:
     logger = configure_logging(root / "logs" / "run_publication_adaptive_tuning.log")
     device = resolve_device(args.device or config["adaptive_tuning"].get("device", "cpu"))
     dataset_keys = list(load_yaml(args.datasets)["datasets"])
-    keys = dataset_keys if args.dataset == "all" else [args.dataset]
+    development = [
+        dataset for dataset in dataset_keys if dataset in set(config["protocol"].get("development_datasets", []))
+    ]
+    confirmation = [
+        dataset for dataset in dataset_keys if dataset in set(config["protocol"].get("confirmation_datasets", []))
+    ]
+    keys = development if args.dataset == "all" else [args.dataset]
     unknown = sorted(set(keys) - set(dataset_keys))
     if unknown:
         raise KeyError(f"Unknown datasets: {unknown}")
+    non_development = sorted(set(keys) - set(development))
+    if non_development:
+        raise ValueError(
+            "Adaptive tuning is restricted to declared development datasets; "
+            f"confirmation datasets remain frozen: {non_development}"
+        )
 
     result_path = root / "results" / "adaptive_tuning_candidates.csv"
     history_path = root / "results" / "adaptive_tuning_history.csv"
@@ -141,6 +153,8 @@ def main(argv: list[str] | None = None) -> int:
         selected = summary.iloc[0].to_dict()
         selected.update(
             {
+                "dataset_role": "development",
+                "selection_source": "dataset_validation_only",
                 "candidate_grid_size": len(candidates),
                 "selection_seed_count": len(seeds),
                 "selection_rule": "highest mean validation composite; tie-break rare-class macro-F1 then macro-F1",
@@ -166,6 +180,66 @@ def main(argv: list[str] | None = None) -> int:
             selected["rare_sampler_power"],
             selected["contrastive_weight"],
         )
+    if args.dataset == "all":
+        frame = pd.DataFrame(rows)
+        development_frame = frame[frame["dataset"].isin(development)].copy()
+        expected_total = len(development) * len(candidates) * len(seeds)
+        if len(development_frame) != expected_total:
+            raise RuntimeError(
+                "Development-only adaptive tuning is incomplete: "
+                f"expected {expected_total}, observed {len(development_frame)}"
+            )
+        confirmation_summary = (
+            development_frame.groupby(
+                ["focal_mix", "rare_sampler_power", "contrastive_weight"], as_index=False
+            )
+            .agg(
+                selection_dataset_count=("dataset", "nunique"),
+                selection_run_count=("seed", "size"),
+                validation_selection_score=("validation_selection_score", "mean"),
+                validation_f1_macro=("validation_f1_macro", "mean"),
+                validation_rare_f1_macro=("validation_rare_f1_macro", "mean"),
+            )
+            .sort_values(
+                ["validation_selection_score", "validation_rare_f1_macro", "validation_f1_macro"],
+                ascending=False,
+            )
+            .reset_index(drop=True)
+        )
+        confirmation_summary.to_csv(root / "results" / "adaptive_tuning_confirmation_summary.csv", index=False)
+        winner = confirmation_summary.iloc[0].to_dict()
+        for dataset in confirmation:
+            selected = {
+                "dataset": dataset,
+                "dataset_role": "external_confirmation",
+                "selection_source": "development_datasets_only_global_mean",
+                "selection_datasets": development,
+                "candidate_grid_size": len(candidates),
+                "selection_seed_count": len(seeds),
+                "selection_rule": (
+                    "highest mean validation composite across development datasets only; "
+                    "tie-break rare-class macro-F1 then macro-F1"
+                ),
+                "validation_composite": "0.5 * (macro_f1 + rare_class_macro_f1)",
+                "test_access_count": 0,
+                **winner,
+            }
+            selected_hyperparameters_path(root, dataset).write_text(
+                json.dumps(
+                    selected,
+                    indent=2,
+                    default=lambda value: value.item() if isinstance(value, np.generic) else str(value),
+                ),
+                encoding="utf-8",
+            )
+            logger.info(
+                "frozen confirmation dataset=%s from development-only validation score=%.4f settings=(%.3f, %.3f, %.3f)",
+                dataset,
+                selected["validation_selection_score"],
+                selected["focal_mix"],
+                selected["rare_sampler_power"],
+                selected["contrastive_weight"],
+            )
     return 0
 
 

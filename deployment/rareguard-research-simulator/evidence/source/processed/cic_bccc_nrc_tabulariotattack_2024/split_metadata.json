@@ -1,0 +1,113 @@
+{
+  "seed": 42,
+  "rows": 35472,
+  "features": 79,
+  "classes": 15,
+  "class_mapping": {
+    "Benign Traffic": 0,
+    "DDoS ICMP Flood": 1,
+    "DDoS UDP Flood": 2,
+    "DoS ICMP Flood": 3,
+    "DoS TCP Flood": 4,
+    "DoS UDP Flood": 5,
+    "MITM ARP Spoofing": 6,
+    "MQTT DDoS Publish Flood": 7,
+    "MQTT DoS Connect Flood": 8,
+    "MQTT DoS Publish Flood": 9,
+    "MQTT Malformed": 10,
+    "Recon OS Scan": 11,
+    "Recon Ping Sweep": 12,
+    "Recon Port Scan": 13,
+    "Recon Vulnerability Scan": 14
+  },
+  "split_rows": {
+    "train": 24829,
+    "validation": 3548,
+    "test": 7095
+  },
+  "split_class_counts": {
+    "train": [
+      2099,
+      1769,
+      1781,
+      1475,
+      2099,
+      2095,
+      737,
+      2085,
+      2100,
+      668,
+      1572,
+      2100,
+      50,
+      2100,
+      2099
+    ],
+    "validation": [
+      300,
+      253,
+      254,
+      211,
+      300,
+      300,
+      105,
+      298,
+      300,
+      95,
+      225,
+      300,
+      7,
+      300,
+      300
+    ],
+    "test": [
+      600,
+      506,
+      509,
+      421,
+      600,
+      599,
+      211,
+      596,
+      600,
+      190,
+      449,
+      600,
+      14,
+      600,
+      600
+    ]
+  },
+  "rejected_non_numeric_columns": [
+    "Attack_Name"
+  ],
+  "duplicate_decimals": 6,
+  "exact_duplicate_rows_removed": 0,
+  "feature_duplicate_rows_removed": 31,
+  "conflicting_feature_rows_removed": 12,
+  "duplicate_hash_overlap": {
+    "train_val": 0,
+    "train_test": 0,
+    "val_test": 0
+  },
+  "transform_fit_scope": "training_only",
+  "post_transform_clip": [
+    -10.0,
+    10.0
+  ],
+  "test_locked": true,
+  "source_sha256": "11113a2e33535364cf28da828aebaa98896a1425207d7685e6e8d46c7a2e7af0",
+  "array_content_sha256": {
+    "X_train": "739bb9b33b6696fd89cce0bd8490d93a726b5268c2eb8c4b8c5d17523badec86",
+    "X_val": "688d52545bb2838b9e9dade48b38dd7d87160177cb8512dc1e86f064dc8341d3",
+    "X_test": "33a59a581531ff0ccfd39724c98fbc9d74c7cf21e8c38827edd9cb980560e4a7",
+    "y_train": "ab763fd2b949fe5cc7534ead1bf5e79c7131609b5871b68211a5e22350723e56",
+    "y_val": "0e932abd4b1f1467a24d8bd64f01288a3a8def561a6789a644029d10390a90ac",
+    "y_test": "0d79dec13bdaf95b8520de1d42505ed56aa1050d5865cc662b42a30bd490d300",
+    "train_indices": "d35079d3bd666c1ae55d46aebc56a96e9fbcd1e3ed9eb8ed7c7994467e44ea49",
+    "val_indices": "5e17f9a7458c884aaef5485f44dbdec32cefd22495053f3d49213290ffc620a3",
+    "test_indices": "f86851ae897db0178d6ca02520462ce346b185eda3573f5ffeb002b99aa7dba4",
+    "feature_names": "6e0f9a7c98b1a2a4a2f4e99c048ad2c59f3581a56409cb41cc2dcef9e5595be2"
+  },
+  "ready": true
+}

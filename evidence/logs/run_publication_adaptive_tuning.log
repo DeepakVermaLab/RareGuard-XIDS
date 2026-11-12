@@ -1,0 +1,89 @@
+2026-10-23 16:03:28,387 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=0 seed=42 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 16:06:39,117 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=0 seed=73 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 16:12:35,614 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=0 seed=101 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 16:22:28,260 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=0 seed=101 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 16:28:00,504 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=1 seed=42 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 16:34:02,207 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=1 seed=73 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 16:37:24,373 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=1 seed=101 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 16:41:05,698 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=2 seed=42 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 16:46:44,946 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=2 seed=73 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 16:52:11,755 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=2 seed=101 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 16:58:09,947 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=3 seed=42 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 17:02:58,089 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=3 seed=73 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 17:06:41,163 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=3 seed=101 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 17:09:47,267 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=4 seed=42 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 17:14:05,781 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=4 seed=73 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 17:17:37,654 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=4 seed=101 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 17:21:32,961 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=5 seed=42 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 17:27:18,500 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=5 seed=73 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 17:31:01,349 | INFO | rareguard | dataset=cse_cic_ids2018 candidate=5 seed=101 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 17:33:23,570 | INFO | rareguard | selected dataset=cse_cic_ids2018 validation_score=0.6429 settings=(0.500, 0.250, 0.100)
+2026-10-23 17:33:24,313 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=0 seed=42 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 17:39:15,263 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=0 seed=73 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 17:44:03,332 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=0 seed=101 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 17:49:37,813 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=1 seed=42 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 17:57:28,277 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=1 seed=73 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 18:07:26,215 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=1 seed=101 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 18:11:44,424 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=2 seed=42 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 18:17:56,155 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=2 seed=73 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 18:24:14,281 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=2 seed=101 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 18:31:02,186 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=3 seed=42 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 18:38:51,423 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=3 seed=73 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 18:48:10,911 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=3 seed=101 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 18:57:32,817 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=4 seed=42 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 19:03:30,051 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=4 seed=73 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 19:08:40,926 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=4 seed=101 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 19:14:28,127 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=5 seed=42 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 19:18:37,108 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=5 seed=73 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 19:28:06,833 | INFO | rareguard | dataset=cic_bccc_nrc_tabulariotattack_2024 candidate=5 seed=101 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 19:36:58,277 | INFO | rareguard | selected dataset=cic_bccc_nrc_tabulariotattack_2024 validation_score=0.3698 settings=(0.000, 0.000, 0.100)
+2026-10-23 19:36:58,967 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=0 seed=42 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 19:40:25,779 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=0 seed=73 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 19:44:17,246 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=0 seed=101 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 19:47:39,356 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=1 seed=42 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 19:50:15,272 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=1 seed=73 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 19:53:31,080 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=1 seed=101 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 19:57:04,334 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=2 seed=42 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 20:00:28,496 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=2 seed=73 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 20:03:49,758 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=2 seed=101 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 20:07:15,720 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=3 seed=42 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 20:10:00,439 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=3 seed=73 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 20:13:10,247 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=3 seed=101 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 20:16:35,629 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=4 seed=42 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 20:20:01,439 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=4 seed=73 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 20:22:32,488 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=4 seed=101 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 20:25:56,019 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=5 seed=42 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 20:29:11,750 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=5 seed=73 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 20:32:29,124 | INFO | rareguard | dataset=cic_iiot_2025_datasense candidate=5 seed=101 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 20:35:42,604 | INFO | rareguard | selected dataset=cic_iiot_2025_datasense validation_score=0.8096 settings=(0.000, 0.000, 0.100)
+2026-10-23 20:35:43,111 | INFO | rareguard | dataset=edge_iiotset candidate=0 seed=42 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 20:39:58,596 | INFO | rareguard | dataset=edge_iiotset candidate=0 seed=73 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 20:44:20,410 | INFO | rareguard | dataset=edge_iiotset candidate=0 seed=101 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 20:48:40,822 | INFO | rareguard | dataset=edge_iiotset candidate=1 seed=42 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 20:53:00,496 | INFO | rareguard | dataset=edge_iiotset candidate=1 seed=73 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 20:55:09,991 | INFO | rareguard | dataset=edge_iiotset candidate=1 seed=101 settings={'focal_mix': 0.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 20:59:33,897 | INFO | rareguard | dataset=edge_iiotset candidate=2 seed=42 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 21:04:10,389 | INFO | rareguard | dataset=edge_iiotset candidate=2 seed=73 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 21:08:39,690 | INFO | rareguard | dataset=edge_iiotset candidate=2 seed=101 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 21:55:29,477 | INFO | rareguard | selected dataset=cse_cic_ids2018 validation_score=0.6429 settings=(0.500, 0.250, 0.100)
+2026-10-23 21:55:34,664 | INFO | rareguard | selected dataset=cic_bccc_nrc_tabulariotattack_2024 validation_score=0.3698 settings=(0.000, 0.000, 0.100)
+2026-10-23 21:55:37,991 | INFO | rareguard | selected dataset=cic_iiot_2025_datasense validation_score=0.8096 settings=(0.000, 0.000, 0.100)
+2026-10-23 21:55:39,127 | INFO | rareguard | dataset=edge_iiotset candidate=2 seed=101 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 22:02:34,103 | INFO | rareguard | dataset=edge_iiotset candidate=3 seed=42 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 22:09:22,354 | INFO | rareguard | dataset=edge_iiotset candidate=3 seed=73 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 22:15:59,484 | INFO | rareguard | dataset=edge_iiotset candidate=3 seed=101 settings={'focal_mix': 0.5, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 22:22:35,758 | INFO | rareguard | dataset=edge_iiotset candidate=4 seed=42 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 22:29:22,989 | INFO | rareguard | dataset=edge_iiotset candidate=4 seed=73 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 22:36:03,099 | INFO | rareguard | dataset=edge_iiotset candidate=4 seed=101 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.0, 'contrastive_weight': 0.1}
+2026-10-23 22:41:05,336 | INFO | rareguard | dataset=edge_iiotset candidate=5 seed=42 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 22:47:44,706 | INFO | rareguard | dataset=edge_iiotset candidate=5 seed=73 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 22:54:32,571 | INFO | rareguard | dataset=edge_iiotset candidate=5 seed=101 settings={'focal_mix': 1.0, 'rare_sampler_power': 0.25, 'contrastive_weight': 0.1}
+2026-10-23 23:01:08,356 | INFO | rareguard | selected dataset=edge_iiotset validation_score=0.8954 settings=(0.000, 0.000, 0.100)
+2026-10-23 23:01:08,380 | INFO | rareguard | frozen confirmation dataset=ciciot2023 from development-only validation score=0.6692 settings=(0.000, 0.000, 0.100)
+2026-10-23 23:01:08,385 | INFO | rareguard | frozen confirmation dataset=ton_iot from development-only validation score=0.6692 settings=(0.000, 0.000, 0.100)
+2026-10-24 11:56:03,119 | INFO | rareguard | selected dataset=cse_cic_ids2018 validation_score=0.6429 settings=(0.500, 0.250, 0.100)
+2026-10-24 11:56:05,808 | INFO | rareguard | selected dataset=cic_bccc_nrc_tabulariotattack_2024 validation_score=0.3698 settings=(0.000, 0.000, 0.100)
+2026-10-24 11:56:07,521 | INFO | rareguard | selected dataset=cic_iiot_2025_datasense validation_score=0.8096 settings=(0.000, 0.000, 0.100)
+2026-10-24 11:56:08,601 | INFO | rareguard | selected dataset=edge_iiotset validation_score=0.8954 settings=(0.000, 0.000, 0.100)
+2026-10-24 11:56:09,289 | INFO | rareguard | frozen confirmation dataset=ciciot2023 from development-only validation score=0.6692 settings=(0.000, 0.000, 0.100)
+2026-10-24 11:56:09,535 | INFO | rareguard | frozen confirmation dataset=ton_iot from development-only validation score=0.6692 settings=(0.000, 0.000, 0.100)

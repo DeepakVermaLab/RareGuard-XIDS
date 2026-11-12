@@ -1,0 +1,217 @@
+dataset,seed,method,task,introduced_classes,seen_classes,task_train_rows,memory_rows,seen_validation_selection_score,prototype_imprint_accepted
+cse_cic_ids2018,42,RareGuard-FineTune,0,"[6, 7, 0, 8, 4, 11, 1, 5, 2, 3]",10,12000,0,0.896811238676638,
+cse_cic_ids2018,42,RareGuard-FineTune,1,[12],11,54,0,0.5613305197637088,
+cse_cic_ids2018,42,RareGuard-FineTune,2,[9],12,25,0,0.5908817876493446,
+cse_cic_ids2018,42,RareGuard-FineTune,3,[10],13,21,0,0.436147616475001,
+cse_cic_ids2018,42,RareGuard-ReservoirReplay,0,"[6, 7, 0, 8, 4, 11, 1, 5, 2, 3]",10,12000,1500,0.896811238676638,
+cse_cic_ids2018,42,RareGuard-ReservoirReplay,1,[12],11,1554,1500,0.672739363775076,
+cse_cic_ids2018,42,RareGuard-ReservoirReplay,2,[9],12,1525,1500,0.7543552404285762,
+cse_cic_ids2018,42,RareGuard-ReservoirReplay,3,[10],13,1521,1500,0.5527198542552881,
+cse_cic_ids2018,42,RareGuard-Continual,0,"[6, 7, 0, 8, 4, 11, 1, 5, 2, 3]",10,12000,1500,0.896811238676638,True
+cse_cic_ids2018,42,RareGuard-Continual,1,[12],11,1554,1418,0.7708961196097689,False
+cse_cic_ids2018,42,RareGuard-Continual,2,[9],12,1443,1329,0.7994464380702857,True
+cse_cic_ids2018,42,RareGuard-Continual,3,[10],13,1350,1255,0.6134138949911054,True
+cse_cic_ids2018,73,RareGuard-FineTune,0,"[6, 7, 0, 8, 4, 11, 1, 5, 2, 3]",10,12000,0,0.9012853449577184,
+cse_cic_ids2018,73,RareGuard-FineTune,1,[12],11,54,0,0.7831831459225134,
+cse_cic_ids2018,73,RareGuard-FineTune,2,[9],12,25,0,0.7426439246469421,
+cse_cic_ids2018,73,RareGuard-FineTune,3,[10],13,21,0,0.5727085997322336,
+cse_cic_ids2018,73,RareGuard-ReservoirReplay,0,"[6, 7, 0, 8, 4, 11, 1, 5, 2, 3]",10,12000,1500,0.9012853449577184,
+cse_cic_ids2018,73,RareGuard-ReservoirReplay,1,[12],11,1554,1500,0.6055785768419695,
+cse_cic_ids2018,73,RareGuard-ReservoirReplay,2,[9],12,1525,1500,0.9045614240701544,
+cse_cic_ids2018,73,RareGuard-ReservoirReplay,3,[10],13,1521,1500,0.6224470890416693,
+cse_cic_ids2018,73,RareGuard-Continual,0,"[6, 7, 0, 8, 4, 11, 1, 5, 2, 3]",10,12000,1500,0.9012853449577184,False
+cse_cic_ids2018,73,RareGuard-Continual,1,[12],11,1554,1418,0.7867918263154109,True
+cse_cic_ids2018,73,RareGuard-Continual,2,[9],12,1443,1329,0.82241924148618,False
+cse_cic_ids2018,73,RareGuard-Continual,3,[10],13,1350,1255,0.5953765422528239,False
+cse_cic_ids2018,101,RareGuard-FineTune,0,"[6, 7, 0, 8, 4, 11, 1, 5, 2, 3]",10,12000,0,0.8893283843153595,
+cse_cic_ids2018,101,RareGuard-FineTune,1,[12],11,54,0,0.78806627889816,
+cse_cic_ids2018,101,RareGuard-FineTune,2,[9],12,25,0,0.7705283683455602,
+cse_cic_ids2018,101,RareGuard-FineTune,3,[10],13,21,0,0.5825178542627161,
+cse_cic_ids2018,101,RareGuard-ReservoirReplay,0,"[6, 7, 0, 8, 4, 11, 1, 5, 2, 3]",10,12000,1500,0.8893283843153595,
+cse_cic_ids2018,101,RareGuard-ReservoirReplay,1,[12],11,1554,1500,0.7959450112862206,
+cse_cic_ids2018,101,RareGuard-ReservoirReplay,2,[9],12,1525,1500,0.900534285676879,
+cse_cic_ids2018,101,RareGuard-ReservoirReplay,3,[10],13,1521,1500,0.570371747631981,
+cse_cic_ids2018,101,RareGuard-Continual,0,"[6, 7, 0, 8, 4, 11, 1, 5, 2, 3]",10,12000,1500,0.8893283843153595,False
+cse_cic_ids2018,101,RareGuard-Continual,1,[12],11,1554,1418,0.6123527090258962,False
+cse_cic_ids2018,101,RareGuard-Continual,2,[9],12,1443,1329,0.8198228666620264,True
+cse_cic_ids2018,101,RareGuard-Continual,3,[10],13,1350,1255,0.6090218591796981,False
+edge_iiotset,42,RareGuard-FineTune,0,"[7, 1, 0, 6, 9, 3, 2, 4]",8,11742,0,0.9133941488228148,
+edge_iiotset,42,RareGuard-FineTune,1,[5],9,250,0,0.8641238049443944,
+edge_iiotset,42,RareGuard-FineTune,2,[8],10,178,0,0.7153950769359299,
+edge_iiotset,42,RareGuard-FineTune,3,[10],11,17,0,0.7029534681742555,
+edge_iiotset,42,RareGuard-ReservoirReplay,0,"[7, 1, 0, 6, 9, 3, 2, 4]",8,11742,1500,0.9133941488228148,
+edge_iiotset,42,RareGuard-ReservoirReplay,1,[5],9,1750,1500,0.9209638451948235,
+edge_iiotset,42,RareGuard-ReservoirReplay,2,[8],10,1678,1500,0.8669140455270977,
+edge_iiotset,42,RareGuard-ReservoirReplay,3,[10],11,1517,1500,0.9101115780157844,
+edge_iiotset,42,RareGuard-Continual,0,"[7, 1, 0, 6, 9, 3, 2, 4]",8,11742,1500,0.9133941488228148,True
+edge_iiotset,42,RareGuard-Continual,1,[5],9,1750,1500,0.8138007592036366,True
+edge_iiotset,42,RareGuard-Continual,2,[8],10,1678,1500,0.7612122361569962,True
+edge_iiotset,42,RareGuard-Continual,3,[10],11,1517,1381,0.863506019206614,True
+edge_iiotset,73,RareGuard-FineTune,0,"[7, 1, 0, 6, 9, 3, 2, 4]",8,11742,0,0.919895485777964,
+edge_iiotset,73,RareGuard-FineTune,1,[5],9,250,0,0.8273006463958882,
+edge_iiotset,73,RareGuard-FineTune,2,[8],10,178,0,0.6967634025114526,
+edge_iiotset,73,RareGuard-FineTune,3,[10],11,17,0,0.6347432276076547,
+edge_iiotset,73,RareGuard-ReservoirReplay,0,"[7, 1, 0, 6, 9, 3, 2, 4]",8,11742,1500,0.9194790539786823,
+edge_iiotset,73,RareGuard-ReservoirReplay,1,[5],9,1750,1500,0.9257131008787722,
+edge_iiotset,73,RareGuard-ReservoirReplay,2,[8],10,1678,1500,0.8644131103332388,
+edge_iiotset,73,RareGuard-ReservoirReplay,3,[10],11,1517,1500,0.924746149507808,
+edge_iiotset,73,RareGuard-Continual,0,"[7, 1, 0, 6, 9, 3, 2, 4]",8,11742,1500,0.919895485777964,False
+edge_iiotset,73,RareGuard-Continual,1,[5],9,1750,1500,0.8754546102698868,True
+edge_iiotset,73,RareGuard-Continual,2,[8],10,1678,1500,0.7612451140410966,True
+edge_iiotset,73,RareGuard-Continual,3,[10],11,1517,1381,0.858921025457177,False
+edge_iiotset,101,RareGuard-FineTune,0,"[7, 1, 0, 6, 9, 3, 2, 4]",8,11742,0,0.920858377078102,
+edge_iiotset,101,RareGuard-FineTune,1,[5],9,250,0,0.8795769881953822,
+edge_iiotset,101,RareGuard-FineTune,2,[8],10,178,0,0.6816932896301673,
+edge_iiotset,101,RareGuard-FineTune,3,[10],11,17,0,0.7396130781120259,
+edge_iiotset,101,RareGuard-ReservoirReplay,0,"[7, 1, 0, 6, 9, 3, 2, 4]",8,11742,1500,0.920858377078102,
+edge_iiotset,101,RareGuard-ReservoirReplay,1,[5],9,1750,1500,0.9238686931363804,
+edge_iiotset,101,RareGuard-ReservoirReplay,2,[8],10,1678,1500,0.8676935799009069,
+edge_iiotset,101,RareGuard-ReservoirReplay,3,[10],11,1517,1500,0.9072006674719229,
+edge_iiotset,101,RareGuard-Continual,0,"[7, 1, 0, 6, 9, 3, 2, 4]",8,11742,1500,0.920858377078102,True
+edge_iiotset,101,RareGuard-Continual,1,[5],9,1750,1500,0.8625933750179626,False
+edge_iiotset,101,RareGuard-Continual,2,[8],10,1678,1500,0.7330358442764949,False
+edge_iiotset,101,RareGuard-Continual,3,[10],11,1517,1381,0.8287724854357359,False
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-FineTune,0,"[11, 13, 8, 0, 14, 4, 5, 7, 2, 1, 10, 3]",12,12000,0,0.5490564335270273,
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-FineTune,1,[6],13,737,0,0.4611780589524241,
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-FineTune,2,[9],14,668,0,0.3457488841849682,
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-FineTune,3,[12],15,50,0,0.6562843110248653,
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-ReservoirReplay,0,"[11, 13, 8, 0, 14, 4, 5, 7, 2, 1, 10, 3]",12,12000,1500,0.5490564335270273,
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-ReservoirReplay,1,[6],13,2237,1500,0.4592929801452354,
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-ReservoirReplay,2,[9],14,2168,1500,0.5074034829914635,
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-ReservoirReplay,3,[12],15,1550,1500,0.3526703660744088,
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-Continual,0,"[11, 13, 8, 0, 14, 4, 5, 7, 2, 1, 10, 3]",12,12000,1500,0.5490564335270273,False
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-Continual,1,[6],13,2237,1500,0.4564284157978652,False
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-Continual,2,[9],14,2168,1500,0.4732738558781274,False
+cic_bccc_nrc_tabulariotattack_2024,42,RareGuard-Continual,3,[12],15,1550,1450,0.6736579295038301,False
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-FineTune,0,"[11, 13, 8, 0, 14, 4, 5, 7, 2, 1, 10, 3]",12,12000,0,0.555035107600124,
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-FineTune,1,[6],13,737,0,0.4200149824745217,
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-FineTune,2,[9],14,668,0,0.3839823035447517,
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-FineTune,3,[12],15,50,0,0.6031207138910255,
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-ReservoirReplay,0,"[11, 13, 8, 0, 14, 4, 5, 7, 2, 1, 10, 3]",12,12000,1500,0.5557232471194018,
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-ReservoirReplay,1,[6],13,2237,1500,0.47779729403944,
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-ReservoirReplay,2,[9],14,2168,1500,0.4756257773556466,
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-ReservoirReplay,3,[12],15,1550,1500,0.3618533364577369,
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-Continual,0,"[11, 13, 8, 0, 14, 4, 5, 7, 2, 1, 10, 3]",12,12000,1500,0.5553796305299161,False
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-Continual,1,[6],13,2237,1500,0.4606783179782259,False
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-Continual,2,[9],14,2168,1500,0.471161628955182,True
+cic_bccc_nrc_tabulariotattack_2024,73,RareGuard-Continual,3,[12],15,1550,1450,0.5151957538764376,True
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-FineTune,0,"[11, 13, 8, 0, 14, 4, 5, 7, 2, 1, 10, 3]",12,12000,0,0.5498879222639658,
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-FineTune,1,[6],13,737,0,0.470876405893365,
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-FineTune,2,[9],14,668,0,0.3395387434595727,
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-FineTune,3,[12],15,50,0,0.6248926298549912,
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-ReservoirReplay,0,"[11, 13, 8, 0, 14, 4, 5, 7, 2, 1, 10, 3]",12,12000,1500,0.5498879222639658,
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-ReservoirReplay,1,[6],13,2237,1500,0.4589078651120598,
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-ReservoirReplay,2,[9],14,2168,1500,0.4998333469994973,
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-ReservoirReplay,3,[12],15,1550,1500,0.5120341501688371,
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-Continual,0,"[11, 13, 8, 0, 14, 4, 5, 7, 2, 1, 10, 3]",12,12000,1500,0.5498879222639658,False
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-Continual,1,[6],13,2237,1500,0.4238227652702296,False
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-Continual,2,[9],14,2168,1500,0.4307867309283167,False
+cic_bccc_nrc_tabulariotattack_2024,101,RareGuard-Continual,3,[12],15,1550,1450,0.4297717575055353,False
+cic_iiot_2025_datasense,42,RareGuard-FineTune,0,"[29, 0, 32, 38, 30, 34, 14, 31, 37, 35, 33, 9, 27, 21, 13, 36, 6, 10, 24, 7, 8, 11, 3, 18, 19, 1, 23, 28, 12, 22, 25, 2, 20, 5, 15, 26]",36,9081,0,0.686014086330226,
+cic_iiot_2025_datasense,42,RareGuard-FineTune,1,[4],37,7,0,0.6613790217624507,
+cic_iiot_2025_datasense,42,RareGuard-FineTune,2,[17],38,6,0,0.5124761019799179,
+cic_iiot_2025_datasense,42,RareGuard-FineTune,3,[16],39,5,0,0.4630526143813779,
+cic_iiot_2025_datasense,42,RareGuard-ReservoirReplay,0,"[29, 0, 32, 38, 30, 34, 14, 31, 37, 35, 33, 9, 27, 21, 13, 36, 6, 10, 24, 7, 8, 11, 3, 18, 19, 1, 23, 28, 12, 22, 25, 2, 20, 5, 15, 26]",36,9081,1500,0.686014086330226,
+cic_iiot_2025_datasense,42,RareGuard-ReservoirReplay,1,[4],37,1507,1500,0.6350705685829551,
+cic_iiot_2025_datasense,42,RareGuard-ReservoirReplay,2,[17],38,1506,1500,0.603468104913927,
+cic_iiot_2025_datasense,42,RareGuard-ReservoirReplay,3,[16],39,1505,1500,0.6537488250091158,
+cic_iiot_2025_datasense,42,RareGuard-Continual,0,"[29, 0, 32, 38, 30, 34, 14, 31, 37, 35, 33, 9, 27, 21, 13, 36, 6, 10, 24, 7, 8, 11, 3, 18, 19, 1, 23, 28, 12, 22, 25, 2, 20, 5, 15, 26]",36,9081,1291,0.686014086330226,False
+cic_iiot_2025_datasense,42,RareGuard-Continual,1,[4],37,1298,1269,0.6456302516068819,True
+cic_iiot_2025_datasense,42,RareGuard-Continual,2,[17],38,1275,1246,0.6374017714232293,True
+cic_iiot_2025_datasense,42,RareGuard-Continual,3,[16],39,1251,1223,0.6105865289636313,True
+cic_iiot_2025_datasense,73,RareGuard-FineTune,0,"[29, 0, 32, 38, 30, 34, 14, 31, 37, 35, 33, 9, 27, 21, 13, 36, 6, 10, 24, 7, 8, 11, 3, 18, 19, 1, 23, 28, 12, 22, 25, 2, 20, 5, 15, 26]",36,9081,0,0.7117575786221628,
+cic_iiot_2025_datasense,73,RareGuard-FineTune,1,[4],37,7,0,0.6465970107286422,
+cic_iiot_2025_datasense,73,RareGuard-FineTune,2,[17],38,6,0,0.6137696107157816,
+cic_iiot_2025_datasense,73,RareGuard-FineTune,3,[16],39,5,0,0.5494495685499801,
+cic_iiot_2025_datasense,73,RareGuard-ReservoirReplay,0,"[29, 0, 32, 38, 30, 34, 14, 31, 37, 35, 33, 9, 27, 21, 13, 36, 6, 10, 24, 7, 8, 11, 3, 18, 19, 1, 23, 28, 12, 22, 25, 2, 20, 5, 15, 26]",36,9081,1500,0.7117575786221628,
+cic_iiot_2025_datasense,73,RareGuard-ReservoirReplay,1,[4],37,1507,1500,0.7987197662358486,
+cic_iiot_2025_datasense,73,RareGuard-ReservoirReplay,2,[17],38,1506,1500,0.682239152969111,
+cic_iiot_2025_datasense,73,RareGuard-ReservoirReplay,3,[16],39,1505,1500,0.6575008929367385,
+cic_iiot_2025_datasense,73,RareGuard-Continual,0,"[29, 0, 32, 38, 30, 34, 14, 31, 37, 35, 33, 9, 27, 21, 13, 36, 6, 10, 24, 7, 8, 11, 3, 18, 19, 1, 23, 28, 12, 22, 25, 2, 20, 5, 15, 26]",36,9081,1291,0.7117575786221628,False
+cic_iiot_2025_datasense,73,RareGuard-Continual,1,[4],37,1298,1269,0.6993934728735651,False
+cic_iiot_2025_datasense,73,RareGuard-Continual,2,[17],38,1275,1246,0.7069449567034435,True
+cic_iiot_2025_datasense,73,RareGuard-Continual,3,[16],39,1251,1223,0.7117721555938809,False
+cic_iiot_2025_datasense,101,RareGuard-FineTune,0,"[29, 0, 32, 38, 30, 34, 14, 31, 37, 35, 33, 9, 27, 21, 13, 36, 6, 10, 24, 7, 8, 11, 3, 18, 19, 1, 23, 28, 12, 22, 25, 2, 20, 5, 15, 26]",36,9081,0,0.6918533402155256,
+cic_iiot_2025_datasense,101,RareGuard-FineTune,1,[4],37,7,0,0.6564712116979434,
+cic_iiot_2025_datasense,101,RareGuard-FineTune,2,[17],38,6,0,0.623183619214249,
+cic_iiot_2025_datasense,101,RareGuard-FineTune,3,[16],39,5,0,0.5635708308922185,
+cic_iiot_2025_datasense,101,RareGuard-ReservoirReplay,0,"[29, 0, 32, 38, 30, 34, 14, 31, 37, 35, 33, 9, 27, 21, 13, 36, 6, 10, 24, 7, 8, 11, 3, 18, 19, 1, 23, 28, 12, 22, 25, 2, 20, 5, 15, 26]",36,9081,1500,0.6927088152557832,
+cic_iiot_2025_datasense,101,RareGuard-ReservoirReplay,1,[4],37,1507,1500,0.6779869322574376,
+cic_iiot_2025_datasense,101,RareGuard-ReservoirReplay,2,[17],38,1506,1500,0.6779809278839912,
+cic_iiot_2025_datasense,101,RareGuard-ReservoirReplay,3,[16],39,1505,1500,0.5955673629071233,
+cic_iiot_2025_datasense,101,RareGuard-Continual,0,"[29, 0, 32, 38, 30, 34, 14, 31, 37, 35, 33, 9, 27, 21, 13, 36, 6, 10, 24, 7, 8, 11, 3, 18, 19, 1, 23, 28, 12, 22, 25, 2, 20, 5, 15, 26]",36,9081,1291,0.6927088152557832,False
+cic_iiot_2025_datasense,101,RareGuard-Continual,1,[4],37,1298,1269,0.7128648505866528,False
+cic_iiot_2025_datasense,101,RareGuard-Continual,2,[17],38,1275,1246,0.683449703210504,False
+cic_iiot_2025_datasense,101,RareGuard-Continual,3,[16],39,1251,1223,0.6664287642216371,False
+ciciot2023,42,RareGuard-FineTune,0,"[12, 21, 6, 1, 9, 10, 8, 7, 14, 13, 15, 22, 18, 19, 16, 4, 29, 25, 26, 27, 23, 20, 24, 32, 5, 11, 17, 2, 30, 3, 33]",31,12000,0,0.4626145681772358,
+ciciot2023,42,RareGuard-FineTune,1,[0],32,172,0,0.3668886388001557,
+ciciot2023,42,RareGuard-FineTune,2,[28],33,130,0,0.2845050014275526,
+ciciot2023,42,RareGuard-FineTune,3,[31],34,69,0,0.2255846381130515,
+ciciot2023,42,RareGuard-ReservoirReplay,0,"[12, 21, 6, 1, 9, 10, 8, 7, 14, 13, 15, 22, 18, 19, 16, 4, 29, 25, 26, 27, 23, 20, 24, 32, 5, 11, 17, 2, 30, 3, 33]",31,12000,1500,0.4626145681772358,
+ciciot2023,42,RareGuard-ReservoirReplay,1,[0],32,1672,1500,0.4156968602395016,
+ciciot2023,42,RareGuard-ReservoirReplay,2,[28],33,1630,1500,0.4053489963986,
+ciciot2023,42,RareGuard-ReservoirReplay,3,[31],34,1569,1500,0.3539866711159112,
+ciciot2023,42,RareGuard-Continual,0,"[12, 21, 6, 1, 9, 10, 8, 7, 14, 13, 15, 22, 18, 19, 16, 4, 29, 25, 26, 27, 23, 20, 24, 32, 5, 11, 17, 2, 30, 3, 33]",31,12000,1500,0.4626145681772358,False
+ciciot2023,42,RareGuard-Continual,1,[0],32,1672,1500,0.3807890233108472,True
+ciciot2023,42,RareGuard-Continual,2,[28],33,1630,1500,0.3643510824635353,True
+ciciot2023,42,RareGuard-Continual,3,[31],34,1569,1500,0.3363670889673065,True
+ciciot2023,73,RareGuard-FineTune,0,"[12, 21, 6, 1, 9, 10, 8, 7, 14, 13, 15, 22, 18, 19, 16, 4, 29, 25, 26, 27, 23, 20, 24, 32, 5, 11, 17, 2, 30, 3, 33]",31,12000,0,0.4463357925146938,
+ciciot2023,73,RareGuard-FineTune,1,[0],32,172,0,0.3740546957358487,
+ciciot2023,73,RareGuard-FineTune,2,[28],33,130,0,0.2925378890114725,
+ciciot2023,73,RareGuard-FineTune,3,[31],34,69,0,0.2424933386653431,
+ciciot2023,73,RareGuard-ReservoirReplay,0,"[12, 21, 6, 1, 9, 10, 8, 7, 14, 13, 15, 22, 18, 19, 16, 4, 29, 25, 26, 27, 23, 20, 24, 32, 5, 11, 17, 2, 30, 3, 33]",31,12000,1500,0.4463357925146938,
+ciciot2023,73,RareGuard-ReservoirReplay,1,[0],32,1672,1500,0.4254034463372637,
+ciciot2023,73,RareGuard-ReservoirReplay,2,[28],33,1630,1500,0.3931336715451605,
+ciciot2023,73,RareGuard-ReservoirReplay,3,[31],34,1569,1500,0.3552340218191777,
+ciciot2023,73,RareGuard-Continual,0,"[12, 21, 6, 1, 9, 10, 8, 7, 14, 13, 15, 22, 18, 19, 16, 4, 29, 25, 26, 27, 23, 20, 24, 32, 5, 11, 17, 2, 30, 3, 33]",31,12000,1500,0.4463357925146938,True
+ciciot2023,73,RareGuard-Continual,1,[0],32,1672,1500,0.366483889106283,False
+ciciot2023,73,RareGuard-Continual,2,[28],33,1630,1500,0.3521671141039914,True
+ciciot2023,73,RareGuard-Continual,3,[31],34,1569,1500,0.3207675663380852,True
+ciciot2023,101,RareGuard-FineTune,0,"[12, 21, 6, 1, 9, 10, 8, 7, 14, 13, 15, 22, 18, 19, 16, 4, 29, 25, 26, 27, 23, 20, 24, 32, 5, 11, 17, 2, 30, 3, 33]",31,12000,0,0.4869534451296807,
+ciciot2023,101,RareGuard-FineTune,1,[0],32,172,0,0.4391841618189169,
+ciciot2023,101,RareGuard-FineTune,2,[28],33,130,0,0.3482112976414205,
+ciciot2023,101,RareGuard-FineTune,3,[31],34,69,0,0.3166452163047204,
+ciciot2023,101,RareGuard-ReservoirReplay,0,"[12, 21, 6, 1, 9, 10, 8, 7, 14, 13, 15, 22, 18, 19, 16, 4, 29, 25, 26, 27, 23, 20, 24, 32, 5, 11, 17, 2, 30, 3, 33]",31,12000,1500,0.4869534451296807,
+ciciot2023,101,RareGuard-ReservoirReplay,1,[0],32,1672,1500,0.4074812525490119,
+ciciot2023,101,RareGuard-ReservoirReplay,2,[28],33,1630,1500,0.4090857554044119,
+ciciot2023,101,RareGuard-ReservoirReplay,3,[31],34,1569,1500,0.3758170601859945,
+ciciot2023,101,RareGuard-Continual,0,"[12, 21, 6, 1, 9, 10, 8, 7, 14, 13, 15, 22, 18, 19, 16, 4, 29, 25, 26, 27, 23, 20, 24, 32, 5, 11, 17, 2, 30, 3, 33]",31,12000,1500,0.4869534451296807,False
+ciciot2023,101,RareGuard-Continual,1,[0],32,1672,1500,0.3775148386784346,True
+ciciot2023,101,RareGuard-Continual,2,[28],33,1630,1500,0.3550374863491665,True
+ciciot2023,101,RareGuard-Continual,3,[31],34,1569,1500,0.3354854726530529,False
+ton_iot,42,RareGuard-FineTune,0,"[0, 1, 2, 3, 4, 5, 6]",7,980,0,0.7901698955504566,
+ton_iot,42,RareGuard-FineTune,1,[8],8,140,0,0.6390822075054556,
+ton_iot,42,RareGuard-FineTune,2,[9],9,140,0,0.5622704724154,
+ton_iot,42,RareGuard-FineTune,3,[7],10,139,0,0.3419439379662828,
+ton_iot,42,RareGuard-ReservoirReplay,0,"[0, 1, 2, 3, 4, 5, 6]",7,980,980,0.7901698955504566,
+ton_iot,42,RareGuard-ReservoirReplay,1,[8],8,1120,1120,0.853405879895818,
+ton_iot,42,RareGuard-ReservoirReplay,2,[9],9,1260,1260,0.7865667256490574,
+ton_iot,42,RareGuard-ReservoirReplay,3,[7],10,1399,1399,0.8901680122423157,
+ton_iot,42,RareGuard-Continual,0,"[0, 1, 2, 3, 4, 5, 6]",7,980,980,0.7901698955504566,True
+ton_iot,42,RareGuard-Continual,1,[8],8,1120,1120,0.8541111602405469,True
+ton_iot,42,RareGuard-Continual,2,[9],9,1260,1260,0.8210443332118487,True
+ton_iot,42,RareGuard-Continual,3,[7],10,1399,1399,0.8194142030584862,True
+ton_iot,73,RareGuard-FineTune,0,"[0, 1, 2, 3, 4, 5, 6]",7,980,0,0.7113198576003052,
+ton_iot,73,RareGuard-FineTune,1,[8],8,140,0,0.638250959679531,
+ton_iot,73,RareGuard-FineTune,2,[9],9,140,0,0.28083609190831,
+ton_iot,73,RareGuard-FineTune,3,[7],10,139,0,0.39887768901363757,
+ton_iot,73,RareGuard-ReservoirReplay,0,"[0, 1, 2, 3, 4, 5, 6]",7,980,980,0.7113198576003052,
+ton_iot,73,RareGuard-ReservoirReplay,1,[8],8,1120,1120,0.8999491869918699,
+ton_iot,73,RareGuard-ReservoirReplay,2,[9],9,1260,1260,0.8707272861530456,
+ton_iot,73,RareGuard-ReservoirReplay,3,[7],10,1399,1399,0.8594245392936888,
+ton_iot,73,RareGuard-Continual,0,"[0, 1, 2, 3, 4, 5, 6]",7,980,980,0.7113198576003052,True
+ton_iot,73,RareGuard-Continual,1,[8],8,1120,1120,0.8871263205718529,True
+ton_iot,73,RareGuard-Continual,2,[9],9,1260,1260,0.8948993848830651,True
+ton_iot,73,RareGuard-Continual,3,[7],10,1399,1399,0.8718676214513588,True
+ton_iot,101,RareGuard-FineTune,0,"[0, 1, 2, 3, 4, 5, 6]",7,980,0,0.7275796704089572,
+ton_iot,101,RareGuard-FineTune,1,[8],8,140,0,0.7644922371509059,
+ton_iot,101,RareGuard-FineTune,2,[9],9,140,0,0.5932318064836861,
+ton_iot,101,RareGuard-FineTune,3,[7],10,139,0,0.4867102820056887,
+ton_iot,101,RareGuard-ReservoirReplay,0,"[0, 1, 2, 3, 4, 5, 6]",7,980,980,0.7275796704089572,
+ton_iot,101,RareGuard-ReservoirReplay,1,[8],8,1120,1120,0.8610878835928761,
+ton_iot,101,RareGuard-ReservoirReplay,2,[9],9,1260,1260,0.8790552300073053,
+ton_iot,101,RareGuard-ReservoirReplay,3,[7],10,1399,1399,0.8776259997731719,
+ton_iot,101,RareGuard-Continual,0,"[0, 1, 2, 3, 4, 5, 6]",7,980,980,0.7275796704089572,True
+ton_iot,101,RareGuard-Continual,1,[8],8,1120,1120,0.7908134782959959,True
+ton_iot,101,RareGuard-Continual,2,[9],9,1260,1260,0.9049923210370415,False
+ton_iot,101,RareGuard-Continual,3,[7],10,1399,1399,0.8792977084556753,True

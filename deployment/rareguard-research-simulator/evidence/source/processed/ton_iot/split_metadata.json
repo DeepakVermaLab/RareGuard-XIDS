@@ -1,0 +1,116 @@
+{
+  "seed": 42,
+  "rows": 1999,
+  "features": 15,
+  "classes": 10,
+  "class_mapping": {
+    "backdoor": 0,
+    "ddos": 1,
+    "dos": 2,
+    "injection": 3,
+    "mitm": 4,
+    "normal": 5,
+    "password": 6,
+    "ransomware": 7,
+    "scanning": 8,
+    "xss": 9
+  },
+  "split_rows": {
+    "train": 1399,
+    "validation": 200,
+    "test": 400
+  },
+  "split_class_counts": {
+    "train": [
+      140,
+      140,
+      140,
+      140,
+      140,
+      140,
+      140,
+      139,
+      140,
+      140
+    ],
+    "validation": [
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "test": [
+      40,
+      40,
+      40,
+      40,
+      40,
+      40,
+      40,
+      40,
+      40,
+      40
+    ]
+  },
+  "rejected_non_numeric_columns": [
+    "proto",
+    "service",
+    "conn_state",
+    "dns_query",
+    "dns_AA",
+    "dns_RD",
+    "dns_RA",
+    "dns_rejected",
+    "ssl_version",
+    "ssl_cipher",
+    "ssl_resumed",
+    "ssl_established",
+    "ssl_subject",
+    "ssl_issuer",
+    "http_trans_depth",
+    "http_method",
+    "http_uri",
+    "http_version",
+    "http_user_agent",
+    "http_orig_mime_types",
+    "http_resp_mime_types",
+    "weird_name",
+    "weird_addl",
+    "weird_notice"
+  ],
+  "duplicate_decimals": 6,
+  "exact_duplicate_rows_removed": 0,
+  "feature_duplicate_rows_removed": 1,
+  "conflicting_feature_rows_removed": 0,
+  "duplicate_hash_overlap": {
+    "train_val": 0,
+    "train_test": 0,
+    "val_test": 0
+  },
+  "transform_fit_scope": "training_only",
+  "post_transform_clip": [
+    -10.0,
+    10.0
+  ],
+  "test_locked": true,
+  "source_sha256": "d95b0c003d720b8592f187b6acfa30296978f8f32551ae379610316786e006e3",
+  "array_content_sha256": {
+    "X_train": "ce55fd2da0bdc3b4a628c116ccb730b34e75ef20f776545b5e2ecbfd11954405",
+    "X_val": "12c569fb9fa41df2464cfe3132eb6f47afcbda08d09de161045981975bf3bbab",
+    "X_test": "c9a2a48dec314c564c41c1cf4d4f8cf50d547996e5b117a5d9d9a3983db61d4c",
+    "y_train": "678a48ea55c5d917b51fd8e4003eeede660904e6b25a3d2bcd80b43c66f78850",
+    "y_val": "ededbaafe08b5b691a411c8091c9db8c4108e3a911a2728fb56a933a68a1e7c7",
+    "y_test": "0dbb3ea13b64a20609340a1813c24560e248eea3009bef3f453d06408f07379a",
+    "train_indices": "d5491456e6376ea02da9a8a26efd135c609e96d7b3f0f2e5a869739b9b7ce648",
+    "val_indices": "991e199c3ebee460c72087abd1d423f721949d83bdfd05a2b9738a4e290bf5d3",
+    "test_indices": "8f0d2af9169aaf2d740ec487ffdc4b0808a38161248493c48db31b515d471c6e",
+    "feature_names": "7c6f45646974a47324a1e96921e34db03e00be0f9c56bb221ed3b6c03c4ce546"
+  },
+  "ready": true
+}

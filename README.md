@@ -1,105 +1,140 @@
-# RareGuard-XIDS Implementation
+# RareGuard-XIDS
 
-RareGuard-XIDS is the planned second PhD paper implementation. It is incremental over the first-paper NOVA-XIDS baseline and adds:
+<p align="center">
+  <strong>Rare-attack-aware, continual, federated and agentic intrusion detection</strong><br>
+  An artifact-backed research implementation with deterministic evaluation, saved execution logs and a public interactive replay console.
+</p>
 
-- rare-attack-aware embedding;
-- incremental/prototype memory;
-- federated learning with non-IID clients;
-- compute-aware 24/7-capable agentic monitoring;
-- CPU-first experiments with optional GPU.
+<p align="center">
+  <a href="https://deepakvermalab.github.io/RareGuard-XIDS-Simulation/"><strong>Open the interactive simulation</strong></a>
+</p>
 
-## Local Paths
+<p align="center">
+  <img alt="Python 3.9+" src="https://img.shields.io/badge/Python-3.9%2B-17324d?style=flat-square">
+  <img alt="Datasets" src="https://img.shields.io/badge/Datasets-6-0b7f77?style=flat-square">
+  <img alt="Seeds" src="https://img.shields.io/badge/Seeds-5-0b7f77?style=flat-square">
+  <img alt="Readiness" src="https://img.shields.io/badge/Scientific%20readiness-NOT__READY-b45309?style=flat-square">
+</p>
 
-Project:
+> [!IMPORTANT]
+> The implementation and notebook execution are complete, but the final evidence audit is **NOT_READY**: 12 of 19 scientific gates pass. This repository preserves negative and mixed findings rather than rewriting results to force superiority.
 
-```text
-/Volumes/LocalDrive1/onlyscholar-projects/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION
+## Overview
+
+RareGuard-XIDS extends the earlier NOVA-XIDS line of work with four research components:
+
+- rare-attack-aware representation learning;
+- prototype-assisted continual adaptation;
+- non-IID federated evaluation;
+- an agentic light-to-heavy inference policy with validation-selected escalation gates.
+
+The repository includes the full implementation, stage notebooks with saved outputs, final-v2 result tables, execution logs, figures, audit reports and reproducibility metadata. Raw datasets, fitted model binaries and processed tensors are intentionally excluded from Git.
+
+## System architecture
+
+```mermaid
+flowchart LR
+    A[Network-flow dataset] --> B[Leakage-safe split and preprocessing]
+    B --> C[Rare-aware representation]
+    C --> D[Central detector]
+    C --> E[Continual prototype memory]
+    C --> F[Federated clients]
+    D --> G[Light detector]
+    G --> H{Agentic policy gate}
+    H -->|retain| I[Light prediction]
+    H -->|escalate| J[Heavy RareGuard detector]
+    I --> K[Metrics and audit]
+    J --> K
+    E --> K
+    F --> K
 ```
 
-Datasets:
+## Verified evidence snapshot
+
+| Evidence item | Verified value |
+|---|---:|
+| Datasets | 6 |
+| Deterministic seeds | 5 |
+| Central rows | 132 / 132 |
+| Continual rows | 54 / 54 |
+| Federated rows | 72 / 72 |
+| Agentic policy rows | 90 / 90 |
+| Agent validation selections | 30 / 30 |
+| Robustness rows | 240 / 240 |
+| Recorded agent decisions | 149,030 |
+| Scientific readiness gates | 12 / 19 pass |
+
+The exact readiness boundary is stored in [`evidence/reports/PUBLICATION_READINESS.json`](evidence/reports/PUBLICATION_READINESS.json), with the human-readable audit in [`evidence/reports/PUBLICATION_EVIDENCE_AUDIT.md`](evidence/reports/PUBLICATION_EVIDENCE_AUDIT.md).
+
+## Repository layout
 
 ```text
-/Volumes/LocalDrive1/Datasets/Security
+.
+├── configs/                 # Dataset, experiment and publication protocols
+├── docs/                    # Implementation and publication protocol notes
+├── evidence/
+│   ├── figures/             # Final publication figures
+│   ├── logs/                # Saved stage execution logs
+│   ├── reports/             # Readiness, provenance and policy reports
+│   └── results/             # Final-v2 CSV/JSON result tables
+├── notebooks/               # Executed stage notebooks 00–21
+├── scripts/                 # Notebook builders, environment and sync utilities
+├── src/rareguard/           # Research package
+├── tests/                   # Smoke and publication protocol tests
+└── deployment/              # Interactive research simulation source
 ```
 
-Google Drive output folder:
+## Notebook pipeline
 
-```text
-https://drive.google.com/drive/folders/1Oh9o3ipRfNZmeyOl2uatBSHdGrnvnfUc
-```
+| Stage | Notebooks | Purpose |
+|---|---|---|
+| Environment and smoke pipeline | `00`–`07` | Environment, discovery, preprocessing, baselines and early pipeline checks |
+| Original publication protocol | `08`–`14` | Data, central, continual, federated, agentic, robustness and audit stages |
+| Corrective final-v2 protocol | `15`–`21` | External confirmation, corrected tuning, final experiments and evidence audit |
 
-## Stage Notebooks
+Executed notebooks retain their printed outputs. Machine-readable logs are separately preserved under [`evidence/logs`](evidence/logs).
 
-Run in order:
-
-1. `notebooks/00_environment_check.ipynb`
-2. `notebooks/01_dataset_discovery.ipynb`
-3. `notebooks/02_preprocess_features.ipynb`
-4. `notebooks/03_baseline_falconid.ipynb`
-5. `notebooks/04_rareguard_embedding.ipynb`
-6. `notebooks/05_federated_learning.ipynb`
-7. `notebooks/06_agentic_energy_controller.ipynb`
-8. `notebooks/07_ablation_and_report.ipynb`
-
-Stages 00-07 are retained as pipeline smoke tests. They are not publication evidence because their preprocessing was fitted before splitting and their original federated comparison mixed architectures.
-
-Publication protocol:
-
-9. `notebooks/08_publication_data.ipynb` (CPU)
-10. `notebooks/09_publication_central.ipynb` (validation-only per-dataset adaptation, CPU baselines, and deterministic CPU central training)
-11. `notebooks/10_publication_continual.ipynb` (CPU; MPS allowed if required)
-12. `notebooks/11_publication_federated.ipynb` (CPU; MPS recommended only if CPU is impractical)
-13. `notebooks/12_publication_agentic.ipynb` (CPU)
-14. `notebooks/13_publication_robustness.ipynb` (CPU)
-15. `notebooks/14_publication_audit.ipynb` (CPU)
-
-Publication outputs are isolated under `artifacts/publication/`. Completed smoke outputs are preserved under `artifacts/smoke/`.
-
-Each notebook writes logs/results under `artifacts/` and can sync to Drive with `scripts/sync_to_drive.py`.
-
-Set `DATASET_KEY` inside a notebook to run one dataset only, or keep `all` to run every configured dataset.
-
-## CPU First
-
-All configs default to CPU and sampling limits. Increase `sample_rows_per_dataset`, `epochs`, and `federated.rounds` only after smoke tests pass.
-
-## VS Code / Colab Connector Note
-
-If a notebook runs on a Colab remote runtime, it cannot read the Mac-only path `/Volumes/LocalDrive1/...`. Either run the notebook with a local VS Code Python kernel on the Mac, or copy/sync this `IMPLEMENTATION` folder to Google Drive at:
-
-```text
-/content/drive/MyDrive/projects/implementation/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION
-```
-
-The notebooks now auto-detect the local project root first, then common Google Drive locations.
-
-## Install
+## Installation
 
 ```bash
-python3 -m pip install -r requirements.txt
-python3 -m pip install -e .
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m pip install -e .
 ```
 
-## Smoke Test
+Run the test suite:
 
 ```bash
-python3 scripts/env_check.py
-python3 -m rareguard.experiments.dataset_discovery --config configs/default.yaml
+pytest -q
 ```
 
-## Evidence Boundary
+## Dataset boundary
 
-The implementation is CPU-first. Only results that pass `artifacts/publication/reports/PUBLICATION_READINESS.json` may be used as paper evidence. The current CPU-feasible acquisition is explicitly reported as an all-file bounded range sample, not a full-corpus reproduction. The audit forbids energy-in-joules claims unless an external hardware power meter supplies real measurements. Ablations are reported exactly as measured, including any case where a reduced model outperforms the full model.
+Datasets are not redistributed in this repository. Configure the local or mounted Google Drive dataset root in `configs/datasets.yaml` and `configs/datasets_v2.yaml`. Preprocessing fits transformations on training data only and records split metadata for overlap auditing.
 
-## Continuous Agent Runtime
+## Evidence and claim policy
 
-After central models are trained, the deployment service can process feature batches once or continuously. It writes append-only decisions, a resumable file-hash state, errors, and a health heartbeat under `artifacts/publication/agent_runtime/<dataset>/`.
+- Development, validation, external-confirmation and locked-test roles remain separated.
+- Diagnostic replay values are not treated as benchmark results.
+- Energy in joules is not claimed because no external power meter was used.
+- The study uses bounded deterministic samples rather than full-corpus reproduction.
+- Ablations are reported exactly as measured, including cases that outperform the full model.
+- A complete execution package does not imply journal acceptance or universal model superiority.
 
-```bash
-PYTHONPATH=src python -m rareguard.experiments.run_agent_service \
-  --dataset cse_cic_ids2018 \
-  --seed 42 \
-  --inbox /path/to/feature-batches \
-  --device cpu \
-  --continuous
-```
+## Interactive research console
+
+The public simulation replays saved light-to-heavy routing decisions and exposes the evidence boundary without requiring the private training repository:
+
+**https://deepakvermalab.github.io/RareGuard-XIDS-Simulation/**
+
+The simulator source is maintained in the public repository [`DeepakVermaLab/RareGuard-XIDS-Simulation`](https://github.com/DeepakVermaLab/RareGuard-XIDS-Simulation).
+
+## Citation
+
+Citation metadata is available in [`CITATION.cff`](CITATION.cff). Update the manuscript title, author identifiers and publication fields after formal acceptance.
+
+## Research status
+
+This is an active research codebase. The final-v2 implementation is complete; seven scientific readiness gates remain unsupported and are explicitly retained in the audit package.

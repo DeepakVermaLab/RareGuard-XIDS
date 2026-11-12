@@ -1,0 +1,39 @@
+datasets:
+  cse_cic_ids2018:
+    folder: CSE-CIC-IDS2018
+    remote_csv_root: raw/Processed Traffic Data for ML Algorithms
+    source: official AWS S3 bucket s3://cse-cic-ids2018/
+    label_candidates: [Label, label, Attack, attack, Class, class]
+    priority: development
+  cic_bccc_nrc_tabulariotattack_2024:
+    folder: CIC-BCCC-NRC-TabularIoTAttack-2024
+    remote_csv_root: extracted
+    source: CIC official form with Kaggle mirror
+    label_from_source_filename: true
+    label_candidates: [Label, label, Attack, attack, Class, class]
+    priority: development
+  cic_iiot_2025_datasense:
+    folder: CIC-IIoT-2025-DataSense
+    remote_csv_root: extracted/cic-iiot-2025/cic-iiot-2025
+    source: CIC official form with Kaggle CSV mirror
+    label_candidates: [label4, label3, label2, label1, label_full, Label, label, Attack, attack, Class, class]
+    priority: development
+  edge_iiotset:
+    folder: Edge-IIoTset
+    remote_csv_root: extracted
+    source: IEEE DataPort with Kaggle mirror
+    label_candidates: [Attack_type, attack_type, label_full, Attack_label, label1, Label, label, Class, class]
+    priority: development
+  ciciot2023:
+    folder: CICIoT2023
+    remote_csv_root: csv/CICIoT2023
+    source: CICIoT2023 canonical CSV export
+    label_candidates: [label, Label, attack, Attack, type, Type]
+    priority: external_confirmation
+  ton_iot:
+    folder: TON_IoT
+    remote_csv_root: extracted
+    source: TON_IoT official train-test network CSV archive
+    label_candidates: [type, Type, label, Label, attack, Attack]
+    full_file: true
+    priority: external_confirmation

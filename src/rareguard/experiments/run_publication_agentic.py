@@ -155,6 +155,16 @@ def main(argv: list[str] | None = None) -> int:
         rare_ids = {int(i) for i, count in enumerate(counts) if count <= cutoff}
         for seed in sorted(central.loc[central["dataset"] == dataset, "seed"].unique()):
             subset = central[(central["dataset"] == dataset) & (central["seed"] == seed)]
+            available_models = set(subset["model"])
+            required_models = {"NOVA-XIDS", "RareGuard-XIDS"}
+            if not required_models.issubset(available_models):
+                logger.warning(
+                    "%s seed=%s skipped because central evaluation is incomplete; missing=%s",
+                    dataset,
+                    seed,
+                    sorted(required_models - available_models),
+                )
+                continue
             nova_row = subset[subset["model"] == "NOVA-XIDS"].iloc[0]
             rare_row = subset[subset["model"] == "RareGuard-XIDS"].iloc[0]
             nova = np.load(nova_row["prediction_path"])

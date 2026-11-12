@@ -1,0 +1,2763 @@
+{
+  "generated_at_utc": "2026-10-24T12:18:23.565366+00:00",
+  "project_root": "/content/drive/MyDrive/projects/implementation/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION",
+  "artifact_root": "/content/drive/MyDrive/projects/implementation/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION/artifacts/publication_v2",
+  "git": {
+    "commit": "unavailable",
+    "branch": "unavailable",
+    "dirty": false,
+    "dirty_paths": []
+  },
+  "runtime": {
+    "python": "3.13.16 (main, Oct  1 2026, 15:40:24) [GCC 13.3.0]",
+    "executable": "/usr/bin/python3",
+    "platform": "Linux-6.6.122+-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "torch_mps_available": false,
+    "torch_cuda_available": false,
+    "packages": {
+      "numpy": "2.1.3",
+      "pandas": "2.2.3",
+      "scikit-learn": "1.6.1",
+      "scipy": "1.16.3",
+      "pyarrow": "23.0.1",
+      "torch": "2.11.0+cpu",
+      "matplotlib": "3.10.0",
+      "psutil": "5.9.5",
+      "PyYAML": "6.0.3"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/publication_v2/figures/ablation_primary_composite.png",
+      "bytes": 200650,
+      "sha256": "8b434e3d3cc5673442a3c4dd8613339c39c729bdc6556839bd172c180bd5c84a"
+    },
+    {
+      "path": "artifacts/publication_v2/figures/agentic_accuracy_compute_tradeoff.png",
+      "bytes": 88560,
+      "sha256": "4fae5900ff58d507672c55e87d50c0a94e13e5ef11f453cf4c0c0f0b3a9e2f8e"
+    },
+    {
+      "path": "artifacts/publication_v2/figures/all_model_baseline_comparison.png",
+      "bytes": 192186,
+      "sha256": "e0bebc4eea5d6203cdb974eec4ca9b4d31593bc5a898c45f7e377ec1c38dd783"
+    },
+    {
+      "path": "artifacts/publication_v2/figures/central_calibration_ece_ci.png",
+      "bytes": 191366,
+      "sha256": "674fbea1fb3065071a183799ba0a6094b0c6e45c8aac88a6fe3d7297a3038be1"
+    },
+    {
+      "path": "artifacts/publication_v2/figures/central_macro_f1_ci.png",
+      "bytes": 173289,
+      "sha256": "2e04bff70cb8b09539b0d01de4d226cd0c83bffc849493274d0a86cfd54f010c"
+    },
+    {
+      "path": "artifacts/publication_v2/figures/central_rare_f1_ci.png",
+      "bytes": 178730,
+      "sha256": "9407e498e844ad644433109327671067a0b6c3ef20763aecdf87f254e9d57b61"
+    },
+    {
+      "path": "artifacts/publication_v2/figures/continual_memory_tradeoff.png",
+      "bytes": 106016,
+      "sha256": "dff1b72b5735ba1520ba32b23c6e1ad0b9c4fb5e01ef303813d5fdfe59c5fadc"
+    },
+    {
+      "path": "artifacts/publication_v2/figures/federated_communication_tradeoff.png",
+      "bytes": 107415,
+      "sha256": "fe48754d45de84761182dc9fbb2ffe2afb82902a9ae402866846ae1bfd86ad5d"
+    },
+    {
+      "path": "artifacts/publication_v2/figures/robustness_primary_composite_gain.png",
+      "bytes": 180970,
+      "sha256": "68135b4848d835e019faffa7ec52c5da5303e345f7e5ed02ec0f849462e73f7f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/ExtraTrees.joblib",
+      "bytes": 368730145,
+      "sha256": "9b4f511d62ffbf7c449d9f2af75102a4f92a964a670d71e8e00b56fc9a45b5a9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/HistGradientBoosting.joblib",
+      "bytes": 7124182,
+      "sha256": "fba368e4a63877fbeb97f23f4ff287e8e256fc4c3f54bf998150419c8504c393"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/NOVA-XIDS.pt",
+      "bytes": 231212,
+      "sha256": "9a9a80a29dc5d02846bca4fad8221e9b316ed5d78e0caff6882246c1d8d6c46e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/NOVA-XIDS_locked_test.npz",
+      "bytes": 2901071,
+      "sha256": "2a061bf459ff834ecd36f40a3ab2a433c4ec2d54c1980a16b6fb98b7fc313c24"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RandomForest.joblib",
+      "bytes": 286684561,
+      "sha256": "f01b8020d68d824c1bfbc5972d5af98ce6c8c3534890dfc6d0320e7a013fd919"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-Continual.pt",
+      "bytes": 366824,
+      "sha256": "9fee1ee07a2254f6b3b55120aa24c0487c34848c3d2da39e1bce65636ad5a74e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-Continual_locked_test.npz",
+      "bytes": 797489,
+      "sha256": "5d6add1c2051353ef78b868a35fe16acfc22d3e9fef9a3280f84e795bc276659"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-FineTune.pt",
+      "bytes": 366733,
+      "sha256": "5e61285c401ce1adb495a1aefd5d8a24ba6271d7e25340708cbd8618d7c8fd82"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-FineTune_locked_test.npz",
+      "bytes": 782850,
+      "sha256": "3175c16bb4b651be92294a09d2747cf0ac9a37c7b168a60bc1b857cca1649af2"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-ReservoirReplay.pt",
+      "bytes": 367434,
+      "sha256": "c71264b23b73a43e4c2bc7a3ef553e0ea624e946cb2b8421088cd7ad10de4d13"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 804333,
+      "sha256": "e30f38fcc4e3910d7e39ff855815d49665dd9138f735244a985551d8177511a0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-XIDS.pt",
+      "bytes": 366241,
+      "sha256": "7e61b64c7aa942e16d1f58810f92cbff85bf87290f87b3e011ad5eb0d4138752"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-XIDS_locked_test.npz",
+      "bytes": 2858860,
+      "sha256": "32888455a746998f8ee4d078316682a82ac47aee9bfae43b1c01052650525332"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-no-class-balance.pt",
+      "bytes": 367525,
+      "sha256": "e3bf2e27bb2a245cf012c3d6e810fa96575f7ae32bde8a5685ea090ce2a07a84"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 2867461,
+      "sha256": "c5aa9adb4343739f6f34a811bb0c8647821ebd2f6e5786c55b1e9e9dd69fd66b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-no-contrastive.pt",
+      "bytes": 367343,
+      "sha256": "64c540438f8b4bbb693ab73eef6bba196b774766ac050747d697d143b644a202"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 2872742,
+      "sha256": "2cd7b385f8f60f7948364123078606fc2fa39a41199e962c9ef02f389fd8f25c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-no-direct-path.pt",
+      "bytes": 256291,
+      "sha256": "a114f26fd9daea26ba50d885cc5605f6e3447361fa4593b74d76e798bd480d2b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 2910893,
+      "sha256": "9f12f82b259f1c749ccb4b57de5891f438e049cc81f3ff2f045e8fc288caebee"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-no-prototype.pt",
+      "bytes": 362721,
+      "sha256": "f48ee494cfe3bdbf0a03399754ed5e0736928b96a72ac9cbdc5532c8de6ef891"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_101/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 2866805,
+      "sha256": "f50b505b21d8963a085fc80e0666a6de362f55f2b152837379cc8c637e3d1e48"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_137/ExtraTrees.joblib",
+      "bytes": 363347409,
+      "sha256": "f46f6b3a838ad3a7a0c7556ac91c1d3d154d854757ef11d6063c628fce292d01"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_137/HistGradientBoosting.joblib",
+      "bytes": 2976734,
+      "sha256": "cf4f1c557008e56bb7606ff45e1c0bff0bcaa0b280047c5e48e5d34a2e5adfb6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_137/NOVA-XIDS.pt",
+      "bytes": 231212,
+      "sha256": "7c61d5f494e323271c966df7d4d2b27a1a9dcb22d663f31722a7e2b22e867668"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_137/NOVA-XIDS_locked_test.npz",
+      "bytes": 2906160,
+      "sha256": "54b088ed9ed2afa2091b94439b791b494be1fb6e475733b8dc51925def3ef8b8"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_137/RandomForest.joblib",
+      "bytes": 287055137,
+      "sha256": "d4bdc48336442c2292e6ba7ceea5fbaa5673cc16c90cd3bc0897671bda8068e0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_137/RareGuard-XIDS.pt",
+      "bytes": 366241,
+      "sha256": "c4e1bf8d5521847d16e1f07a353f7f2c607ebcb8c21a319cdc00f6b1f4dcfa4e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_137/RareGuard-XIDS_locked_test.npz",
+      "bytes": 2857977,
+      "sha256": "264e8a5bee836625ddf9c008cddf92d40835441396de24b6693be7bf26c29f21"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_211/ExtraTrees.joblib",
+      "bytes": 364099601,
+      "sha256": "251ba1185a63df7f66826b4c42339535cadd58cdd188a4a87712253519c027e3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_211/HistGradientBoosting.joblib",
+      "bytes": 7492102,
+      "sha256": "4e5bc59758c6d8028addf84cb4575ce9513bddef5ecc81cdb7feae1883882731"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_211/NOVA-XIDS.pt",
+      "bytes": 231212,
+      "sha256": "fe6841a883cf8d96a7a140bd2caa42fd5fed938ba82e1d266d5eaf0dd0c944e3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_211/NOVA-XIDS_locked_test.npz",
+      "bytes": 2908270,
+      "sha256": "c259164284e86df16a91516a225a75a3e8003319c231c2267f29db466399e7d6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_211/RandomForest.joblib",
+      "bytes": 287111441,
+      "sha256": "acd18ea893476cf614772b201491e15ab4ba079466e89ebe0fddacf6d0ff31c8"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_211/RareGuard-XIDS.pt",
+      "bytes": 366241,
+      "sha256": "5f943006cb9425312c3d7f6089b32f7171173d8af95e91d0f76e353dd0022dc7"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_211/RareGuard-XIDS_locked_test.npz",
+      "bytes": 2864363,
+      "sha256": "b17fe8d9d5614bbfbb7ed91970a973d35a11eb6817613f9ce924d5617540d157"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/ExtraTrees.joblib",
+      "bytes": 367449873,
+      "sha256": "dc045659cf8a9bb3b3297da3fa195c17d85af1e1b28bb83edef9c77c803dad35"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/HistGradientBoosting.joblib",
+      "bytes": 7071934,
+      "sha256": "994e5291ef9ca3bdc5fd407454b3e84f139b13e1ec3def47677b6fb9bab8bf17"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/NOVA-XIDS.pt",
+      "bytes": 231212,
+      "sha256": "ec8e951ffbc02348a5e14633d38b7ff85e57408f5654193c49d7ff842357fbcf"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/NOVA-XIDS_locked_test.npz",
+      "bytes": 2909534,
+      "sha256": "23c9856c376a43fd83a09f2820c69d6f47151fffd1f5121396f763b20c0a5f06"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RandomForest.joblib",
+      "bytes": 287740721,
+      "sha256": "406d88254ded1b63a489e25c9beb203511199c4441d5ad619e6525d53c030564"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-Continual.pt",
+      "bytes": 366824,
+      "sha256": "fc28a4864a418d1b7fc34ab990681721f83fdc6b6cd8681794edb3ec8ffbbf9b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-Continual_locked_test.npz",
+      "bytes": 798554,
+      "sha256": "bbb7a9293ae9b1ff401172540cf2c831c9ef631aa2ba7ccce05d52baa563400f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-FineTune.pt",
+      "bytes": 366733,
+      "sha256": "1e8efbcc0e0c698e0eaa728afba6b540f9ba88979d4dabcaaa841242c5cfd69e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-FineTune_locked_test.npz",
+      "bytes": 792259,
+      "sha256": "08ba1ffd32fabdd2939f5afa721b7fb7b1d3d34efbb10dda9d2383ac97ace4ca"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-ReservoirReplay.pt",
+      "bytes": 367434,
+      "sha256": "23a15d513e8515797ea61e76ed71c4e3e8d7e560de3600cd2855f8f1b28303fa"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 808495,
+      "sha256": "3ae86e8c9d948e725968b525679e649e6d33a84d466e89ebc2a70754b5a61b9c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-XIDS.pt",
+      "bytes": 366241,
+      "sha256": "a8a526749d9992cb0a30aed2c9d3de59d60f9c4f62c1f57f8b10f8ac5f2a3734"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-XIDS_locked_test.npz",
+      "bytes": 2871253,
+      "sha256": "48d88f638e9edfc3292c8687fef811148cdf8ba798c5f849807d3c8fc28eb9b9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-no-class-balance.pt",
+      "bytes": 367525,
+      "sha256": "a212629adbbbc48afa786c3cfcc930a95b80f28221e4dec3efdbfc98c963e287"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 2873208,
+      "sha256": "e9aab5db69f88bd14eb9da2b16bd8ad30f089b3db05a9a7cca7f52530d838d29"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-no-contrastive.pt",
+      "bytes": 367343,
+      "sha256": "bf6eaa553edf4a32ffaee4dbb62a48dce04e62410cdff6b1a0167a18e204df6c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 2866578,
+      "sha256": "078e2bb0643a690b7e2902ad6192f441043511f5cb633413f119c44e2c24932d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-no-direct-path.pt",
+      "bytes": 256291,
+      "sha256": "97c39203c15f40dd5f661ac50565555df6a19e03e16a024dbb69758e0c406269"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 2904079,
+      "sha256": "1a113823a2386ceb7cab059d63e33b70ec6d4cd66299ac4ec28473d992f05518"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-no-prototype.pt",
+      "bytes": 362721,
+      "sha256": "b22c249d1b12bf42271d229db73fd8f9e755cdc2954d0673029cc9c16a08b119"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_42/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 2871728,
+      "sha256": "52bd7439ed91897cd0064aa0506854b8eb0bb87b9344b5739df68775ca85b80c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/ExtraTrees.joblib",
+      "bytes": 367083345,
+      "sha256": "844358950caa4f55d892bcaae3455739718f4f2a7fc7bb8c2870ca713872f967"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/HistGradientBoosting.joblib",
+      "bytes": 6732102,
+      "sha256": "98ef089f98bcbb522290352ccc8ba3af17316af293bb5bf4f522fdcc11f5c4ff"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/NOVA-XIDS.pt",
+      "bytes": 231212,
+      "sha256": "7ede8185cfc021628fdd2bd165393a3e505d72e6ebca7b7291599e6fa0908f6e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/NOVA-XIDS_locked_test.npz",
+      "bytes": 2907725,
+      "sha256": "f57116746e0136149bf43adc8adb778b2eafefcce176f1bb3971336e201dba28"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RandomForest.joblib",
+      "bytes": 286799009,
+      "sha256": "8b3ae55f6b63636a8375bb3774e91711d767efbb864821514855bbfb3b42b911"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-Continual.pt",
+      "bytes": 366824,
+      "sha256": "bb2fa3f38e8832fa3d7956f178e16738e84eb06ff6299e96061af3f64f326cf1"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-Continual_locked_test.npz",
+      "bytes": 797632,
+      "sha256": "354c163ae0eeab6588a84e9494cf55482d26cdd14b6a5238b83dcb3794889bb2"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-FineTune.pt",
+      "bytes": 366733,
+      "sha256": "c47dcaf9cea0e047a97978e247f311d9a085674e32c4af1d30092e161cebf92b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-FineTune_locked_test.npz",
+      "bytes": 778888,
+      "sha256": "4126f8c26d4ed948caff068e7921a5994dc899553ae81ebd93d05e7d78f6d3d6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-ReservoirReplay.pt",
+      "bytes": 367434,
+      "sha256": "2545e6955c2a137ff5b93d9af0cc03969c91e3bc0ebf8c4680116c2d449c91bb"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 805338,
+      "sha256": "8c1cba80e0add99f87c6332c5475025157eaffe9f6bce1e9054be42e419a954a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-XIDS.pt",
+      "bytes": 366241,
+      "sha256": "f4beb3bbe05a6e7b96d2edf9b681af13fd24aa0825ae7891737cef83b09624c0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-XIDS_locked_test.npz",
+      "bytes": 2871263,
+      "sha256": "40e19f405766280dc43e98198ad8145ed937fed8319eb406633bab3d782bce7c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-no-class-balance.pt",
+      "bytes": 367525,
+      "sha256": "ce31f8f40794e9fa107c385d6d40e80264f756c2b873dcd2448d904d8b30011c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 2873181,
+      "sha256": "a64b5d89c8143bfe6ee218cf6e6e15af3e82394d6807d1d2cd1b2e4c7b8dfe01"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-no-contrastive.pt",
+      "bytes": 367343,
+      "sha256": "166a75eb0bbaaa8096881daa2c846544246fc8d4a7ecf5475b9b3c3effed8953"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 2860664,
+      "sha256": "8151af86ef371f0fcbd7238998cafabef1130f1e26e783accddd5d98f135e8cf"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-no-direct-path.pt",
+      "bytes": 256291,
+      "sha256": "ef0ccda021be3890b9146a3835382177c585bbfb1d76d99ba5a601738f93cf8f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 2915259,
+      "sha256": "d332b9fea4b15d6a0c519ebfbe77283dc4ead8b804d6d1c24ed7d4da8c19d986"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-no-prototype.pt",
+      "bytes": 362721,
+      "sha256": "658868a3eba36dc944cce47424edd1499c6feb54072d523a7131837be049d461"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_bccc_nrc_tabulariotattack_2024/seed_73/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 2851214,
+      "sha256": "4229f7616e44e957db2c0b3b25183ff3a4b87e995247fd7f20092db5bd381e4a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/ExtraTrees.joblib",
+      "bytes": 261817057,
+      "sha256": "df7535dd798a242c28281a7fc2e7f9e284382952509df75e487834e2f45dde53"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/HistGradientBoosting.joblib",
+      "bytes": 4692790,
+      "sha256": "334f3b577f3f181fed5a86df528c6b395adc6f0ace1b849efd79d3cff6868f54"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/NOVA-XIDS.pt",
+      "bytes": 233388,
+      "sha256": "65a0a34f9d0b99ca22b2329c5b71648ac6521c6c481f72dd0b2116d98ab0d447"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/NOVA-XIDS_locked_test.npz",
+      "bytes": 1753832,
+      "sha256": "adfd8252b174d796b768ae807d43fefb3d374a5c4402bdb92971ef378bb5c449"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RandomForest.joblib",
+      "bytes": 157471057,
+      "sha256": "3b26334ebe80c44318a86872e47688e00e5c0816ebd3c1e694e5d6169b7593e4"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-Continual.pt",
+      "bytes": 370984,
+      "sha256": "7c914a6df884d687df1e33c4437a94f6a26d1e49c74a22592e5bea5ff4e157fb"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-Continual_locked_test.npz",
+      "bytes": 754217,
+      "sha256": "4b40eaaee1fe121d059e6f2d51af19626d7c04675081210c35379b4a95a55dc5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-FineTune.pt",
+      "bytes": 370893,
+      "sha256": "658ba7662700b42b15a68e8d4bbb7c784a57ff5c3706d20cc215f08c801362b7"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-FineTune_locked_test.npz",
+      "bytes": 759799,
+      "sha256": "f35ab2aa59a4f85fc3d74dbfd210c101ee495d7f3786808be9175235e048e094"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-ReservoirReplay.pt",
+      "bytes": 371594,
+      "sha256": "242ef1e2cf537b0ff9ba46519b7813e2f10a6d388a7cdf41c7ca536ef30c841e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 760812,
+      "sha256": "588de1559cecc7739a33ba3e2faedb087b1ae069430ac2ab808644234fe606be"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-XIDS.pt",
+      "bytes": 370401,
+      "sha256": "ad93719791fce061e7cdf2515cb4bce7a55e086a60653927ed99cbd097058f3c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1756060,
+      "sha256": "7ca98453c9b6d0bb1a625537b06d30716e2898442b5068f74a7e5b02b59d9e98"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-no-class-balance.pt",
+      "bytes": 371685,
+      "sha256": "3f9566d91ec90af72c3d7d687b53cb7796e35a8a4b95b4b9ab4832a1f28181bf"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 1751188,
+      "sha256": "5e8aa9ad85873b9bb658067c3d222bb9e96fd5e51de237c0512dcd1eb938b3b8"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-no-contrastive.pt",
+      "bytes": 371503,
+      "sha256": "81ad33b8828da9743d44cf7c63ee852422510945b6dea70e9b5ceecc1f490b55"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 1756952,
+      "sha256": "45349e1c86d7e18b0c0301916c9d03ce38da58947f66074910a0404764ff2609"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-no-direct-path.pt",
+      "bytes": 264547,
+      "sha256": "361af9aba210bd1cd378d0a655f012e95e0d8a61074b182c8a7bd9af8ea8cd16"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 1773945,
+      "sha256": "776bc62da3ea16160bd0e4abe13a5a9fcd5f9078e6027d54d0439bb2fb69e0a3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-no-prototype.pt",
+      "bytes": 360737,
+      "sha256": "f77bc2bf720daca5a7178190628d5d21cbf98f9e9438106554955e6fdff65360"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_101/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 1754155,
+      "sha256": "e1511ef06a54eeb4e22f171025251f9174682773a3c68627a58731c2a6de5633"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_137/ExtraTrees.joblib",
+      "bytes": 260653713,
+      "sha256": "4e5a3341d86877f7ff0356cf76f4b4cf98b27fbd547186fb5b1f3c359eacd9a0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_137/HistGradientBoosting.joblib",
+      "bytes": 4692790,
+      "sha256": "e7e0e61654d44ac5efc59c74cdeb99198e1cd5ed493b1b7d0e2f29a99e6f6f62"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_137/NOVA-XIDS.pt",
+      "bytes": 233388,
+      "sha256": "421785082ae977807ed0ca51fcc626ebccad2e5ce6c1371a51c9aa2e8bff09c3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_137/NOVA-XIDS_locked_test.npz",
+      "bytes": 1759326,
+      "sha256": "5339a9032b849a464f6d6e2d7e2f5e6189a18e697cd7ca67ef222656f0420081"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_137/RandomForest.joblib",
+      "bytes": 157411649,
+      "sha256": "f076284e82e436cc8a2c3d89ee8a0c3222e78392033b9cac20c71d45741fa1ed"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_137/RareGuard-XIDS.pt",
+      "bytes": 370401,
+      "sha256": "d7b2175f83551bed9f9e44f2d46ca32519601d6cda1b8f608ea22e0759f217a8"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_137/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1751424,
+      "sha256": "91583926411257a26164ec60bdb2d1a57643a3e0c4dfade813e7985fcc4f4f57"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_211/ExtraTrees.joblib",
+      "bytes": 261673425,
+      "sha256": "18cfe39759bc34a2c95ee052ca4f569d6f8d06b5506d8a7b414bff4019768d2c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_211/HistGradientBoosting.joblib",
+      "bytes": 4692790,
+      "sha256": "6e634327069e7aa3fad948303e122379759c8c99c55755e54f402bf46bff0564"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_211/NOVA-XIDS.pt",
+      "bytes": 233388,
+      "sha256": "b62c51d1e49ae3a4871809d8b96f25698b0d64fa7cb72b460fe7ae329ac42fb2"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_211/NOVA-XIDS_locked_test.npz",
+      "bytes": 1753775,
+      "sha256": "a90e1f27a174505f8fcb3abcfa9498c889370e0ce81fa5cfa6cf9aa5ba08b7ee"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_211/RandomForest.joblib",
+      "bytes": 157353745,
+      "sha256": "956c870b47149625cb8efb6c11e86aec00724dcab3b19d4248bda345e4c3394b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_211/RareGuard-XIDS.pt",
+      "bytes": 370401,
+      "sha256": "d90ad101136b849a55cea7a1de615cc937199a4e7e5337388fad547dd716deeb"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_211/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1755429,
+      "sha256": "3dce35a31472d7cfceeed3f9a22c2063ede8de922e0a9b9b38a9c24d69674f0f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/ExtraTrees.joblib",
+      "bytes": 262469793,
+      "sha256": "bdc53ed3dfac0a8c37efa5f89e7db997bfe38d119de4ae9acda05d4775f4dc79"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/HistGradientBoosting.joblib",
+      "bytes": 4692790,
+      "sha256": "8222e76eb8a29ca996e2a6074e293dfd50a50cb589f927b76be0ed7bb0ba6b02"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/NOVA-XIDS.pt",
+      "bytes": 233388,
+      "sha256": "054f2dbf96113ed77eced23b6a51c270a4f61d63a1cb1aa020ea515ec7c0a06f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/NOVA-XIDS_locked_test.npz",
+      "bytes": 1745593,
+      "sha256": "dcbfc6ab4ca8d274d1079a0fa97ddbbf376b9e88c4a5426f6ba689d21f9cfd3b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RandomForest.joblib",
+      "bytes": 158017761,
+      "sha256": "8d0363e79ff973b6b6cac7c962587180b271498e48320b8d07a460bd7264b510"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-Continual.pt",
+      "bytes": 370984,
+      "sha256": "642776b676062826a304fd2b07423cbc08a67ff991efd89f44fe868fdea83b68"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-Continual_locked_test.npz",
+      "bytes": 751242,
+      "sha256": "71a36e6ed58aa18d3c99925f6a87b4f7e542ae5ea57b0efe6c90bd63e178a6e7"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-FineTune.pt",
+      "bytes": 370893,
+      "sha256": "c366d8011083e2c2757d197f9907385b01479d74a4a8dbd8f3ab466449190efa"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-FineTune_locked_test.npz",
+      "bytes": 753629,
+      "sha256": "a3655b1757a6b51741daaba2fe81a06ddffd3bac6fed76466285b197109fc9b9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-ReservoirReplay.pt",
+      "bytes": 371594,
+      "sha256": "3b7b469cf045cf2132dcf306cc9db39b5164d9ccfc39c54893b1b1f22451f6e5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 759052,
+      "sha256": "6e8eee2894e3918dcdd02fbf5bbf33a17154708d2400c947a2082af19d8e5525"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-XIDS.pt",
+      "bytes": 370401,
+      "sha256": "5db1da1dfb1b0e79aa462e6e7919ee8a95a3c8008a87ded9b3c9aca43a05437e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1753889,
+      "sha256": "afda916d5441e818d1b9f152e31da1f6fa04032074985aa54384939f96b3e435"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-no-class-balance.pt",
+      "bytes": 371685,
+      "sha256": "49f2d2ea6fef6f372d58bb7aff5f790a1d5139cbd845ca8c207b88bd7383bf74"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 1749477,
+      "sha256": "c8816e21998bc81662955638a6b9cc89aad810705afecab013f1c627e38ad89f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-no-contrastive.pt",
+      "bytes": 371503,
+      "sha256": "d95502d678c4010081dce9c165469cf60985b98a09bebe62a609b8834da96cb2"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 1757961,
+      "sha256": "5460b50bf6ece6846cae7fd711ef8fc4da8616545366b2c5941842f6d85fc4b5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-no-direct-path.pt",
+      "bytes": 264547,
+      "sha256": "a0c69653ec4d57fb7913948c90787d0074830243fb379d2ba57e7554ea5f4968"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 1776198,
+      "sha256": "d53ac39bbb8211512ee813725dd13a2b92832b551613f295c5fb1ab04ddf7d1a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-no-prototype.pt",
+      "bytes": 360737,
+      "sha256": "99a6a74aff17e7f006a513a6959e8a983923c46a0079460e38a33a139e93fc07"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_42/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 1755999,
+      "sha256": "8b4350e02e178b1396d3c27731c3c083389777336b5b3057cbe4f9d8b3499b86"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/ExtraTrees.joblib",
+      "bytes": 262211105,
+      "sha256": "569c65cf7776010d763871a1263c0fb13f494f20544778c11b371f3f813d5060"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/HistGradientBoosting.joblib",
+      "bytes": 4692790,
+      "sha256": "5ef2edefae25ff18a3b39dc8375a779908a82fc1c77be330b0f3f6555288567b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/NOVA-XIDS.pt",
+      "bytes": 233388,
+      "sha256": "e5228257e41ad4a6002b904e2fd6f7630915203c132900881c77635bbb1f5681"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/NOVA-XIDS_locked_test.npz",
+      "bytes": 1750153,
+      "sha256": "4da48cd323fd5a18ac4e96162bc0997e8bc2153d7dd7378e6a8e837fea3bf99d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RandomForest.joblib",
+      "bytes": 157911729,
+      "sha256": "0ff8e2c20f9fda30536172434300b97a8b21ca864581aee1363f021b60347776"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-Continual.pt",
+      "bytes": 370984,
+      "sha256": "be57ea54d3bd7ecff98e167356f64ebc8f64ca28c602706ba99dc620a07ee2ad"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-Continual_locked_test.npz",
+      "bytes": 754592,
+      "sha256": "593f85b48be178868bd514dad2b313093f6e7ab3eed05cd0f2d1b43ebe423202"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-FineTune.pt",
+      "bytes": 370893,
+      "sha256": "d50062cba33ebfc9e44155516f85a471ba67209efc56f648136144a743032c98"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-FineTune_locked_test.npz",
+      "bytes": 758312,
+      "sha256": "38eda68e266c352860f106177918c25ac9b4876bced9258e156404cabc03f154"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-ReservoirReplay.pt",
+      "bytes": 371594,
+      "sha256": "82ec3c4ae3ce4d23f32f620343c987d5bfdb10d65b92f7280a88a52159800c77"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 760780,
+      "sha256": "03b185096701fab6f29708f54478d6210b66a98c74290a820e1bebd609d53cd3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-XIDS.pt",
+      "bytes": 370401,
+      "sha256": "28a7de4f1b133702841fddfbdebe15b69b6c37349742f76a30856fbcf8e0e96c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1754550,
+      "sha256": "a24a79172416751771270055f9d841b25e37a0fd50639e31a47453959521b07e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-no-class-balance.pt",
+      "bytes": 371685,
+      "sha256": "449527e4779201fca62fe5a840090290c067cbaded3ee1001b7fe9b31fe39b0f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 1750371,
+      "sha256": "4105c8a04f29fa5b3c42482722cbdb58084149590cdef4b8b396fc56b9a9dfe1"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-no-contrastive.pt",
+      "bytes": 371503,
+      "sha256": "d73192f70e7afadc2e8b7304497b4b1eca5ecb53edb6a1baf565ef2d7c0fb685"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 1754259,
+      "sha256": "40c79dbbd32e5a75e94b00901bbfe9fc2a877918a8e35010115b066ae1682a9b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-no-direct-path.pt",
+      "bytes": 264547,
+      "sha256": "8c65d220e51c37f37b41ae29760f35492ae3d7e8d0277c8d11c97781a7485f5d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 1775982,
+      "sha256": "b0c61a2dac1731984c8867efaf33c3d185e880bf20ab3cbb91ae7f8620fe43f0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-no-prototype.pt",
+      "bytes": 360737,
+      "sha256": "7f415973a86f3b626287ae4a9116acf1cf986db064cb45e588dd1c644f4667fa"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cic_iiot_2025_datasense/seed_73/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 1756306,
+      "sha256": "52ebde93100bb4dc98806b116379075b6d68beface5546ae4eb1c7f43778c44a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/ExtraTrees.joblib",
+      "bytes": 746793785,
+      "sha256": "0c0b94b484b8367634b0ff044ddb0e3aa9bea1644f98b0ce3e0112f7a43f27cc"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/HistGradientBoosting.joblib",
+      "bytes": 1297742,
+      "sha256": "d9136e3fabeb1623d0554bb30716707f614539460bc1d17fc349264216b74c42"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/NOVA-XIDS.pt",
+      "bytes": 219308,
+      "sha256": "584f836cb5a966e19770a3780041f10f96c8ac0bda5d8643f1bb8125a5e4877a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/NOVA-XIDS_locked_test.npz",
+      "bytes": 7448636,
+      "sha256": "b0d6e390ca6ee5559cbe8d04cf6f86b90a6b9f946fb966ff4c5a5be01a3336c0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RandomForest.joblib",
+      "bytes": 608828841,
+      "sha256": "e2f1c65c379f0037b176bfff212a19aeae27c85a864e661c33d2118f626ab265"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-Continual.pt",
+      "bytes": 342824,
+      "sha256": "62353ffb8f85d08fe2c7a043651f47d43b8c74f98f118e935ad658a628f4115d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-Continual_locked_test.npz",
+      "bytes": 3041902,
+      "sha256": "1c7bb5bb1888cc25b02e598ab11759d2d048b0db2ab9986bd0575f28ee2344f3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-FineTune.pt",
+      "bytes": 342733,
+      "sha256": "5669fab59718d421c3cd10a95e37ef3953a2a1f43304af4e69b5345f402a37a7"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-FineTune_locked_test.npz",
+      "bytes": 3063040,
+      "sha256": "345e19561f9b7b1a03407d1df35e39af47a9dfa7f5bde22096365c1aa63d4bb6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-ReservoirReplay.pt",
+      "bytes": 343434,
+      "sha256": "ea92b7b09f8b521f9dd9677df4bc18998d2220ec472a5aa8e0e53796dd3da6b8"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 3069530,
+      "sha256": "5b3eec206c8a5392d5026a026ed48452b42ed499baa755532db34b0653098ab8"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-XIDS.pt",
+      "bytes": 342241,
+      "sha256": "12c88d62999b61c7a6b21fb2bed361de2ba71990959ea1250802e552e964f18b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-XIDS_locked_test.npz",
+      "bytes": 7425020,
+      "sha256": "3f565a6fa66bc7bb66997fb22cc179e4fc670da382eed7689e078ff1c8eebee5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-no-class-balance.pt",
+      "bytes": 343525,
+      "sha256": "8e0b418e047456f0e3b7baa339bcfa4d09b952a785fbf4232d72529479b53c31"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 7466094,
+      "sha256": "36bc4428810de888ff6d730f11275781382d8f76190de02102328bede979a4ea"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-no-contrastive.pt",
+      "bytes": 343343,
+      "sha256": "49c0f7d2ea595d54adf35334d64b691ee99e318f2e0288baa149cd6f9a2efb2d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 7467104,
+      "sha256": "8a8f1187ff04686de145be1d9b3cd9f2b7a25b34fbc6eaba3b719e89958c0139"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-no-direct-path.pt",
+      "bytes": 249187,
+      "sha256": "c36eb4eba4e961436798953d5e05e222cb538df7cf835c04da1613eb0b3aa620"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 7488093,
+      "sha256": "1ca1d80cc866f6d6b633f8b8e3c003ee59ae4b3dc329c566056dffca275571d0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-no-prototype.pt",
+      "bytes": 333857,
+      "sha256": "b2057676eb01f9ca8baef378083252c46e2413a7034ff59da799f5c25aad566f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_101/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 7400771,
+      "sha256": "697d7108adb3e14cc3b74dd9c876e61f83b3a2d162c2ec7fbe10fbec7979d7e2"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_137/ExtraTrees.joblib",
+      "bytes": 749906489,
+      "sha256": "985903111e001c682c0b480068c39e8f13424de6aa9b203746683bb3a2be60c9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_137/HistGradientBoosting.joblib",
+      "bytes": 2894390,
+      "sha256": "c89db123e9bca79b28d14cbd6ec59170229bdd4799181a1379d58648d96162a5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_137/NOVA-XIDS.pt",
+      "bytes": 219308,
+      "sha256": "9f6b047e4320ba3d3861263695b9f46db8276283629ec7f3779f7cb4fbb55079"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_137/NOVA-XIDS_locked_test.npz",
+      "bytes": 7479532,
+      "sha256": "8030e98888f16b63a79ce6b53a690ef73c1031c7a84599002db15ed9898f9536"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_137/RandomForest.joblib",
+      "bytes": 602677353,
+      "sha256": "20f6e9a263ca8b2d760b7d530e3aecff0091c8e83853941b891d92bab319b757"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_137/RareGuard-XIDS.pt",
+      "bytes": 342241,
+      "sha256": "f78f4206bc2f79d1d46cda1206eb65428d6e4a375571de7395bc0b852095406f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_137/RareGuard-XIDS_locked_test.npz",
+      "bytes": 7431313,
+      "sha256": "2e32b9c2517b076b72bffa2114b8950fe326b0a4d3a9f74bcf14c4c74a8c65a0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_211/ExtraTrees.joblib",
+      "bytes": 748800377,
+      "sha256": "b504a27d85c3b2d2c150ff46a17d1c80beda798a7bfd09ce0fa15d218589c71e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_211/HistGradientBoosting.joblib",
+      "bytes": 2643302,
+      "sha256": "92a63ac05edb5f91fb55de8a6d2fed235160b511b32a4d6ef4b7d77aae63519d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_211/NOVA-XIDS.pt",
+      "bytes": 219308,
+      "sha256": "7565e7192d48fd75b5536be20113de6b8b5cd644bf0e16e8c17c55a5325ea540"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_211/NOVA-XIDS_locked_test.npz",
+      "bytes": 7463480,
+      "sha256": "dfa8157c166378af3fd7f97df7a42df5d023d015714dbd62e139c935b48e36ec"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_211/RandomForest.joblib",
+      "bytes": 606449961,
+      "sha256": "3c6aed0964d9f035037cb2a6e82e10bc9466c7f599f1fcf2c9f28477cc7923ff"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_211/RareGuard-XIDS.pt",
+      "bytes": 342241,
+      "sha256": "ba2e08b261f251dc2d3ea85c6d246deb3ad87a80e78c191b6596fd306d54ea80"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_211/RareGuard-XIDS_locked_test.npz",
+      "bytes": 7408387,
+      "sha256": "4a9c59911fcb6d8188c386bf013779318813a36dc1dc6143c2c7edf9086b0032"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/ExtraTrees.joblib",
+      "bytes": 737403257,
+      "sha256": "da94dca5ebe151b561f3d7ca99cd27eaa0dc624a582fc034dbe21f32766cde47"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/HistGradientBoosting.joblib",
+      "bytes": 2482598,
+      "sha256": "c2ea2f65193cdc2c97246fbadae57cb6d2f7e004cb7c17e34f8bde47f29854f4"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/NOVA-XIDS.pt",
+      "bytes": 219308,
+      "sha256": "6e0883ed07985e8432b2a71342a77693393d1ab457f07a6767898d2a76ccf790"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/NOVA-XIDS_locked_test.npz",
+      "bytes": 7461936,
+      "sha256": "1b5d2e12dca3782bcbce927c004c53f978584abb9e560ba44253fbb68cb3458c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RandomForest.joblib",
+      "bytes": 604018665,
+      "sha256": "382c363a50cb2145f281f8fb71b39f96abdb59091eaa672380e6d48fa166c629"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-Continual.pt",
+      "bytes": 342824,
+      "sha256": "5ce8d24674b1b53550cc5eb09b1167e7d8449fb424b8997dcb41a431d65b2631"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-Continual_locked_test.npz",
+      "bytes": 3046259,
+      "sha256": "663a57c2f3ad24c19b3090fa2abd60c3aa9cbc980aadd8bf69d8cf5abf30e599"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-FineTune.pt",
+      "bytes": 342733,
+      "sha256": "9cc157726887a7519fa7763822f91bb90cba17dac04225d79cf6cf4c2c6290f0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-FineTune_locked_test.npz",
+      "bytes": 3045430,
+      "sha256": "dca188c2fac3db31941a038d5aa651ca547d441cefadb976236b516f0baee557"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-ReservoirReplay.pt",
+      "bytes": 343434,
+      "sha256": "64eadbc96e67d760a116fa0cdd33fd43d3f8d37a6a6f03d2e9b590490d4e762e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 3070616,
+      "sha256": "f0db48ffbdeedb259ad6a9003c0e1efa7d148384b9cce0acb7b92ef49c8bdf4e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-XIDS.pt",
+      "bytes": 342241,
+      "sha256": "aac0fc001f847e6bfc6676d78ff038c559df3eaad414ecb856cd19fadaf98cbe"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-XIDS_locked_test.npz",
+      "bytes": 7445695,
+      "sha256": "9792627984ce263527ea9ba3a332fefa2b97a3bcecb40cc49be428c68be051bb"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-no-class-balance.pt",
+      "bytes": 343525,
+      "sha256": "26641d43fa25f489fe1817b8ca9bbc803d541009052e087596daa482141ca3c1"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 7464576,
+      "sha256": "2844c5bbcdd1214bdaf6023910590fcbb50a6bb66854fb362dd071f0c1a452f5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-no-contrastive.pt",
+      "bytes": 343343,
+      "sha256": "68815b68073b72b15bfd11b011da3ddf7c20dcf384a9df548da77b4775e016f6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 7452807,
+      "sha256": "adb40258ded0f9bcb1c9d6c727b43c7f8357561e53a4534aadae18b03f964b29"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-no-direct-path.pt",
+      "bytes": 249187,
+      "sha256": "3e706a95a9a9547c03914c1c420018c1c569d9589cbb55112de18b42ce5e9ec1"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 7470011,
+      "sha256": "ea4328668bb345908858c5eafa0a27974a1f85cb8edec700aa340763085dd578"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-no-prototype.pt",
+      "bytes": 333857,
+      "sha256": "23b25c760d18bc8be27e67d623c833aa00f96dd576f68cc4d77522ba7704cd5d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_42/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 7429913,
+      "sha256": "9f83f02061cf24c14a9df9dac589b6f6834a8a37761c79bf2c42ac5c26deb626"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/ExtraTrees.joblib",
+      "bytes": 749905817,
+      "sha256": "b51d618116132bd0b6b919c48cf56d0df8acd9d4fcd6dbeb418fdea4dad48caa"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/HistGradientBoosting.joblib",
+      "bytes": 1294350,
+      "sha256": "3ba22648b3a3ac8e2a3358d77e8786f48063524dfdd35d677caf7e6d93a8f5dc"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/NOVA-XIDS.pt",
+      "bytes": 219308,
+      "sha256": "fd5830d1152ff4908e7e54e3d68585a90ea13c3fe4a24433a00f0cf3c0cb6ef1"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/NOVA-XIDS_locked_test.npz",
+      "bytes": 7453089,
+      "sha256": "876270b18a00c45f25cee1917a760428357a89c8b71c7ffc8eb3ba4658cd6866"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RandomForest.joblib",
+      "bytes": 607141449,
+      "sha256": "5522b572394f56d157985dca2a04cdf948957a2a4487761f073eb7b9f552cc65"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-Continual.pt",
+      "bytes": 342824,
+      "sha256": "eba7b5b0d8e9fe698371a2fc047d42d09cc4988c14fa9902c79453c4a98e882f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-Continual_locked_test.npz",
+      "bytes": 3045585,
+      "sha256": "12f77ce56a28e000a4743359e61a418f20a8217a8c21cea6bdc3eac2ae2663cc"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-FineTune.pt",
+      "bytes": 342733,
+      "sha256": "e51a872ada275dd37bd037fe85e89e28376ca69c9ede98bf08f9a22e695f11ff"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-FineTune_locked_test.npz",
+      "bytes": 3062811,
+      "sha256": "ea9b49a6690137e7839e5c48aa67869a577b3d5d653370a2359788769f92ced9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-ReservoirReplay.pt",
+      "bytes": 343434,
+      "sha256": "1c06a7cea6eac713fc9a67a29c7fae924fb1b2c020a8e93b2b97bf7e6e8c4bd6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 3067651,
+      "sha256": "373c2d8997f7091c226abd44f6531a94938687154d58e19869ef85633bf1494e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-XIDS.pt",
+      "bytes": 342241,
+      "sha256": "e1427a3ddfbd89cc04f85581e813119bf59c0ec377efc751bcafa31a2209e3ea"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-XIDS_locked_test.npz",
+      "bytes": 7437993,
+      "sha256": "71605549b4d7138b5247bfe38eebab60213c989d5bb4e39d85830164ac5910ed"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-no-class-balance.pt",
+      "bytes": 343525,
+      "sha256": "512ce11693de97dafd159f10e46e7e067da959d5d088108f674eed1eae979e33"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 7428289,
+      "sha256": "5444f468a1cc5b4c3259191837a64e75bf4633f14f55d9403c8f14143fdb9e39"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-no-contrastive.pt",
+      "bytes": 343343,
+      "sha256": "b906f57aa64fe5604f20d5c83eb8ca646bd8736a44509c96dc83e14797bea5a6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 7468664,
+      "sha256": "7ce41759a0be399f104a8855563c86c329596c0dfd35e3d8c3ed9d4115e730d4"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-no-direct-path.pt",
+      "bytes": 249187,
+      "sha256": "8a4e092a00d062df94b2603f4f426b9b0e405290656be5507a96510ad5bb91b5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 7490042,
+      "sha256": "564f09e71780a8831fbc034fe42924960c9fb939193a62130fbf30da9c8a342c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-no-prototype.pt",
+      "bytes": 333857,
+      "sha256": "976e47a8ea690080d4694c353d1c9e8153e1db478441ddb271995febbfbc2988"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ciciot2023/seed_73/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 7413929,
+      "sha256": "b2ee511253b606b6c03d63a672260ed0431cd63a5174eaf4e5f78e9c4e46631f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/ExtraTrees.joblib",
+      "bytes": 56484049,
+      "sha256": "757eab34d0aef7ffc6c3fe1f180158ba36512129698970c716f488e3e8bc0119"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/HistGradientBoosting.joblib",
+      "bytes": 777022,
+      "sha256": "c3d0ae8990dbe8c8b18e3b4f80f83dacb64d0b27446bf143f5eb72f6c057a4a4"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/NOVA-XIDS.pt",
+      "bytes": 230188,
+      "sha256": "f7f9eeca6613201c565a285144193da10df9f2c9cf7f66bcb2f0136107501ec8"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/NOVA-XIDS_locked_test.npz",
+      "bytes": 1626582,
+      "sha256": "392afb2b4e346c339b7b6e55b225b866517087f14dda188ae9913b87ca3921c5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RandomForest.joblib",
+      "bytes": 47318657,
+      "sha256": "87a31f2cfdcb890aa2b0c81d0c64e7231acf5abd80c294d0aab421f4e4d66af9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-Continual.pt",
+      "bytes": 364776,
+      "sha256": "3c95c851c6b44de733ad8feaa2fbd90f62a7b094b8b5211ae4cf98a66ea2a33d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-Continual_locked_test.npz",
+      "bytes": 410954,
+      "sha256": "2fdb406125edeacbbf3f4d5d9e20346f037a98d23de73901e101f150ef933227"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-FineTune.pt",
+      "bytes": 364621,
+      "sha256": "4e6a43ed8378df17cc96bda64ebe221134821bd190314f20a2e8aeef9def3df4"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-FineTune_locked_test.npz",
+      "bytes": 416395,
+      "sha256": "a21d501313aa214e6b75a0bb2717cf94755bbfc5e1f3bb3bce010abf4ece090d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-ReservoirReplay.pt",
+      "bytes": 365386,
+      "sha256": "9d6a074b8d3ed3c6a6ce091a3a4f3f31b4b602f1d8618198450aee06a61bc9d6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 411344,
+      "sha256": "e143315311da823e512c1c97561a12997e8e4f57fac820206e65b44fd7379b48"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-XIDS.pt",
+      "bytes": 364129,
+      "sha256": "b255fd802ae12cb699b682d733fe068be5b688932babc963a94d423c3b980d6b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1589894,
+      "sha256": "681156c24673f36754a44b57710eb98f4559c7a853cc83cde3d84c3c2894ce34"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-no-class-balance.pt",
+      "bytes": 365477,
+      "sha256": "71045089dcf24c46cf0eca597fd42aae173ae395b4b03128eed1390024537d96"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 1585627,
+      "sha256": "1c2ebfbf779301dae3182a96f704c7a804db3d3a6ecb8871d8664df1b65a65a9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-no-contrastive.pt",
+      "bytes": 365295,
+      "sha256": "34c9e825591cff455c82864b9cefd7852ebace389f61e5b3a62c14a6e7d7295d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 1590714,
+      "sha256": "8a7c556d277adeb4d650ed4c5624a8ebea129029695e3c92135bbd5798f512fa"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-no-direct-path.pt",
+      "bytes": 254755,
+      "sha256": "2bfd99298628b8699cd288db47cc4eff1a25a6ab1fd004e428775f0d49cb733f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 1620742,
+      "sha256": "c943891ee9ef803c9c859763613a708470afa53f11f409ac0104c3f539b423d5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-no-prototype.pt",
+      "bytes": 361185,
+      "sha256": "a407fc4e8c7bc9a50ecbf39e2b3018dea306113e986b4b2ba66fe9103fb711a0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_101/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 1596724,
+      "sha256": "7c267d3325fe20addbd5eea5583cf3dd41947cf1e52eb2b565b34fb2b25aa9c9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_137/ExtraTrees.joblib",
+      "bytes": 56877169,
+      "sha256": "f546a1dfba084cc0de2b65cc1513493c4fbabd7544108f732f2f856f6c5fcb22"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_137/HistGradientBoosting.joblib",
+      "bytes": 723822,
+      "sha256": "bdd28056ee1db636fad1a3d8adbd8f2f7b741c87e5e1802b1ecc02e1168a57b7"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_137/NOVA-XIDS.pt",
+      "bytes": 230188,
+      "sha256": "473c1faeb1b5b4ce416361e5c92395d499694ed5b5f65acf7a06040a0392d3fe"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_137/NOVA-XIDS_locked_test.npz",
+      "bytes": 1623284,
+      "sha256": "4e341802818ac19742a28318d17eced210a432c1f513137902776a08e2484f4f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_137/RandomForest.joblib",
+      "bytes": 47296481,
+      "sha256": "575f356bc3156089e10a9276c89635965657d92f7fb7ab0eb59e32e9d53dd10f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_137/RareGuard-XIDS.pt",
+      "bytes": 364129,
+      "sha256": "95d58d70bceadb0d414e70c88fdaa82fcc93052ca1f5ec8e162d90f49949e419"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_137/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1589508,
+      "sha256": "40d2fec86f9eaddb5588d1ff653d241be3ec0d5ebefb2880507d157ba06b4842"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_211/ExtraTrees.joblib",
+      "bytes": 56827777,
+      "sha256": "fe1c10dc11c95fcb6d88cffd9bbe17335aa97be10ae93f06a6175292d2b8d44c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_211/HistGradientBoosting.joblib",
+      "bytes": 682534,
+      "sha256": "d2a2ee932dbdea8eb823cd76bacc5a21fadf214132e5cd7e1e488ae639debcd4"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_211/NOVA-XIDS.pt",
+      "bytes": 230188,
+      "sha256": "7873a68acb2145d8fcbd24f598e55cce09c3936cee1ad621767ce73007c27714"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_211/NOVA-XIDS_locked_test.npz",
+      "bytes": 1622056,
+      "sha256": "4fc3332ec6e99d3a0343c88f2575bc61aa38b4cfd0731cd7e8bae14579f2ab04"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_211/RandomForest.joblib",
+      "bytes": 47338145,
+      "sha256": "702bdf2277ad755f4b696bcef4844a780d533f134b75eca53bd87f6b2bde79ab"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_211/RareGuard-XIDS.pt",
+      "bytes": 364129,
+      "sha256": "caa0b801bd05834dcefdd2e22201acd7722fd3325ae63a2419301276cec80c64"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_211/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1585526,
+      "sha256": "acec3f23784496ae6fbf790ddb9b628e1f4245f77603894890fec02daf7d7d57"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/ExtraTrees.joblib",
+      "bytes": 56643313,
+      "sha256": "769a3a7ff96836b83e522cccff9f2dd9546615587deef665511f5db718550707"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/HistGradientBoosting.joblib",
+      "bytes": 952454,
+      "sha256": "c97f39c5e4f50bb6bbed656b2f8bfa64c3bd32cb7d378db07b4113b92c353b9a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/NOVA-XIDS.pt",
+      "bytes": 230188,
+      "sha256": "e943db2154068fb6ee1cd7b69a7b03f9b54a24e335f6696037343960ae528626"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/NOVA-XIDS_locked_test.npz",
+      "bytes": 1619089,
+      "sha256": "1644430a0b1bb0f1b045a5ad2f91e6da06f1a22969520da9d1257a012cbf91c3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RandomForest.joblib",
+      "bytes": 47273969,
+      "sha256": "f9b70846a87b30a2cdfed5e649bf8d20007762167fadfcc2c449b7249b70518e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-Continual.pt",
+      "bytes": 364776,
+      "sha256": "80f54f6887851f53a0dd44afb294123ddde60a5153f9b3821b751cf4554958bf"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-Continual_locked_test.npz",
+      "bytes": 407814,
+      "sha256": "b7ae2cd6f07b943682bc495ff666b98cc586d15df70a94aa215d887fd58a8b09"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-FineTune.pt",
+      "bytes": 364621,
+      "sha256": "fa3379d65de75e9f12bda0a9553a1e89364555e737abbf79e5a15c1a726035a7"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-FineTune_locked_test.npz",
+      "bytes": 415739,
+      "sha256": "b85d095cd271ebcc772e6608d4a556b76903199f104de57e1f41324d9653f3eb"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-ReservoirReplay.pt",
+      "bytes": 365386,
+      "sha256": "09f53acaef6e743cae13105a8273c5aa87a83ecd90633306b1da3a4c7eca4bb5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 410846,
+      "sha256": "124d51227f7097761f877b467aa18c059963994b283ed330639cf1a6957ee5b6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-XIDS.pt",
+      "bytes": 364129,
+      "sha256": "6147ad82b79e1539613e9050a52dbf6fd42cdb5fc057cddcc8ad18c381e43e59"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1590433,
+      "sha256": "c18a9e891a5574d5787f0acf52b9071ec886138197606258610c12460b3f61a9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-no-class-balance.pt",
+      "bytes": 365477,
+      "sha256": "f941df70cf77ecd4949e0929eb0f221169c4372dea3c2a79b7b4cb91b369921f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 1586921,
+      "sha256": "c7daa2071c9ba8f9688b0e96aec37577de42cc47aa46758a34d028e94e4279e5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-no-contrastive.pt",
+      "bytes": 365295,
+      "sha256": "b9bca432858903e152e540abe7d9bf2a25e1d58ea64dc3f955f8c600dd266e40"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 1589682,
+      "sha256": "11f552fc67ed327ac598e30859a4e1a09fae7beec18fd6efdf0b3e86af3c2d77"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-no-direct-path.pt",
+      "bytes": 254755,
+      "sha256": "b5ed5d6b05755dfeacbd0381d230c39dc06ccac19bacbf00902241f6e3fd3e43"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 1611362,
+      "sha256": "3bb03fe377b1219c9cd47d9d0c9164452bf83f10fc70fba5241269cd60bc9351"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-no-prototype.pt",
+      "bytes": 361185,
+      "sha256": "3505ecbe70d6d7387529f345c8a2092c1ac50e3e49bc713929f8ed951904d97a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_42/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 1590478,
+      "sha256": "2c5c724a465fff16666b4befb83a7ba6ae31ec9d725ad2dd3a21d2087708fa18"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/ExtraTrees.joblib",
+      "bytes": 56882881,
+      "sha256": "76e836c2bfb4e16d834a90d1cdfbf3148039cb82c82adb8befdd7d5713e563f5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/HistGradientBoosting.joblib",
+      "bytes": 1045022,
+      "sha256": "04d99baeab6224615c36ff9c540029b3f4739e5d3eef0b19cd396e353697dcdf"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/NOVA-XIDS.pt",
+      "bytes": 230188,
+      "sha256": "6c40278cda235b4ac78efa1d176430f3ca9e39c64b7f034f44da7c2515141d4a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/NOVA-XIDS_locked_test.npz",
+      "bytes": 1616768,
+      "sha256": "e1d10c7a117eb6da6b6347f1a2cc6ddfd31eeec9f2ba6d9a646076499fa3433e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RandomForest.joblib",
+      "bytes": 47757137,
+      "sha256": "cc8e778534f34d84fb2115674c1c7788acca0b514a99ffa9ee464b3eedccf3ff"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-Continual.pt",
+      "bytes": 364776,
+      "sha256": "1c8dce194831ec21d383cebfc6b18af143fb468423705c8524e4e0f24f7b0915"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-Continual_locked_test.npz",
+      "bytes": 411177,
+      "sha256": "f655f0921776ada33acff547138f64de11a5234c6b75050eb3fa999e4b5b745b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-FineTune.pt",
+      "bytes": 364621,
+      "sha256": "4924e7b5cb9a38e038702dad4f9606ae2693ba8751ef0f874554a350540f47f7"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-FineTune_locked_test.npz",
+      "bytes": 415921,
+      "sha256": "2a83644286ccedc9a63577572eb06eefca43027eda82b3ebb892a5cca34bfcf3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-ReservoirReplay.pt",
+      "bytes": 365386,
+      "sha256": "fda0aff8a15ca347c0051f958a8da129f86505f4038d8c4448060cf3cf79f98c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 412304,
+      "sha256": "c713dc0439ac2d74fddc7709335fb1ba77b2ab4489d8ee3cc16e9856a8efd0d8"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-XIDS.pt",
+      "bytes": 364129,
+      "sha256": "e3e25d67bf5892c76daac413c1993a474c3246285386fdae92e20624d430b0ea"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1590521,
+      "sha256": "490863b4ceb9dc979976271c1090c5d284d282b8092a17451a8e85b2288ae615"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-no-class-balance.pt",
+      "bytes": 365477,
+      "sha256": "1549c4f8fa0b904e3a7ca0a217594d96e8802c5a71cf2230eca898e16e14f038"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 1584556,
+      "sha256": "f495703f3cc63bdf6be3ee12c829c501bdf88d5840869d43ef1089e7981c20f9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-no-contrastive.pt",
+      "bytes": 365295,
+      "sha256": "9c07deed253d92e5b606bf7d517eeda4937898d33f75b4031b308eb7df815778"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 1592466,
+      "sha256": "97c5c2501c7c0e611c4f0fecdac6a2c27da6ad1b22cdb7830e5d35811fb5995f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-no-direct-path.pt",
+      "bytes": 254755,
+      "sha256": "a51edfb83ddff968ab3426d508ba4cfb13b010c61b888909cb0c46f27042965d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 1610418,
+      "sha256": "67307fe4cbf136fe535bb87ee98ab2c515b75540fbfbe7218a38402488bb5d65"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-no-prototype.pt",
+      "bytes": 361185,
+      "sha256": "7763fd82f3d35d6820ebb96c07db879c5f8ec3cac748df04b3bd2e74aabebd96"
+    },
+    {
+      "path": "artifacts/publication_v2/models/cse_cic_ids2018/seed_73/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 1589975,
+      "sha256": "7bb87f61544900da15b24b745229ff97455b0e8fb671c1f4a23fe2d129d69f87"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/ExtraTrees.joblib",
+      "bytes": 22053009,
+      "sha256": "59a2dc9bc7bead752cefd7b8dc055741def36b15f4ad6587743a33b079b061e8"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/HistGradientBoosting.joblib",
+      "bytes": 1520702,
+      "sha256": "5e9a0d37ed83d6933bf07692c09f237bbe751a3e920bd5678881d1c7fed69ce1"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/NOVA-XIDS.pt",
+      "bytes": 216876,
+      "sha256": "614ddab1ced78b871cbcb42c731823e291a58ff34339fdcbd3533523d8ad465e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/NOVA-XIDS_locked_test.npz",
+      "bytes": 1240043,
+      "sha256": "064716b7102bb1e803fcb306e6c22e9e15947f0f3bf05a54f0a560d561099bcb"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RandomForest.joblib",
+      "bytes": 15420049,
+      "sha256": "e86d4a5b607bc57ca539c454a2b22c1af757d0bcb617d8edddbd22b2a7d2509d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-Continual.pt",
+      "bytes": 338088,
+      "sha256": "3a551a1a1913575d7d2757571834fe1c581cb67f0430a19cbaef43f7e30b3e63"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-Continual_locked_test.npz",
+      "bytes": 285392,
+      "sha256": "d0d185dc92533f77732bb5ef6c2efc173e84c8f09ededd4a35dae577580055a6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-FineTune.pt",
+      "bytes": 337997,
+      "sha256": "356d0b5b8e30adb3b9947244c2696089e03c3a8dc2c47cc2f32db02a9cbc7003"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-FineTune_locked_test.npz",
+      "bytes": 284932,
+      "sha256": "332a0639eda58e3110ebdb6a8d9b6b9a811a1ba832a0df63988d4c0dcfe4a83f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-ReservoirReplay.pt",
+      "bytes": 338698,
+      "sha256": "2dbf2300f56c4c1fca0b7091db4063e663db4ef5892f9208abd0c657209dc98e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 286641,
+      "sha256": "c616f755c161f81e3b2df474630aa48583178d9c2f7489021b86d1491749f7bf"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-XIDS.pt",
+      "bytes": 337505,
+      "sha256": "5b52248c940db12dc7269d517b42397bd5671663f0c7453655fea02970c753d9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1231155,
+      "sha256": "f1b23e4fbf089ca274c50a28c1934690997d4d88c3383b3e8cd6bf42c03ed11b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-no-class-balance.pt",
+      "bytes": 338789,
+      "sha256": "36d542441aaac3f77a596937123c6a0e6fbae9786979348dd87a56704e55b442"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 1228972,
+      "sha256": "411da97631a14b94dd3f5efc90b655927d8b9b4da0e59bd3ec3b95aeccc715ae"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-no-contrastive.pt",
+      "bytes": 338607,
+      "sha256": "67525566953ffeb2c7a318e29f9d29d2f801b72d0f25e8cdeb1f6d67e14e58a9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 1230221,
+      "sha256": "2cb73fdba464885fa302c5bc1dd7b09bc716e3e20e7b97741d0c7e74c1a15137"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-no-direct-path.pt",
+      "bytes": 240867,
+      "sha256": "5ba60fefc1c5d78dd2bdb1d2ec5c1401666fbd8f42fbfcbb4d7ca97d6e4985e7"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 1248571,
+      "sha256": "eda38680e2f4c113058be15995c6f757ddd4a23369b02402ee87aaa04b84c81e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-no-prototype.pt",
+      "bytes": 335009,
+      "sha256": "33cfcd33e03c4a807927c7f89ed347fde95cf855579972242ee33defeb16d202"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_101/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 1229215,
+      "sha256": "d7a160b349752e4598a6fcb55eeb209a6937f0ebd56514585ea3d2469bdb91a3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_137/ExtraTrees.joblib",
+      "bytes": 21863617,
+      "sha256": "5d4d65a245b24041521b53aa610a91523b65ff4ccdb4774030935a813181cf65"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_137/HistGradientBoosting.joblib",
+      "bytes": 1434710,
+      "sha256": "5f56ed2cdf5d5b4857a9319ec360d9cfdc9f2740e27fb50ddc53d422b4d1e844"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_137/NOVA-XIDS.pt",
+      "bytes": 216876,
+      "sha256": "1e81e88ce3f028a7dd63bd83d5b68e45b05b1925c20f052519a4b69d73e2229e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_137/NOVA-XIDS_locked_test.npz",
+      "bytes": 1246470,
+      "sha256": "2f2143028495d4d57fbab8ac8b05d0b517b2d531ab4c1aa920e1b054e650037c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_137/RandomForest.joblib",
+      "bytes": 15475681,
+      "sha256": "920a2030e32ac183d1929fdb5b6b7c2d710fa8ff10adcd072e3ba7e5934a6cfd"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_137/RareGuard-XIDS.pt",
+      "bytes": 337505,
+      "sha256": "769e8e371afca47ebd20671a2fae29b3d345d103dbfe90da7329daad69f21f61"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_137/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1228842,
+      "sha256": "c6b47f7412693eba1e2516cda6be17adcc7b18cf5f422b3da0b04815de6c474d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_211/ExtraTrees.joblib",
+      "bytes": 22314145,
+      "sha256": "5def571178fb9463edff2e718c3d716ee1df1b923996a7d9b993a7a0c4f7e94f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_211/HistGradientBoosting.joblib",
+      "bytes": 1484518,
+      "sha256": "70d2a827ac99094c1601f3a4cd079b9b102410b4bd51bf676e59f5ddd348baa3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_211/NOVA-XIDS.pt",
+      "bytes": 216876,
+      "sha256": "770fccf219be49efeb54b88d77ea958d5abe10a9daf149c2a6b1c58603576304"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_211/NOVA-XIDS_locked_test.npz",
+      "bytes": 1245724,
+      "sha256": "28890f57d6858ddc25030f2855423d1da908e4d80a82fdb202cd2418672ff343"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_211/RandomForest.joblib",
+      "bytes": 15697905,
+      "sha256": "ecfada19beb92d3ba0045d113e821bf6854090599c2a0a0cae77d62b7c30284a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_211/RareGuard-XIDS.pt",
+      "bytes": 337505,
+      "sha256": "57a0bad1539583b8875d6f476a407bc3ae442d00bf19f17cd5da6cfbc09f8aae"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_211/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1229045,
+      "sha256": "62b411868d799eaf67cd3d1edef14f9abf787b41752ce1a3cb56b89849fbd67b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/ExtraTrees.joblib",
+      "bytes": 21956945,
+      "sha256": "c3a93622cf9ac49f195b1bb856d505c40c8bfe15a071cd68678391271c99d8e1"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/HistGradientBoosting.joblib",
+      "bytes": 1308822,
+      "sha256": "59195677a5f82597dc71919d2912a6774132b49c1d4726e968d26766d385024c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/NOVA-XIDS.pt",
+      "bytes": 216876,
+      "sha256": "e669b7d9158f7b64b1087cc48ee0dfb68b968943a3b0601f525484d94648357c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/NOVA-XIDS_locked_test.npz",
+      "bytes": 1243411,
+      "sha256": "455c95914bd930e935746bc4082c3815edf37f56079685a398b2871166de9882"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RandomForest.joblib",
+      "bytes": 15369585,
+      "sha256": "6c088da9c0eafb51e7ed57972dd9091215a4614fa9fde67c0ce7edc1888dcffe"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-Continual.pt",
+      "bytes": 338088,
+      "sha256": "b940214a9650acd32e8f17a404ffd2eb8d17772aec76a90621f678738463474e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-Continual_locked_test.npz",
+      "bytes": 285860,
+      "sha256": "b99ffffee410f7640064221ffd8a5657945e2c6dafa4baf88c1c3a0b26df7db2"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-FineTune.pt",
+      "bytes": 337997,
+      "sha256": "e9155acd4f5c6981e6cd91889a9ae2ffd4c34575faff2a22e2b213b2276e7af2"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-FineTune_locked_test.npz",
+      "bytes": 284330,
+      "sha256": "b94408b47388a8ce8ccf7ba67e01ea5f4ad7f30d8e1b5279ed52e1fbac751077"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-ReservoirReplay.pt",
+      "bytes": 338698,
+      "sha256": "d4dbe4d4a344d5774fb974cf06def191fcfe5666134035e5bddc83af3ad1c40b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 288185,
+      "sha256": "e820563bb066b50fc4520010c8048e5ed4c04a3695800c0345c5495fbd6628be"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-XIDS.pt",
+      "bytes": 337505,
+      "sha256": "4edecca5c2a2c68c0d729057a84b42fe08b4eb86dcbb0cd391ac65d0410ed6d1"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1230568,
+      "sha256": "cadd4d7e9efc75d8c58e965588013017e2754c3b10e6df307436c05311d81289"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-no-class-balance.pt",
+      "bytes": 338789,
+      "sha256": "d11d9ca2401a041c5cb3e955ecc61fc2aac0ee70de5850dfd230fa0073d239b1"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 1230501,
+      "sha256": "f3adc4306014161bb42535a7aac9ca74a67047605d8fc3fa7478a95fdb34b83b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-no-contrastive.pt",
+      "bytes": 338607,
+      "sha256": "ed6d121b7cc3ad698b365caab9c6005b651858e74ab8abbd0375cd3b7c4e2275"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 1225986,
+      "sha256": "ac3d47e7bb2566854ee5bf7a972b2970527d28853da465d2d615218b6c2d5444"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-no-direct-path.pt",
+      "bytes": 240867,
+      "sha256": "451525009f6294245cb1e802776de940010ea2770b01801faccf6e925b072c6c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 1251474,
+      "sha256": "925cacaa8390df648f3fd85aff01185a88aa1a3fa20bcc35b71185a29cd8aba1"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-no-prototype.pt",
+      "bytes": 335009,
+      "sha256": "76798b8aa2e67826ffd24da7b30ac7e674e206b015cdc6e43016c1291a509449"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_42/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 1227984,
+      "sha256": "ce85fe07f955e22529ee329103848871ab8ee431f9f1e9f8df099c6ff7c72b28"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/ExtraTrees.joblib",
+      "bytes": 21387249,
+      "sha256": "707b613734377b13630ad4a15e8a67f52449ec97ef153919c7ef45d054590224"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/HistGradientBoosting.joblib",
+      "bytes": 1738046,
+      "sha256": "8720b3793d324ce8d7d79d8d6a74df7c50680ac9db6531b198cb02cf783dc91c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/NOVA-XIDS.pt",
+      "bytes": 216876,
+      "sha256": "991aa8fcf7f0abb2456b384d97a444d1f110ba5119a68e3bb55ca18babf90d16"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/NOVA-XIDS_locked_test.npz",
+      "bytes": 1250139,
+      "sha256": "597eaf65e543d9d252c8e790bfb106640947580949cfce64f816509c0e3f547e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RandomForest.joblib",
+      "bytes": 15569921,
+      "sha256": "39bb2632a0c43154c6e0659e49d8aed11bb02d582d7ca641ac51c9989febec07"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-Continual.pt",
+      "bytes": 338088,
+      "sha256": "08ec42f941f9437deddbba0014e1172dc7d18166313d220aa536e3f449324a5f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-Continual_locked_test.npz",
+      "bytes": 284962,
+      "sha256": "4c2dbeec9735660e3629c5763a731afa9672fa4573e7739742c0361a1dd9dba3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-FineTune.pt",
+      "bytes": 337997,
+      "sha256": "7f2eb1c91b592dd4e975067b646358adf21c396f577792794ad9329ec3c07b4c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-FineTune_locked_test.npz",
+      "bytes": 282835,
+      "sha256": "f900f27ad7a93455635af5f6a2cc0e769335d0cab9ede87cf85e06688c01e944"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-ReservoirReplay.pt",
+      "bytes": 338698,
+      "sha256": "4f14c068a6de55f38f8a5b87be1819ec874aea06d9a75254e88de7b916e2197a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 286830,
+      "sha256": "91c309456ca13b694a0d283d7483a22f144d8c8e49806b0d93989aff57d47db3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-XIDS.pt",
+      "bytes": 337505,
+      "sha256": "f1d4fa90f1528f3cbe0e0c72886d7fb4bdbcd3ab168c375d1b05ce3d5ad14ae9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-XIDS_locked_test.npz",
+      "bytes": 1223732,
+      "sha256": "7c8e3bf458f635f18cd28fde97e92f815840ee8889dba47bbba5e3e80d2ff28f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-no-class-balance.pt",
+      "bytes": 338789,
+      "sha256": "e0fb414bd6a1a347820d0363ec879979ed9419e5bc9d9da820267e0c301f290f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 1225911,
+      "sha256": "478c9623639aac7d025e55a5fc783b81bd7a05b2ca263b9d35144c34dab28bcd"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-no-contrastive.pt",
+      "bytes": 338607,
+      "sha256": "d2e1ba6ef9b47aea752e234a0ba723adb4285d617fa860c383074f8438e4571a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 1223945,
+      "sha256": "05159139715a5abfd496342bdb5d0d3144aa22f03c375a53fe31b28b0eb4f462"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-no-direct-path.pt",
+      "bytes": 240867,
+      "sha256": "df194914ddf9fb7fc658b72980493737be80ce3e66196ab5cf957b158537c62d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 1249688,
+      "sha256": "117392dca0eef9d553ecf94ebf83dd675c4771eb58320e7b374e72d5eedfb215"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-no-prototype.pt",
+      "bytes": 335009,
+      "sha256": "8ccd7bdf12857c761783d2258983de5b799377e39c66f8e6b4ef0f89e5fb9a12"
+    },
+    {
+      "path": "artifacts/publication_v2/models/edge_iiotset/seed_73/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 1227356,
+      "sha256": "c60880e21a30be9a6bb9eecd23cd51424117fa7f3ec8836812fc67d92652b764"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/ExtraTrees.joblib",
+      "bytes": 6148793,
+      "sha256": "dfd0fb1159786083e8fe8159fb532e3aa718defa635ae5a5fc2cd7a00fc14094"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/HistGradientBoosting.joblib",
+      "bytes": 1229136,
+      "sha256": "818fc7097cb688c0a363c405d76d70de996e24e14abfdd8ae43b8468c6af150a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/NOVA-XIDS.pt",
+      "bytes": 197164,
+      "sha256": "9cc3134fa7f8a2f2c701685b3bfdb9b9e76db10d87cfce1066eb2c4153856328"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/NOVA-XIDS_locked_test.npz",
+      "bytes": 140996,
+      "sha256": "8d093523af4f3362cd180ab6b221747df84fd97dfe0be5f6609b69486fbc9833"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RandomForest.joblib",
+      "bytes": 6723945,
+      "sha256": "146fdee8b0b6efd7efdf72351f256ccc5e4bc5946d178e2a984672304455e6cf"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-Continual.pt",
+      "bytes": 298664,
+      "sha256": "6e72489b7b7ee61fd719387a17cb8ad5c89fc1090178f93432c640649755efc5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-Continual_locked_test.npz",
+      "bytes": 31368,
+      "sha256": "9f7d6fa08b40084895d7c0e84a735db894060e3c1fa00252ff4e1fa2a38f6017"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-FineTune.pt",
+      "bytes": 298573,
+      "sha256": "b48dc83d9768721de627dd44cbff91319962254902feba956af704e8a875697e"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-FineTune_locked_test.npz",
+      "bytes": 30288,
+      "sha256": "6323ac30fe805e9cfa2a4fb2d5305f9c260bd91121892a67247e2e0e2e8a417c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-ReservoirReplay.pt",
+      "bytes": 299274,
+      "sha256": "1194f1b21a276649035e501f89d7fc331e1a8f397e4986fdf2c8328d3ad88de5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 31339,
+      "sha256": "546359ba92746d84c167da1bee8491ff623abd33e327dfb41b19983240f8edb5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-XIDS.pt",
+      "bytes": 298081,
+      "sha256": "2b450b331cd9fbc525425f66e9947aec903d41cf62c28886e435e3876153a971"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-XIDS_locked_test.npz",
+      "bytes": 140719,
+      "sha256": "0ed3052d3ec8efd13eaa3b5143e04b48b42ca29a3d018c696a4f3bca0fad16f0"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-no-class-balance.pt",
+      "bytes": 299365,
+      "sha256": "8842590449af4a1bc9b17c8b4083eeca466e69b8f95c6edb9e31ba68669fb01b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 140757,
+      "sha256": "bff9988af62f9476a3c2ccea9e7d072d68a9ee016dd392c9d2718a1ce8655f76"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-no-contrastive.pt",
+      "bytes": 299183,
+      "sha256": "24b5cd8960ea1c0281d601a6621d7c1a0442c9387263d6549341f7b2bcae4bc5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 140770,
+      "sha256": "96f7dae930bea258153a94159d1c73119e8923e2a6ccccba2c485a92fecae5a6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-no-direct-path.pt",
+      "bytes": 220899,
+      "sha256": "19ebf090413d14e14783e03a6693ca10e4c13f9bc7e9b3423c4f486dbb777654"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 142439,
+      "sha256": "618e5d71422dfdd3234524497e812b39e1c32ed66d32e6e167c299272fa572c4"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-no-prototype.pt",
+      "bytes": 295841,
+      "sha256": "bd6d12dd225455b631a42e5d3461b3944ca6dda3c2e9ffe5266bbbf734d57eb4"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_101/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 140645,
+      "sha256": "6c437c1d2ed1481923abca99b15411ccffdb919b4bf2da52107f7a6fcd0a54a6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_137/ExtraTrees.joblib",
+      "bytes": 6321017,
+      "sha256": "d9fdc6c36e6d660738507adcf34cfba4d5830f0eb5cfd838a752901b4d422346"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_137/HistGradientBoosting.joblib",
+      "bytes": 1229136,
+      "sha256": "58d3c91380b0d724a63e728d8fb20d0b1a8980b871743e252c52eac74a0f5a5a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_137/NOVA-XIDS.pt",
+      "bytes": 197164,
+      "sha256": "3f4168d9cc2a6b8ee18c15ea015d5507c82de0efcff2ce8fba92fb78c584ce37"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_137/NOVA-XIDS_locked_test.npz",
+      "bytes": 141571,
+      "sha256": "1190f710f1c3c44d1ba94c6246a0abbd446cd8d9f4f5fbe41cac5da34e7786d9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_137/RandomForest.joblib",
+      "bytes": 6663753,
+      "sha256": "b8ea265e79563674057e5754b4b523d4cffbdf4573aa78768524fae7349136f7"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_137/RareGuard-XIDS.pt",
+      "bytes": 298081,
+      "sha256": "6cf2b13acc082c7007450dd2779fc3c3dbd4b13d60e5c0029b17cd0d1fb9dc6b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_137/RareGuard-XIDS_locked_test.npz",
+      "bytes": 140761,
+      "sha256": "b53f4d09b8d9d6e4c355747cf7ee2feeff46941375a4292b5d7b3e63bd48f64b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_211/ExtraTrees.joblib",
+      "bytes": 6208985,
+      "sha256": "27e627cba144ac3c8b7bc154a44259f2e0c160d298c1c026d95cb1c45aca6e0a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_211/HistGradientBoosting.joblib",
+      "bytes": 1229136,
+      "sha256": "11f66adec6eacbcfbc2b957798e597876ecd709d530a359133b28940ff6e1d5a"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_211/NOVA-XIDS.pt",
+      "bytes": 197164,
+      "sha256": "145b5b5f02443131ff3cfecabec0675bdf7f32b2f0f8efe1b7bb6df0fd860587"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_211/NOVA-XIDS_locked_test.npz",
+      "bytes": 141212,
+      "sha256": "bf4a0386c6ee0041221d1901d0b1c77c92a6f38e123b0c9235c3b1a7d698757f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_211/RandomForest.joblib",
+      "bytes": 6643881,
+      "sha256": "ff459090dce059efc616af639d88ea3c31fac3f3248faebd796ffc65e49687ce"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_211/RareGuard-XIDS.pt",
+      "bytes": 298081,
+      "sha256": "ae1ac7d1b98952532d81f254ad9e285a8f217d898f738e8ec4c3e0fba02bffab"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_211/RareGuard-XIDS_locked_test.npz",
+      "bytes": 140835,
+      "sha256": "06fa621fa2b2a497d9ed1c415f9cb0aa90e57ee223e81aad766997fb8a6f71f9"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/ExtraTrees.joblib",
+      "bytes": 6143897,
+      "sha256": "3ead181b7c1e96d11f44a2b8d061b4b44fa88cd2dc19949b7683b553e02c4b8d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/HistGradientBoosting.joblib",
+      "bytes": 1229136,
+      "sha256": "121c8361e33ba490dc4775cfaae2f9f5410c4232b4d488b0aef4eba7701fab74"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/NOVA-XIDS.pt",
+      "bytes": 197164,
+      "sha256": "1d4795425c6e87e7b0b3aec7a60b16a122eec28fa9bc00ab407147b579c2d0a2"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/NOVA-XIDS_locked_test.npz",
+      "bytes": 141192,
+      "sha256": "9fc9814fa5d63643f242e40df5ccb2db0a596ea910fc52ab72bf9ab03e53808d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RandomForest.joblib",
+      "bytes": 6770025,
+      "sha256": "412dd359aab6de77ada01c097590fa65b2f00c7c87251e8398c47a967270c569"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-Continual.pt",
+      "bytes": 298664,
+      "sha256": "89c6381d8b1592c46f3bf6df81f2be76aeeac4355e7e5dc5cc89230793bddc0b"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-Continual_locked_test.npz",
+      "bytes": 31216,
+      "sha256": "b76f2d56822c159d5279dec55ddfdac78fcf55eb340865441df855ef86f64e52"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-FineTune.pt",
+      "bytes": 298573,
+      "sha256": "d1a5521117994f99e0d60878c5f430419e15252cf03aaf52772db1ebc8661121"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-FineTune_locked_test.npz",
+      "bytes": 30485,
+      "sha256": "5688a9dd7fbce7edce2420789a570b850a50e99440f61453ee5327fcbd7bcc30"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-ReservoirReplay.pt",
+      "bytes": 299274,
+      "sha256": "2444fd5a2cd4af352d8b80645bdda530a000253d83c7788a39d901d3c3589b33"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 31203,
+      "sha256": "0a1652d70ae6e06869a5f3b00a8ce51278c16f0ee985652e05d3a87208c51e8f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-XIDS.pt",
+      "bytes": 298081,
+      "sha256": "540c19ea6bab006e37ea7080e464dc8b8d27f809731f3f1261f7682bf408ed61"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-XIDS_locked_test.npz",
+      "bytes": 140693,
+      "sha256": "7dac0a40604a47f7471ee2f13b537d70e7481f99fea61e9e4f2fa552d3b95200"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-no-class-balance.pt",
+      "bytes": 299365,
+      "sha256": "7ecb99051c84e9b0a86e575123e39876b3f537406dfbed13472b9c77f782e634"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 140721,
+      "sha256": "827cbba3a75f930a792d5017252e1d8b0b9ce92057ed731433a679c6d22c6423"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-no-contrastive.pt",
+      "bytes": 299183,
+      "sha256": "74c7e59218f91a8b41947f119558447cee55774667dfe456813b4c2c6155536f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 140636,
+      "sha256": "4f1ea3bfdd016ebd62c6f42881858baf9e2d88af40f3efc816a65b9fa6d72728"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-no-direct-path.pt",
+      "bytes": 220899,
+      "sha256": "2c75bf5cec25fd0b6df55141e2b9b20611cd783892585d944f3c447a8422a140"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 142665,
+      "sha256": "c0d71cec327d832deff37aba12a214517bda416ecc321766a9fb4cde237d79a5"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-no-prototype.pt",
+      "bytes": 295841,
+      "sha256": "60464af4f12324403763bf356512ed486d55f51a4a8faa2fd29ed4fd90f0a51f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_42/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 140663,
+      "sha256": "538e621aae7acc72a6fcc764cae754e4d27368952d6daf9bbdea50b6221aefc3"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/ExtraTrees.joblib",
+      "bytes": 6032729,
+      "sha256": "d1abb3fc56028eb5512e776db5e14123ae3cf60ea0e05336267a2bc503097889"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/HistGradientBoosting.joblib",
+      "bytes": 1229136,
+      "sha256": "33f580320f299a423b5b13e3cfc88300d1c56017c4f7f2369673711182f18722"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/NOVA-XIDS.pt",
+      "bytes": 197164,
+      "sha256": "4cb6e75dab1182d2b43443d438fe87dc054dfc114083da47e0ca1fb8a349d79d"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/NOVA-XIDS_locked_test.npz",
+      "bytes": 141185,
+      "sha256": "a5ed3c24a9a194a73e192d9c182bef568d198e73a7e8728f154f1a3c1119d367"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RandomForest.joblib",
+      "bytes": 6704649,
+      "sha256": "f7e265b4ebc653adaf9e30112709c0f7f6674d029fb15d04d7ed02148c980083"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-Continual.pt",
+      "bytes": 298664,
+      "sha256": "cb22a5d32b8db9a24a52483dc73de5a2eddfcc387021bde8afd4e2031b0d0b91"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-Continual_locked_test.npz",
+      "bytes": 31302,
+      "sha256": "ef6c79bb5104641d49feb4e4948a6b0d9fe446fd5e148fccfad413b92172f672"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-FineTune.pt",
+      "bytes": 298573,
+      "sha256": "0c73499d4f60771cfdbe4e9de4292fcb05012519d49bb3dedba75bcb5767ea1c"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-FineTune_locked_test.npz",
+      "bytes": 30358,
+      "sha256": "ae19163209cdb89fb9ecc27afc7f4661e4f151cd46594b49feb469be89f0bd08"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-ReservoirReplay.pt",
+      "bytes": 299274,
+      "sha256": "a01d59ce9e21893247a28d15f160a189a808b865fdffbd0327f4aa8f914db893"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-ReservoirReplay_locked_test.npz",
+      "bytes": 31198,
+      "sha256": "8fb666882a02f64f9864226fba9ebd9c3ce925b25a9ab7024b9cc3a5e0e4492f"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-XIDS.pt",
+      "bytes": 298081,
+      "sha256": "31f2dedfbc467e93f4806127caa7556faab677ef560feec35cc999f6c285e0e4"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-XIDS_locked_test.npz",
+      "bytes": 140670,
+      "sha256": "45034bebf78cccb4cac26895c47c4f2b03e84f71b1019736905c46c6bbc96277"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-no-class-balance.pt",
+      "bytes": 299365,
+      "sha256": "be1021cd89b152a0acca738fe2db4a5ec56f8b29193f81f99eee4da39f4a2659"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-no-class-balance_locked_test.npz",
+      "bytes": 140668,
+      "sha256": "512ff6462ac9b8cc3a55ea9405a4d83aa10238f7de3f7cb139672ed4e6303d33"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-no-contrastive.pt",
+      "bytes": 299183,
+      "sha256": "51e5724643fab89112a76696ffdfcd0a94e45b8848a66b4e68f642378caa78d7"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-no-contrastive_locked_test.npz",
+      "bytes": 140539,
+      "sha256": "928d89110411d431225e51b97a4f5fff3620597235de4f51819b19742fbe1760"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-no-direct-path.pt",
+      "bytes": 220899,
+      "sha256": "fa4461d52aeb7b0570ab22ce498bf8a11e9608b52e41e02688252358341918c6"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-no-direct-path_locked_test.npz",
+      "bytes": 142602,
+      "sha256": "b4b30d36fe75b52bf4de3fa4c3339244d2f7343712895adc8a6237248915ce77"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-no-prototype.pt",
+      "bytes": 295841,
+      "sha256": "00e0fe9e346b226d29506b958a0c70f727d40f375e9f7316f64bcd5b2dbc8992"
+    },
+    {
+      "path": "artifacts/publication_v2/models/ton_iot/seed_73/RareGuard-no-prototype_locked_test.npz",
+      "bytes": 140493,
+      "sha256": "c3c610c501c01084bc02d682c55dccbe5b80f428cdf78112f1477c35f8380484"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cic_bccc_nrc_tabulariotattack_2024/acquisition_metadata.json",
+      "bytes": 633,
+      "sha256": "c547b65edcff01d499b4eae29fbb9b620ab24769e57fea67003c1203c05ac5d4"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cic_bccc_nrc_tabulariotattack_2024/split_metadata.json",
+      "bytes": 2592,
+      "sha256": "44e7d7ffe6c76de0776886c3fa2f44c7bdd78defbd77998f9c0af2119622752f"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cic_bccc_nrc_tabulariotattack_2024/splits.npz",
+      "bytes": 3525487,
+      "sha256": "edae38beddfc36d6bb2ea8d4e4a5945f6a1998f59cd127808cee4ac2cf037fda"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cic_bccc_nrc_tabulariotattack_2024/train_fitted_transformer.joblib",
+      "bytes": 4473,
+      "sha256": "4620b30d2db6165e88b4d1fd9dfdca104b0248e2388f5a2362535209cd8730e4"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cic_iiot_2025_datasense/acquisition_metadata.json",
+      "bytes": 626,
+      "sha256": "c26a7ca329e6880e82c2ebd9a60003318df8848e5d54884ed72669d759970167"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cic_iiot_2025_datasense/split_metadata.json",
+      "bytes": 4509,
+      "sha256": "b8b0531b1fe10bf6a33ed501bb38e82de6e2b93bb5922a2876c1eac3b3a3f5dc"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cic_iiot_2025_datasense/splits.npz",
+      "bytes": 1224686,
+      "sha256": "b3f9b055074f5aa59adb17d8c6c384e295111b4d3d65ea9a6687eafd5c79424a"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cic_iiot_2025_datasense/train_fitted_transformer.joblib",
+      "bytes": 4745,
+      "sha256": "6eda7b7c2c3690988d98889de920c8d58ff4c5a9dd50b27de7442bc7ff7abc71"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/ciciot2023/acquisition_metadata.json",
+      "bytes": 755,
+      "sha256": "3adb22957fe4543483c04ff7d8ac4a05c32e81c9a400de37127c0a9e33a2116f"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/ciciot2023/split_metadata.json",
+      "bytes": 3707,
+      "sha256": "130e0e69f85f691ca264f32b12311ee4c57768bcaae5885259d202d92a46ba2d"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/ciciot2023/splits.npz",
+      "bytes": 3302449,
+      "sha256": "2aa4d6d47e9fba9870680e2f3e9d945d0734e3b12b3d2204fe8b56874629345e"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/ciciot2023/train_fitted_transformer.joblib",
+      "bytes": 2721,
+      "sha256": "d60d55ee7a160f53f7d71ba0d8f2f2b8ee5986d141f8766fcd1d5e5e7caf89c1"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cse_cic_ids2018/acquisition_metadata.json",
+      "bytes": 625,
+      "sha256": "11235fc83335b086e07731f19440f386be1e22792579ac4f2b07b8238ec8e91c"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cse_cic_ids2018/split_metadata.json",
+      "bytes": 2438,
+      "sha256": "5993ca253a19647ff151c52dd894a4bd646496f45bfea64f8f8f4343e08da3d0"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cse_cic_ids2018/splits.npz",
+      "bytes": 1846204,
+      "sha256": "eaa186095205dc4ced35d72b38537fe2c307236100cfc0b1b3535ac934e48a95"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/cse_cic_ids2018/train_fitted_transformer.joblib",
+      "bytes": 4257,
+      "sha256": "67e9b7c6b06fe561e196137323e16442885020c73bcfbb7bf11f9e896e5909b8"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/edge_iiotset/acquisition_metadata.json",
+      "bytes": 590,
+      "sha256": "e204b369b28892cb129e12920cc6d93f9be77a00cf9c448944c584d945a296a6"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/edge_iiotset/split_metadata.json",
+      "bytes": 2318,
+      "sha256": "31a13c62fcf6273f1590ec07dca61060ccb88103c2f810a655bf7d2829b96ee7"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/edge_iiotset/splits.npz",
+      "bytes": 282405,
+      "sha256": "0a3ef311616986dcaaef68061ab77369b1d71d132348e68d6d0e3dd2aaa4a01d"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/edge_iiotset/train_fitted_transformer.joblib",
+      "bytes": 3305,
+      "sha256": "93fabea56f1c4b3260ac6247594948a9628376362b3db5abde4a28f4e83e3e29"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/ton_iot/acquisition_metadata.json",
+      "bytes": 762,
+      "sha256": "31c35534c08105173058b0470074edda1325e17e362243054424a584e307aa12"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/ton_iot/split_metadata.json",
+      "bytes": 2584,
+      "sha256": "8cdffb94bd8274ab80192dc33b33cad8acf080360cdfa6bce60bba91aca4cc75"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/ton_iot/splits.npz",
+      "bytes": 41417,
+      "sha256": "997dc0f1734cd9efee28b857dbd38333e771f961ad94ade6a76e03b05e473d42"
+    },
+    {
+      "path": "artifacts/publication_v2/processed/ton_iot/train_fitted_transformer.joblib",
+      "bytes": 1689,
+      "sha256": "cb6bb18e6d941206e04d61632b7b0240892999ca68d1daf2630f4f2bfc163be6"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/AGENT_POLICY_cic_bccc_nrc_tabulariotattack_2024.json",
+      "bytes": 3935,
+      "sha256": "87f759c8d02ae828ce23f9f59f9c23d7012fd54937a202c1f839bdaaf654d6fa"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/AGENT_POLICY_cic_iiot_2025_datasense.json",
+      "bytes": 3826,
+      "sha256": "6e2bf88a2245f6540e13ab90429eac66a38a7b1054734cd41078ae0d1014f250"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/AGENT_POLICY_ciciot2023.json",
+      "bytes": 3676,
+      "sha256": "ae8041703184e5b530c2a937912845c2d24b77a0369ebb1878a7ef098d18b535"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/AGENT_POLICY_cse_cic_ids2018.json",
+      "bytes": 3827,
+      "sha256": "f0519ef6603904f93699130f4c9568506e42924e03107e13b1937a3dfd3afe24"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/AGENT_POLICY_edge_iiotset.json",
+      "bytes": 3647,
+      "sha256": "3c3e9b68e76e177bfad8a51fd3eba7d6c421aced837ac8933d501698692222cf"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/AGENT_POLICY_ton_iot.json",
+      "bytes": 3506,
+      "sha256": "279e3e7585c47dc8b69fa1c24d72216075b8f414ee028d0aee734577215ad950"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/PUBLICATION_EVIDENCE_AUDIT.md",
+      "bytes": 7882,
+      "sha256": "6dcf332e5c3825d5b2cc91ee32d57095f726c01465e27cfc921c22581445c87e"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/PUBLICATION_READINESS.json",
+      "bytes": 3138,
+      "sha256": "bd1ede77df3aa28d79b0eb5cad0d4a57debe62e0a11283b92bab044dae549724"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/SELECTED_HYPERPARAMETERS_cic_bccc_nrc_tabulariotattack_2024.json",
+      "bytes": 628,
+      "sha256": "93c14e9171beddbea4703477d2dc5a34ff575b00ca5ea8195a1743392c79a241"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/SELECTED_HYPERPARAMETERS_cic_iiot_2025_datasense.json",
+      "bytes": 616,
+      "sha256": "54d5614d3b48de5dd9caa36a5cdca733d69214b0fa7655709fb6760e4aa3e294"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/SELECTED_HYPERPARAMETERS_ciciot2023.json",
+      "bytes": 857,
+      "sha256": "63548784076ec619a21ac758a5faa60eca1c1f75e7885490a0be61da33155c49"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/SELECTED_HYPERPARAMETERS_cse_cic_ids2018.json",
+      "bytes": 609,
+      "sha256": "a664fc082cdb183f036da9c42e32ae082120e903ba625c7d167bd3a313046083"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/SELECTED_HYPERPARAMETERS_edge_iiotset.json",
+      "bytes": 605,
+      "sha256": "a37cf8b8f8a31c66425e9f7e86acc621cfd84fc51df426d9cede27b93d13e4fe"
+    },
+    {
+      "path": "artifacts/publication_v2/reports/SELECTED_HYPERPARAMETERS_ton_iot.json",
+      "bytes": 854,
+      "sha256": "11a7ea6b1c4d709cf49dc1b08ff14e6737992fa818d088c641e458ebb5517469"
+    },
+    {
+      "path": "artifacts/publication_v2/results/ablation_paired_gains.csv",
+      "bytes": 1607,
+      "sha256": "1d714a9a4060c8ae79141b36507cb22ede91cf69040aad551b9b36d2dd242fe6"
+    },
+    {
+      "path": "artifacts/publication_v2/results/adaptive_tuning_candidates.csv",
+      "bytes": 8895,
+      "sha256": "0e01ff0f1fd06feac4ad6081756f20ee303b8cdf68dea8566a234ba9bfaf1ad2"
+    },
+    {
+      "path": "artifacts/publication_v2/results/adaptive_tuning_confirmation_summary.csv",
+      "bytes": 608,
+      "sha256": "92eaa322d469092168e6b8c05bd56109e6245dbcb113f31cc330be3c7697b6d3"
+    },
+    {
+      "path": "artifacts/publication_v2/results/adaptive_tuning_history.csv",
+      "bytes": 175332,
+      "sha256": "452b97e1816802bb521cf705e0093a0ff938bd74d1a572abe7ffa2a95cd71d14"
+    },
+    {
+      "path": "artifacts/publication_v2/results/adaptive_tuning_summary.csv",
+      "bytes": 2372,
+      "sha256": "bb08ce2df2fb9c9fb8cb9f97facd90d9f297afc66337eb014b3e56386768d5cf"
+    },
+    {
+      "path": "artifacts/publication_v2/results/agent_policy_comparisons.csv",
+      "bytes": 337,
+      "sha256": "9714d8c9404aa134b9209f2c57ea33926d808459d48e7fd214f69f81c629cd1f"
+    },
+    {
+      "path": "artifacts/publication_v2/results/agentic_decisions.csv",
+      "bytes": 17666643,
+      "sha256": "844452e631c644bc28ad27f9d4dc7a5290c8749c3fad3f327a4cb42492b9d575"
+    },
+    {
+      "path": "artifacts/publication_v2/results/agentic_policy_metrics.csv",
+      "bytes": 47333,
+      "sha256": "5e368174740683a3bec474f738abeea8fa194dee8dad608013c79a0bcb338b22"
+    },
+    {
+      "path": "artifacts/publication_v2/results/agentic_validation_selections.csv",
+      "bytes": 7086,
+      "sha256": "b0da9b7ee53ff793e2d11ed9b303dc8d69ee69be5845a06b6e32cda5c8db9778"
+    },
+    {
+      "path": "artifacts/publication_v2/results/baseline_seed_metrics.csv",
+      "bytes": 35944,
+      "sha256": "96b9a189feca6dfcc40751d12c6a7252246fab9d74c3bf92dee72092ef4031d7"
+    },
+    {
+      "path": "artifacts/publication_v2/results/central_per_class_metrics.csv",
+      "bytes": 267888,
+      "sha256": "84464732b38af466105d8d1b4bbb140c9f297f718523c94c5933e4c6b78de836"
+    },
+    {
+      "path": "artifacts/publication_v2/results/central_seed_metrics.csv",
+      "bytes": 92756,
+      "sha256": "53b24acf7dcbdcaaf71774ff15bbfeae298b3e41a91f1a3712fcd81e63f6b748"
+    },
+    {
+      "path": "artifacts/publication_v2/results/central_summary_ci.csv",
+      "bytes": 37084,
+      "sha256": "7f394e96eb64f65a97ef7337f125b72f826665d75a40977183be493bec21021f"
+    },
+    {
+      "path": "artifacts/publication_v2/results/central_training_history.csv",
+      "bytes": 340712,
+      "sha256": "74905722f4098813a2e847ee862c1bbe0bfa918de910a514890e06478b4807d9"
+    },
+    {
+      "path": "artifacts/publication_v2/results/continual_comparisons.csv",
+      "bytes": 981,
+      "sha256": "9f49358d7b83af724ab287acf73e7644241d2d2490fd16d79cc3c882b7777d55"
+    },
+    {
+      "path": "artifacts/publication_v2/results/continual_seed_metrics.csv",
+      "bytes": 32624,
+      "sha256": "fd3a5a629fc49853cb183fed67d7310f2e7c79cb869e851de9a8082fe62fe129"
+    },
+    {
+      "path": "artifacts/publication_v2/results/continual_task_metrics.csv",
+      "bytes": 21084,
+      "sha256": "570659cab1d0e030ccf8b6078d9a4a5b6fec87302840a74aca1172328ab9dbb0"
+    },
+    {
+      "path": "artifacts/publication_v2/results/data_summaries/cic_bccc_nrc_tabulariotattack_2024.json",
+      "bytes": 2643,
+      "sha256": "52f05f4747d583a0ecef8a92461e1c3f37a97b93a4d3401de8ee1f655b447f02"
+    },
+    {
+      "path": "artifacts/publication_v2/results/data_summaries/cic_iiot_2025_datasense.json",
+      "bytes": 4549,
+      "sha256": "26786902b57278d4cc4c5a48724b0497961a59ae847a6beb59e16b52f1ca9a8f"
+    },
+    {
+      "path": "artifacts/publication_v2/results/data_summaries/ciciot2023.json",
+      "bytes": 4470,
+      "sha256": "e6e3ec153f824617119ac836b7c3036d5b5fe0146efe93bf62e263a9df80066f"
+    },
+    {
+      "path": "artifacts/publication_v2/results/data_summaries/cse_cic_ids2018.json",
+      "bytes": 2470,
+      "sha256": "b915967057378edb891fbeae8648598c5d44e7ca9f50c9d3d616a2c7f61d007d"
+    },
+    {
+      "path": "artifacts/publication_v2/results/data_summaries/edge_iiotset.json",
+      "bytes": 2347,
+      "sha256": "ff2dbfd77aaac8fc11906e5f6561831f15dc6cffc3a7210be9b90b0bedaab404"
+    },
+    {
+      "path": "artifacts/publication_v2/results/data_summaries/ton_iot.json",
+      "bytes": 3351,
+      "sha256": "e7fa84532c543d318d835c22552bdb65db1f564fd6f56de712f4b55c9e065176"
+    },
+    {
+      "path": "artifacts/publication_v2/results/federated_seed_metrics.csv",
+      "bytes": 27010,
+      "sha256": "125f14e979fa988ee45cc7e04763c6908fcff6cce5c4a0ca1420b76057f4e4e1"
+    },
+    {
+      "path": "artifacts/publication_v2/results/federated_validation_rounds.csv",
+      "bytes": 24589,
+      "sha256": "dfefae0718a751c3f06c5125f675e30c095956561e16a100add343a7fbe6589e"
+    },
+    {
+      "path": "artifacts/publication_v2/results/paired_gain_ci.csv",
+      "bytes": 2777,
+      "sha256": "be2e2e65d90234116a81fb53bcb5dc6fba239de4a6ecfe21734bc37de6ad7a9e"
+    },
+    {
+      "path": "artifacts/publication_v2/results/paired_statistical_tests.csv",
+      "bytes": 2625,
+      "sha256": "858f7d5f4598599d7f37a68adc8840f069cda2cd68d3c8fb3663fc8be4772209"
+    },
+    {
+      "path": "artifacts/publication_v2/results/publication_data_summary.json",
+      "bytes": 21626,
+      "sha256": "3c203c67d1ad394750bf2711ac8463f247990f976f015df232d28fd0cd335d24"
+    },
+    {
+      "path": "artifacts/publication_v2/results/robustness_comparisons.csv",
+      "bytes": 448,
+      "sha256": "8a3f80895deb00805176626ea27f70a417b90dd2ccb7659962db926bd0ae15a3"
+    },
+    {
+      "path": "artifacts/publication_v2/results/robustness_seed_metrics.csv",
+      "bytes": 67644,
+      "sha256": "121af7bec7b5eb7ab0300345823728dd554ff618a048c10307e3fec786320e2b"
+    },
+    {
+      "path": "artifacts/publication_v2/results/robustness_summary.csv",
+      "bytes": 6062,
+      "sha256": "4ee28d4c46a177221f34f586ca39751389a6aefd38f6caf3a94113079f061be5"
+    },
+    {
+      "path": "configs/datasets.yaml",
+      "bytes": 1106,
+      "sha256": "653a79b0fe7933d6b57d788375cb8a3a67e73c9b7b80fff6f2ca5160b8750ba4"
+    },
+    {
+      "path": "configs/datasets_v2.yaml",
+      "bytes": 1595,
+      "sha256": "d13806c7c9ad00f479e6a16f92454cf7aba1d815312b0b5766223ac6a0f7974a"
+    },
+    {
+      "path": "configs/default.yaml",
+      "bytes": 1238,
+      "sha256": "09c9668963117e3bc67172ec7363fa123a830955ba83a9ffce5b16c7ac360bb1"
+    },
+    {
+      "path": "configs/first_paper_reference.yaml",
+      "bytes": 948,
+      "sha256": "58994954fb84e7f12b10c66929effd6c23474d312600cc84c929cd4b0892642a"
+    },
+    {
+      "path": "configs/publication.yaml",
+      "bytes": 2332,
+      "sha256": "4a4b0dc1f63cf9472b698ca77f9ccfbe4640be5ffdf0f8f4dee4c8a7b7bb8deb"
+    },
+    {
+      "path": "configs/publication_v2.yaml",
+      "bytes": 2820,
+      "sha256": "d181cd6bd234e34c97573b8c3d5f2c0330b6001a4e0cf27f12aad5914c3a5b50"
+    }
+  ]
+}

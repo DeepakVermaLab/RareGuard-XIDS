@@ -1,0 +1,9 @@
+dataset,perturbation,strength,paired_seeds,mean_primary_composite_gain,passed
+ciciot2023,feature_mask,0.1,5,0.03882283890297509,True
+ciciot2023,feature_mask,0.25,5,0.030731880033321897,True
+ciciot2023,gaussian_noise,0.05,5,0.03253156597084733,True
+ciciot2023,gaussian_noise,0.1,5,0.011570329399988154,True
+ton_iot,feature_mask,0.1,5,,False
+ton_iot,feature_mask,0.25,5,,False
+ton_iot,gaussian_noise,0.05,5,,False
+ton_iot,gaussian_noise,0.1,5,,False

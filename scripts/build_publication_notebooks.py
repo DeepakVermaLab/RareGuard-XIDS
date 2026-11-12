@@ -20,13 +20,47 @@ def code(text: str) -> dict:
 SETUP = """from pathlib import Path
 import os, sys
 
-PROJECT_ROOT = Path('/Volumes/LocalDrive1/onlyscholar-projects/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION')
-if not (PROJECT_ROOT / 'pyproject.toml').is_file():
-    raise FileNotFoundError(f'Canonical local project is unavailable: {PROJECT_ROOT}')
+LOCAL_CANDIDATES = [
+    Path('/Volumes/LocalDrive1/onlyscholar-projects/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION'),
+]
+DRIVE_CANDIDATES = [
+    Path('/content/drive/MyDrive/projects/implementation/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION'),
+    Path('/content/drive/MyDrive/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION'),
+]
+
+def is_project_root(path: Path) -> bool:
+    return (path / 'pyproject.toml').is_file() and (path / 'src' / 'rareguard').is_dir()
+
+def find_project_root() -> Path | None:
+    cwd = Path.cwd().resolve()
+    for candidate in [cwd, *cwd.parents, *LOCAL_CANDIDATES, *DRIVE_CANDIDATES]:
+        if is_project_root(candidate):
+            return candidate
+
+    if Path('/content').is_dir():
+        from google.colab import drive
+
+        drive.mount('/content/drive', force_remount=False)
+        for candidate in DRIVE_CANDIDATES:
+            if is_project_root(candidate):
+                return candidate
+    return None
+
+PROJECT_ROOT = find_project_root()
+if PROJECT_ROOT is None:
+    raise FileNotFoundError(
+        'RareGuard-XIDS IMPLEMENTATION project not found. Expected the canonical '
+        'Google Drive project at '
+        '/content/drive/MyDrive/projects/implementation/'
+        'RareGuard-XIDS[DeepakSir]/IMPLEMENTATION or the canonical local project.'
+    )
 os.chdir(PROJECT_ROOT)
-sys.path.insert(0, str(PROJECT_ROOT / 'src'))
+PROJECT_SRC = str(PROJECT_ROOT / 'src')
+sys.path.insert(0, PROJECT_SRC)
+os.environ['PYTHONPATH'] = PROJECT_SRC + os.pathsep + os.environ.get('PYTHONPATH', '')
 print('Project root:', PROJECT_ROOT)
-print('Use the local VS Code research kernel for this publication stage.')"""
+print('Runtime:', 'Colab' if Path('/content').is_dir() else 'local')
+print('Python path ready')"""
 
 
 NOTEBOOKS = {
@@ -39,7 +73,7 @@ NOTEBOOKS = {
     "09_publication_central.ipynb": [
         markdown("# 09 - Validation adaptation and repeated central experiments\n\nThe same prespecified validation-only adaptation grid and selection rule is applied independently to every dataset before its locked test is opened. CSE-CIC-IDS2018 and Edge-IIoTset are development datasets; TabularIoTAttack-2024 and DataSense 2025 are untouched external confirmations."),
         code(SETUP),
-        code("TUNING_DEVICE = 'mps'  # Accelerator use is restricted to validation-only adaptation.\n!python -m rareguard.experiments.run_publication_adaptive_tuning --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {TUNING_DEVICE} --resume"),
+        code("TUNING_DEVICE = 'cpu'  # Accelerator use is restricted to validation-only adaptation.\n!python -m rareguard.experiments.run_publication_adaptive_tuning --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {TUNING_DEVICE} --resume"),
         code("!python -m rareguard.experiments.run_publication_baselines --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --resume"),
         code("CONFIRMATORY_DEVICE = 'cpu'\n!python -m rareguard.experiments.run_publication_central --config configs/publication.yaml --datasets configs/datasets.yaml --dataset all --device {CONFIRMATORY_DEVICE} --resume"),
         code("import pandas as pd\ndisplay(pd.read_csv('artifacts/publication/results/central_summary_ci.csv'))"),

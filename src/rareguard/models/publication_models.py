@@ -125,6 +125,8 @@ class RareGuardXIDSNet(nn.Module):
         dropout: float = 0.2,
         use_prototypes: bool = True,
         use_direct_path: bool = True,
+        prototype_initial_scale: float = 1.0,
+        prototype_gate_bias: float = -2.0,
         **encoder_flags,
     ):
         super().__init__()
@@ -155,9 +157,15 @@ class RareGuardXIDSNet(nn.Module):
         self.use_prototypes = use_prototypes
         self.prototype_layer = nn.Linear(latent_dim, num_classes, bias=False) if use_prototypes else None
         self.prototype_log_scale = (
-            nn.Parameter(torch.tensor(math.log(10.0), dtype=torch.float32)) if use_prototypes else None
+            nn.Parameter(
+                torch.tensor(math.log(max(float(prototype_initial_scale), 1e-6)), dtype=torch.float32)
+            )
+            if use_prototypes
+            else None
         )
         self.gate = nn.Sequential(nn.Linear(latent_dim, 1), nn.Sigmoid())
+        if use_prototypes:
+            nn.init.constant_(self.gate[0].bias, float(prototype_gate_bias))
 
     def encode(self, x: torch.Tensor) -> torch.Tensor:
         embedding = self.embedding(self.encoder(x))

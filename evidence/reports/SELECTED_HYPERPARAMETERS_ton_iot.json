@@ -1,0 +1,24 @@
+{
+  "dataset": "ton_iot",
+  "dataset_role": "external_confirmation",
+  "selection_source": "development_datasets_only_global_mean",
+  "selection_datasets": [
+    "cse_cic_ids2018",
+    "cic_bccc_nrc_tabulariotattack_2024",
+    "cic_iiot_2025_datasense",
+    "edge_iiotset"
+  ],
+  "candidate_grid_size": 6,
+  "selection_seed_count": 3,
+  "selection_rule": "highest mean validation composite across development datasets only; tie-break rare-class macro-F1 then macro-F1",
+  "validation_composite": "0.5 * (macro_f1 + rare_class_macro_f1)",
+  "test_access_count": 0,
+  "focal_mix": 0.0,
+  "rare_sampler_power": 0.0,
+  "contrastive_weight": 0.1,
+  "selection_dataset_count": 4.0,
+  "selection_run_count": 12.0,
+  "validation_selection_score": 0.6691980473827975,
+  "validation_f1_macro": 0.7755232417048337,
+  "validation_rare_f1_macro": 0.5628728530607615
+}

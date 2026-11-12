@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Evidence-backed RareGuard-XIDS agentic intrusion-detection replay and publication evidence console.">
+  <title>RareGuard-XIDS Research Simulation Console</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to simulation</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="RareGuard-XIDS home">
+        <span class="brand-mark" aria-hidden="true">RG</span>
+        <span><strong>RareGuard-XIDS</strong><small>Research simulation console</small></span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#simulation">Simulation</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#robustness">Stress tests</a>
+        <a href="#reproducibility">Reproducibility</a>
+      </nav>
+      <div class="header-status"><span class="status-dot"></span>Final v2 evidence</div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow">Artifact-backed decision replay</p>
+        <h1>Inspect when the agent escalates—and what the evidence actually supports.</h1>
+        <p class="hero-lede">A publication-facing simulation of the RareGuard-XIDS light-to-heavy routing policy. Every event shown here comes from the saved final-v2 decision trace; no live traffic or synthetic result is presented as experimental evidence.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#simulation">Open replay console</a>
+          <a class="button secondary" href="#reproducibility">Review evidence boundary</a>
+        </div>
+      </div>
+      <aside class="readiness-card" aria-label="Publication readiness summary">
+        <div class="readiness-heading">
+          <span>Scientific readiness</span>
+          <strong id="readinessStatus">Loading…</strong>
+        </div>
+        <div class="gate-meter" aria-hidden="true"><span id="gateMeter"></span></div>
+        <p><strong id="gateCount">—</strong> gates pass. Failed gates remain visible throughout the console.</p>
+        <p class="boundary-note">Complete execution is not equivalent to supported superiority.</p>
+      </aside>
+    </section>
+
+    <section class="metric-strip" aria-label="Evidence summary">
+      <article><span>Datasets</span><strong id="datasetCount">6</strong><small>4 development · 2 confirmation</small></article>
+      <article><span>Recorded decisions</span><strong id="decisionCount">149,030</strong><small>Five deterministic seeds</small></article>
+      <article><span>Agent escalation</span><strong id="heavyRatio">—</strong><small>Across recorded decisions</small></article>
+      <article><span>Energy evidence</span><strong>Not measured</strong><small>Timing and compute proxies only</small></article>
+    </section>
+
+    <section class="section simulation-section" id="simulation">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 · Interactive replay</p>
+          <h2>Agentic escalation under recorded network events</h2>
+        </div>
+        <p>Select a dataset, seed, routing policy, and replay mode. Validated mode reproduces the recorded policy. What-if modes recalculate routing over the same saved scores and are labelled diagnostic—not benchmark results.</p>
+      </div>
+
+      <div class="simulation-grid">
+        <aside class="control-panel panel">
+          <div class="panel-title"><span>Replay configuration</span><span class="live-badge">Deterministic</span></div>
+          <label for="datasetSelect">Dataset</label>
+          <select id="datasetSelect"></select>
+          <div class="role-row"><span id="datasetRole" class="role-chip">—</span><span id="datasetRows">— rows in replay source</span></div>
+
+          <div class="control-pair">
+            <div><label for="seedSelect">Seed</label><select id="seedSelect"></select></div>
+            <div><label for="policySelect">Policy</label><select id="policySelect">
+              <option value="rareguard_agent">RareGuard agent</option>
+              <option value="always_light_nova">Always light</option>
+              <option value="always_heavy_rareguard">Always heavy</option>
+            </select></div>
+          </div>
+
+          <label for="presetSelect">Threshold mode</label>
+          <select id="presetSelect">
+            <option value="validated">Validated policy (reported)</option>
+            <option value="sensitivity">Sensitivity-first what-if</option>
+            <option value="efficiency">Compute-first what-if</option>
+          </select>
+          <p class="field-help" id="presetHelp">Uses the exact recorded gate decision.</p>
+
+          <div class="thresholds" aria-label="Active thresholds">
+            <div><span>Uncertainty</span><strong id="uncertaintyThreshold">—</strong></div>
+            <div><span>Rare signal</span><strong id="rareThreshold">—</strong></div>
+            <div><span>Traffic drift</span><strong id="driftThreshold">—</strong></div>
+          </div>
+
+          <div class="transport-controls">
+            <button class="icon-button" id="resetButton" type="button" aria-label="Reset replay">↺</button>
+            <button class="button primary transport-main" id="playButton" type="button">Start replay</button>
+            <button class="icon-button" id="stepButton" type="button" aria-label="Advance one event">›</button>
+          </div>
+          <label for="speedSelect">Playback speed</label>
+          <select id="speedSelect">
+            <option value="900">1×</option>
+            <option value="450" selected>2×</option>
+            <option value="180">5×</option>
+          </select>
+        </aside>
+
+        <div class="replay-panel panel">
+          <div class="panel-title">
+            <span>Decision path</span>
+            <span id="eventCounter" class="mono">Event — / —</span>
+          </div>
+
+          <div class="pipeline" aria-label="Current event decision path">
+            <div class="pipeline-node observed"><span>01</span><strong>Observed event</strong><small id="sourceEventIndex">Source index —</small></div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node light"><span>02</span><strong>Light detector</strong><small id="lightPrediction">Prediction —</small></div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node gate" id="gateNode"><span>03</span><strong>Policy gate</strong><small id="gateDecision">Awaiting event</small></div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node heavy" id="heavyNode"><span>04</span><strong>Heavy detector</strong><small id="heavyPrediction">Standby</small></div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node outcome" id="outcomeNode"><span>05</span><strong>Outcome</strong><small id="outcomeText">—</small></div>
+          </div>
+
+          <div class="signal-grid">
+            <div class="signal-card">
+              <div><span>Predictive uncertainty</span><strong id="uncertaintyValue">—</strong></div>
+              <div class="signal-track"><span id="uncertaintyBar"></span><i id="uncertaintyMarker"></i></div>
+              <small id="uncertaintyState">Waiting</small>
+            </div>
+            <div class="signal-card">
+              <div><span>Rare-attack probability</span><strong id="rareValue">—</strong></div>
+              <div class="signal-track"><span id="rareBar"></span><i id="rareMarker"></i></div>
+              <small id="rareState">Waiting</small>
+            </div>
+            <div class="signal-card">
+              <div><span>Traffic drift score</span><strong id="driftValue">—</strong></div>
+              <div class="signal-track"><span id="driftBar"></span><i id="driftMarker"></i></div>
+              <small id="driftState">Waiting</small>
+            </div>
+          </div>
+
+          <div class="explanation-box">
+            <div>
+              <p class="eyebrow">Policy explanation · not feature attribution</p>
+              <h3 id="explanationTitle">Select Start replay to inspect the first event.</h3>
+              <p id="explanationBody">The explanation reports which saved policy signals crossed their validation-selected thresholds. It does not claim causal or SHAP-based feature attribution.</p>
+            </div>
+            <div class="truth-box"><span>Ground truth</span><strong id="trueClass">—</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="simulation-summary">
+        <article class="panel compact-stat"><span>Window accuracy</span><strong id="windowAccuracy">—</strong><small id="windowAccuracyNote">Current replay window</small></article>
+        <article class="panel compact-stat"><span>Heavy-call ratio</span><strong id="windowHeavyRatio">—</strong><small id="windowHeavyNote">Current replay window</small></article>
+        <article class="panel compact-stat"><span>Projected inference time</span><strong id="projectedSeconds">—</strong><small id="projectedTimeNote">From measured runs</small></article>
+        <article class="panel compact-stat warning-stat"><span>Energy in joules</span><strong>Unavailable</strong><small>External power meter not used</small></article>
+      </div>
+
+      <div class="event-log panel">
+        <div class="panel-title"><span>Recent replay events</span><span class="table-note">Recorded event evidence</span></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Source index</th><th>Route</th><th>Trigger reason</th><th>Prediction</th><th>Truth</th><th>Result</th></tr></thead>
+          <tbody id="eventLogBody"><tr><td colspan="6" class="empty-cell">No events replayed yet.</td></tr></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section class="section evidence-section" id="evidence">
+      <div class="section-heading">
+        <div><p class="eyebrow">02 · Comparative evidence</p><h2>Performance, calibration, and resource profile</h2></div>
+        <p>Seed-aggregated final-v2 metrics are shown with no rank claim added by the interface. Use the dataset and metric controls to inspect where RareGuard-XIDS leads—and where it does not.</p>
+      </div>
+      <div class="evidence-controls panel">
+        <label for="evidenceDataset">Dataset<select id="evidenceDataset"></select></label>
+        <label for="metricSelect">Metric<select id="metricSelect">
+          <option value="f1_macro">Macro F1</option>
+          <option value="rare_f1_macro">Rare-class F1</option>
+          <option value="accuracy">Accuracy</option>
+          <option value="ece_15">ECE (lower is better)</option>
+        </select></label>
+        <div class="metric-context"><span id="evidenceRole" class="role-chip">—</span><small>Mean across saved seeds</small></div>
+      </div>
+      <div class="evidence-grid">
+        <article class="panel chart-panel">
+          <div class="panel-title"><span id="chartTitle">Model comparison</span><span id="chartDirection">Higher is better</span></div>
+          <div id="modelBars" class="model-bars" role="img" aria-label="Model comparison bar chart"></div>
+        </article>
+        <article class="panel evidence-callout">
+          <p class="eyebrow">Interpretation</p>
+          <h3 id="comparisonHeadline">Loading evidence…</h3>
+          <p id="comparisonNarrative">The console will describe the displayed values without turning a local lead into a universal superiority claim.</p>
+          <div class="callout-metrics">
+            <div><span>RareGuard-XIDS</span><strong id="rareguardMetric">—</strong></div>
+            <div><span>Best comparator</span><strong id="bestComparatorMetric">—</strong></div>
+            <div><span>Displayed difference</span><strong id="displayedDifference">—</strong></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="figure-gallery">
+        <figure><img src="assets/figures/central_macro_f1_ci.png" alt="Central macro F1 confidence interval plot"><figcaption>Central macro-F1 with confidence intervals</figcaption></figure>
+        <figure><img src="assets/figures/central_rare_f1_ci.png" alt="Central rare-class F1 confidence interval plot"><figcaption>Rare-class performance with confidence intervals</figcaption></figure>
+        <figure><img src="assets/figures/agentic_accuracy_compute_tradeoff.png" alt="Agentic accuracy and compute trade-off plot"><figcaption>Agentic accuracy–compute trade-off</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="section robustness-section" id="robustness">
+      <div class="section-heading">
+        <div><p class="eyebrow">03 · Stress tests and component evidence</p><h2>Robustness, ablation, continual, and federated findings</h2></div>
+        <p>These panels preserve negative and mixed findings. A failed comparison is shown as evidence—not corrected by presentation logic.</p>
+      </div>
+      <div class="research-grid">
+        <article class="panel research-panel">
+          <div class="panel-title"><span>Robustness gates</span><span id="robustnessScore">—</span></div>
+          <div id="robustnessList" class="finding-list"></div>
+        </article>
+        <article class="panel research-panel">
+          <div class="panel-title"><span>Ablation dominance</span><span id="ablationScore">—</span></div>
+          <div id="ablationList" class="finding-list"></div>
+        </article>
+        <article class="panel research-panel">
+          <div class="panel-title"><span>Continual-learning controls</span><span id="continualScore">—</span></div>
+          <div id="continualList" class="finding-list"></div>
+        </article>
+        <article class="panel research-panel">
+          <div class="panel-title"><span>Federated operating profile</span><span>Measured means</span></div>
+          <div id="federatedList" class="finding-list"></div>
+        </article>
+      </div>
+      <div class="figure-gallery two-up">
+        <figure><img src="assets/figures/robustness_primary_composite_gain.png" alt="Robustness primary composite gains"><figcaption>Primary-composite gain under perturbation</figcaption></figure>
+        <figure><img src="assets/figures/ablation_primary_composite.png" alt="Ablation primary composite plot"><figcaption>Full model versus component ablations</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="section reproducibility-section" id="reproducibility">
+      <div class="section-heading">
+        <div><p class="eyebrow">04 · Reproducibility and claim boundary</p><h2>Every visible claim stays attached to its source</h2></div>
+        <p>The console ships with a hashed source manifest, downloaded audit files, dataset split metadata, and the compact browser bundle generator.</p>
+      </div>
+      <div class="repro-grid">
+        <article class="panel gate-panel">
+          <div class="panel-title"><span>Readiness gates</span><span id="gateSummary">—</span></div>
+          <div id="gateList" class="gate-list"></div>
+        </article>
+        <article class="panel disclosure-panel">
+          <p class="eyebrow">Required disclosures</p>
+          <h3>What this simulation does not claim</h3>
+          <ul id="disclosureList"></ul>
+          <div class="download-links">
+            <a href="evidence/source/reports/PUBLICATION_EVIDENCE_AUDIT.md" download>Download evidence audit</a>
+            <a href="evidence/source/reports/PUBLICATION_READINESS.json" download>Download readiness JSON</a>
+            <a href="assets/data/evidence.json" download>Download browser evidence bundle</a>
+          </div>
+        </article>
+      </div>
+      <details class="panel manifest-panel">
+        <summary>View source integrity manifest <span id="manifestCount">— files</span></summary>
+        <div class="table-wrap"><table><thead><tr><th>Source artifact</th><th>Size</th><th>SHA-256</th></tr></thead><tbody id="manifestBody"></tbody></table></div>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    <div><strong>RareGuard-XIDS</strong><span>Evidence-backed research interface · final publication_v2 artifacts</span></div>
+    <div><span id="generatedAt">Evidence bundle loading…</span><button id="printButton" type="button">Print / save view</button></div>
+  </footer>
+
+  <div class="loading-overlay" id="loadingOverlay"><div class="loader"></div><p>Verifying evidence bundle…</p></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

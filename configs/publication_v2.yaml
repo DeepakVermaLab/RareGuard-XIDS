@@ -1,0 +1,110 @@
+project:
+  name: RareGuard-XIDS-publication-v2
+  protocol_revision: prototype-herding-v2
+  device: cpu
+  seeds: [42, 73, 101, 137, 211]
+
+paths:
+  source_artifact_root: artifacts/publication
+  artifact_root: artifacts/publication_v2
+  dataset_drive_root_id: 1PVuKm_nrBp96kVSaH_qbGDCsqSU40hnb
+  rclone_remote: "gdrive:"
+  dataset_mount_candidates:
+    - /content/drive/MyDrive/projects/Dataset/Security
+    - /content/drive/MyDrive/projects/Datasets/Security
+    - /content/drive/MyDrive/Dataset/Security
+    - /content/drive/MyDrive/Datasets/Security
+
+data:
+  remote_window_bytes: 2097152
+  remote_windows_per_file: 4
+  remote_workers: 2
+  max_rows_per_source_file: 2000
+  max_rows_per_class: 3000
+  max_total_rows: 60000
+  test_size: 0.20
+  validation_size: 0.10
+  min_rare_class_ratio: 0.01
+  duplicate_decimals: 6
+  feature_clip_value: 10.0
+
+training:
+  batch_size: 512
+  epochs: 25
+  early_stop_patience: 8
+  learning_rate: 0.003
+  weight_decay: 0.0001
+  class_balance_beta: 0.999
+  focal_gamma: 2.0
+  focal_mix: 0.0
+  rare_sampler_power: 0.0
+  contrastive_weight: 0.10
+  prototype_weight: 0.05
+  contrastive_temperature: 0.2
+
+model:
+  latent_dim: 64
+  hidden_dim: 128
+  dropout: 0.20
+  prototype_initial_scale: 1.0
+  prototype_gate_bias: -2.0
+
+protocol:
+  models: [NOVA-XIDS, RareGuard-XIDS]
+  ablations: [full, no_class_balance, no_contrastive, no_prototype, no_direct_path]
+  ablation_seeds: [42, 73, 101]
+  confidence_level: 0.95
+  locked_test: true
+  allow_legacy_preprocessed_input: false
+  development_datasets: [cse_cic_ids2018, edge_iiotset, cic_bccc_nrc_tabulariotattack_2024, cic_iiot_2025_datasense]
+  confirmation_datasets: [ciciot2023, ton_iot]
+  confirmatory_device: cpu
+
+tuning:
+  device: cpu
+  seeds: [42, 73, 101]
+  focal_mix: [0.0, 0.1, 0.25, 0.5]
+  rare_sampler_power: [0.0, 0.25, 0.5]
+  contrastive_weight: [0.0, 0.05, 0.1]
+
+adaptive_tuning:
+  device: cpu
+  seeds: [42, 73, 101]
+  focal_mix: [0.0, 0.5, 1.0]
+  rare_sampler_power: [0.0, 0.25]
+  contrastive_weight: [0.1]
+
+federated:
+  seeds: [42, 73, 101]
+  clients: 5
+  rounds: 5
+  local_epochs: 1
+  non_iid_alpha: 0.5
+  dropout_rate: 0.10
+  proximal_mu: 0.01
+
+continual:
+  seeds: [42, 73, 101]
+  tasks: 4
+  epochs_per_task: 3
+  early_stop_patience: 2
+  memory_size: 1500
+  max_current_samples_per_task: 12000
+  memory_selection: balanced_prototype_herding
+  validation_gated_imprinting: true
+
+robustness:
+  feature_mask_fraction: [0.10, 0.25]
+  gaussian_noise_std: [0.05, 0.10]
+
+agent:
+  uncertainty_threshold: 0.35
+  rare_probability_threshold: 0.25
+  drift_threshold: 0.15
+  uncertainty_grid: [0.15, 0.25, 0.35, 0.45]
+  rare_probability_grid: [0.10, 0.20, 0.30, 0.40]
+  drift_grid: [0.10, 0.15, 0.25]
+  adaptive_quantiles: [0.50, 0.70, 0.80, 0.90, 0.95, 0.975]
+  min_heavy_call_ratio: 0.05
+  max_heavy_call_ratio: 0.90
+  compute_penalty: 0.02

@@ -1,0 +1,66 @@
+[NbConvertApp] Converting notebook notebooks/17_v2_continual.ipynb to notebook
+/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.
+  _validate(nbdict, ref, version, version_minor, relax_add_props)
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+2026-10-24 04:09:06,476 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=42 RareGuard-FineTune
+2026-10-24 04:09:06,477 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:06,477 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=42 RareGuard-Continual
+2026-10-24 04:09:06,477 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=73 RareGuard-FineTune
+2026-10-24 04:09:06,477 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:06,478 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=73 RareGuard-Continual
+2026-10-24 04:09:06,478 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=101 RareGuard-FineTune
+2026-10-24 04:09:06,478 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:06,478 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=101 RareGuard-Continual
+2026-10-24 04:09:09,569 | INFO | rareguard | Skipping completed edge_iiotset seed=42 RareGuard-FineTune
+2026-10-24 04:09:09,570 | INFO | rareguard | Skipping completed edge_iiotset seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:09,570 | INFO | rareguard | Skipping completed edge_iiotset seed=42 RareGuard-Continual
+2026-10-24 04:09:09,570 | INFO | rareguard | Skipping completed edge_iiotset seed=73 RareGuard-FineTune
+2026-10-24 04:09:09,571 | INFO | rareguard | Skipping completed edge_iiotset seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:09,571 | INFO | rareguard | Skipping completed edge_iiotset seed=73 RareGuard-Continual
+2026-10-24 04:09:09,571 | INFO | rareguard | Skipping completed edge_iiotset seed=101 RareGuard-FineTune
+2026-10-24 04:09:09,572 | INFO | rareguard | Skipping completed edge_iiotset seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:09,572 | INFO | rareguard | Skipping completed edge_iiotset seed=101 RareGuard-Continual
+2026-10-24 04:09:12,734 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-FineTune
+2026-10-24 04:09:12,735 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:12,735 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-Continual
+2026-10-24 04:09:12,735 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-FineTune
+2026-10-24 04:09:12,735 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:12,736 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-Continual
+2026-10-24 04:09:12,736 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-FineTune
+2026-10-24 04:09:12,736 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:12,736 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-Continual
+2026-10-24 04:09:15,866 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=42 RareGuard-FineTune
+2026-10-24 04:09:15,867 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:15,868 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=42 RareGuard-Continual
+2026-10-24 04:09:15,868 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=73 RareGuard-FineTune
+2026-10-24 04:09:15,868 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:15,868 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=73 RareGuard-Continual
+2026-10-24 04:09:15,869 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=101 RareGuard-FineTune
+2026-10-24 04:09:15,869 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:15,869 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=101 RareGuard-Continual
+2026-10-24 04:09:18,948 | INFO | rareguard | Skipping completed ciciot2023 seed=42 RareGuard-FineTune
+2026-10-24 04:09:18,949 | INFO | rareguard | Skipping completed ciciot2023 seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:18,949 | INFO | rareguard | Skipping completed ciciot2023 seed=42 RareGuard-Continual
+2026-10-24 04:09:18,949 | INFO | rareguard | Skipping completed ciciot2023 seed=73 RareGuard-FineTune
+2026-10-24 04:09:18,950 | INFO | rareguard | Skipping completed ciciot2023 seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:18,950 | INFO | rareguard | Skipping completed ciciot2023 seed=73 RareGuard-Continual
+2026-10-24 04:09:18,950 | INFO | rareguard | Skipping completed ciciot2023 seed=101 RareGuard-FineTune
+2026-10-24 04:09:18,950 | INFO | rareguard | Skipping completed ciciot2023 seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:18,950 | INFO | rareguard | Skipping completed ciciot2023 seed=101 RareGuard-Continual
+2026-10-24 04:09:22,032 | INFO | rareguard | Skipping completed ton_iot seed=42 RareGuard-FineTune
+2026-10-24 04:09:22,033 | INFO | rareguard | Skipping completed ton_iot seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:22,033 | INFO | rareguard | Skipping completed ton_iot seed=42 RareGuard-Continual
+2026-10-24 04:09:22,033 | INFO | rareguard | Skipping completed ton_iot seed=73 RareGuard-FineTune
+2026-10-24 04:09:22,034 | INFO | rareguard | Skipping completed ton_iot seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:22,034 | INFO | rareguard | Skipping completed ton_iot seed=73 RareGuard-Continual
+2026-10-24 04:09:22,034 | INFO | rareguard | Skipping completed ton_iot seed=101 RareGuard-FineTune
+2026-10-24 04:09:22,035 | INFO | rareguard | Skipping completed ton_iot seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:22,035 | INFO | rareguard | Skipping completed ton_iot seed=101 RareGuard-Continual
+[NbConvertApp] Writing 79527 bytes to notebooks/17_v2_continual.ipynb

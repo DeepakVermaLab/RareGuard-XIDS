@@ -152,6 +152,8 @@ def build_model(variant: Variant, input_dim: int, classes: int, config: dict) ->
             **common,
             use_prototypes=variant.prototypes,
             use_direct_path=variant.direct_path,
+            prototype_initial_scale=float(config["model"].get("prototype_initial_scale", 1.0)),
+            prototype_gate_bias=float(config["model"].get("prototype_gate_bias", -2.0)),
         )
     return NovaXIDSNet(**common)
 

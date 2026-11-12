@@ -5,6 +5,7 @@ import io
 import json
 import subprocess
 import time
+from urllib.parse import unquote, urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, asdict
 from pathlib import Path
@@ -35,6 +36,14 @@ IDENTIFIER_TOKENS = (
 class RemoteFile:
     path: str
     size: int
+
+
+def _filesystem_root(remote: str) -> Path | None:
+    """Return the mounted filesystem root for a file:// acquisition backend."""
+    parsed = urlparse(remote)
+    if parsed.scheme != "file":
+        return None
+    return Path(unquote(parsed.path))
 
 
 def _run(args: list[str], attempts: int = 4, timeout_seconds: int = 180) -> bytes:
@@ -72,6 +81,16 @@ def _run(args: list[str], attempts: int = 4, timeout_seconds: int = 180) -> byte
 
 def list_remote_csvs(remote: str, folder: str, root_id: str, csv_root: str = "") -> list[RemoteFile]:
     listing_root = "/".join(part.strip("/") for part in [folder, csv_root] if part)
+    filesystem_root = _filesystem_root(remote)
+    if filesystem_root is not None:
+        source_root = filesystem_root / listing_root
+        if not source_root.is_dir():
+            return []
+        return [
+            RemoteFile(path.relative_to(filesystem_root).as_posix(), path.stat().st_size)
+            for path in sorted(source_root.rglob("*.csv"))
+            if path.is_file() and not path.name.startswith("._")
+        ]
     output = _run(
         [
             "rclone",
@@ -99,6 +118,12 @@ def list_remote_csvs(remote: str, folder: str, root_id: str, csv_root: str = "")
 
 
 def _cat_range(remote: str, path: str, root_id: str, offset: int, count: int) -> bytes:
+    filesystem_root = _filesystem_root(remote)
+    if filesystem_root is not None:
+        source = filesystem_root / path
+        with source.open("rb") as handle:
+            handle.seek(offset)
+            return handle.read(count)
     return _run(
         [
             "rclone",
@@ -131,23 +156,65 @@ def source_filename_labels(paths: pd.Series) -> pd.Series:
     return paths.astype(str).map(lambda value: Path(value).stem.strip())
 
 
+def compact_source_frame(
+    frame: pd.DataFrame,
+    label_candidates: list[str],
+    max_rows: int,
+    seed: int,
+    label_from_source_filename: bool = False,
+) -> pd.DataFrame:
+    """Bound per-source memory while retaining deterministic class coverage."""
+    if max_rows <= 0 or len(frame) <= max_rows:
+        return frame
+    normalized = frame.copy()
+    normalized.columns = [str(col).strip().replace(" ", "_") for col in normalized.columns]
+    if label_from_source_filename:
+        return normalized.sample(max_rows, random_state=seed).sort_index()
+    candidates = [candidate.strip().replace(" ", "_") for candidate in label_candidates]
+    label = next((candidate for candidate in candidates if candidate in normalized.columns), None)
+    if label is None:
+        lowered = {str(col).lower(): col for col in normalized.columns}
+        label = next(
+            (lowered[name] for name in ["label", "label4", "attack_label", "attack_type"] if name in lowered),
+            None,
+        )
+    if label is None:
+        return normalized.sample(max_rows, random_state=seed).sort_index()
+    groups = list(normalized.groupby(label, dropna=False, sort=True))
+    per_class = max(1, max_rows // max(1, len(groups)))
+    selected = [group.sample(min(len(group), per_class), random_state=seed) for _, group in groups]
+    compacted = pd.concat(selected).sort_index()
+    remaining = max_rows - len(compacted)
+    if remaining > 0:
+        residual = normalized.drop(index=compacted.index)
+        if not residual.empty:
+            compacted = pd.concat(
+                [compacted, residual.sample(min(len(residual), remaining), random_state=seed)]
+            ).sort_index()
+    return compacted
+
+
 def sample_remote_csv(
     remote: str,
     source: RemoteFile,
     root_id: str,
     window_bytes: int,
     windows: int,
+    full_file: bool = False,
 ) -> pd.DataFrame:
     header = _header(remote, source.path, root_id)
-    max_offset = max(0, source.size - window_bytes)
-    offsets = sorted({int(value) for value in np.linspace(0, max_offset, max(1, windows))})
+    effective_window_bytes = source.size if full_file else window_bytes
+    max_offset = max(0, source.size - effective_window_bytes)
+    offsets = [0] if full_file else sorted({int(value) for value in np.linspace(0, max_offset, max(1, windows))})
     frames: list[pd.DataFrame] = []
     for offset in offsets:
-        payload = _cat_range(remote, source.path, root_id, offset, min(window_bytes, source.size - offset))
+        payload = _cat_range(remote, source.path, root_id, offset, min(effective_window_bytes, source.size - offset))
         lines = payload.splitlines()
+        if offset == 0 and lines and lines[0] == header:
+            lines = lines[1:]
         if offset > 0 and lines:
             lines = lines[1:]
-        if offset + window_bytes < source.size and lines:
+        if offset + effective_window_bytes < source.size and lines:
             lines = lines[:-1]
         if not lines:
             continue
@@ -178,6 +245,8 @@ def build_remote_sample(
     csv_root: str = "",
     workers: int = 4,
     label_from_source_filename: bool = False,
+    max_rows_per_source_file: int = 0,
+    full_file: bool = False,
 ) -> tuple[Path, str, dict[str, object]]:
     files = list_remote_csvs(remote, folder, root_id, csv_root)
     if not files:
@@ -185,27 +254,38 @@ def build_remote_sample(
     part_dir = output_dir / "range_parts"
     part_dir.mkdir(parents=True, exist_ok=True)
 
-    def load_or_sample(item: RemoteFile) -> pd.DataFrame:
+    def load_or_sample(item: RemoteFile) -> tuple[int, pd.DataFrame]:
         cache_key = hashlib.sha1(
-            f"{item.path}|{item.size}|{window_bytes}|{windows}".encode("utf-8")
+            f"{item.path}|{item.size}|{window_bytes}|{windows}|full={full_file}".encode("utf-8")
         ).hexdigest()
         cache_path = part_dir / f"{cache_key}.parquet"
         if cache_path.exists():
-            return pd.read_parquet(cache_path)
-        sampled_frame = sample_remote_csv(remote, item, root_id, window_bytes, windows)
-        sampled_frame = parquet_compatible(sampled_frame)
-        sampled_frame.to_parquet(cache_path, index=False)
-        return sampled_frame
+            sampled_frame = pd.read_parquet(cache_path)
+        else:
+            sampled_frame = sample_remote_csv(remote, item, root_id, window_bytes, windows, full_file)
+            sampled_frame = parquet_compatible(sampled_frame)
+            sampled_frame.to_parquet(cache_path, index=False)
+        observed_rows = len(sampled_frame)
+        source_seed = (seed + int(hashlib.sha1(item.path.encode("utf-8")).hexdigest()[:8], 16)) % (2**32)
+        sampled_frame = compact_source_frame(
+            sampled_frame,
+            label_candidates,
+            max_rows_per_source_file,
+            source_seed,
+            label_from_source_filename,
+        )
+        return observed_rows, sampled_frame
 
     with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
         pending = {executor.submit(load_or_sample, item): item for item in files}
-        loaded_frames: list[tuple[str, pd.DataFrame]] = []
+        loaded_frames: list[tuple[str, int, pd.DataFrame]] = []
         for future in as_completed(pending):
             item = pending[future]
-            frame = future.result()
-            loaded_frames.append((item.path, frame))
-            print(f"Sampled {item.path}: {len(frame):,} rows")
-    frames = [frame for _, frame in sorted(loaded_frames, key=lambda pair: pair[0])]
+            observed_rows, frame = future.result()
+            loaded_frames.append((item.path, observed_rows, frame))
+            print(f"Sampled {item.path}: observed={observed_rows:,} retained={len(frame):,} rows")
+    loaded_frames.sort(key=lambda item: item[0])
+    frames = [frame for _, _, frame in loaded_frames]
     frames = [frame for frame in frames if not frame.empty]
     if not frames:
         raise ValueError(f"No CSV rows could be sampled from {folder}")
@@ -249,6 +329,8 @@ def build_remote_sample(
         "csv_root": csv_root,
         "remote_files": len(files),
         "sampled_files": len(frames),
+        "rows_observed_in_windows": int(sum(observed for _, observed, _ in loaded_frames)),
+        "rows_after_source_cap": int(sum(len(item) for item in frames)),
         "rows_before_class_cap": int(sum(len(item) for item in frames)),
         "rows_after_class_cap": int(len(frame)),
         "classes": int(frame[label].nunique()),
@@ -256,12 +338,19 @@ def build_remote_sample(
         "label_source": "source_filename" if label_from_source_filename else "csv_column",
         "window_bytes": window_bytes,
         "windows_per_file": windows,
+        "full_file_mode": full_file,
         "parallel_workers": workers,
+        "max_rows_per_source_file": max_rows_per_source_file,
         "source_concatenation_order": "lexicographic_remote_path",
         "max_rows_per_class": max_rows_per_class,
         "max_total_rows": max_total_rows,
         "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-        "evidence": "remote_range_sample_from_canonical_drive_dataset",
+        "source_transport": "mounted_google_drive" if _filesystem_root(remote) is not None else "rclone_drive_api",
+        "evidence": (
+            "mounted_drive_range_sample_from_canonical_drive_dataset"
+            if _filesystem_root(remote) is not None
+            else "remote_range_sample_from_canonical_drive_dataset"
+        ),
     }
     (output_dir / "acquisition_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     return path, str(label), metadata

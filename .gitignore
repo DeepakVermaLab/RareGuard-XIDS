@@ -4,6 +4,7 @@ __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
 .venv/
+.venv-test/
 venv/
 build/
 dist/
@@ -16,6 +17,7 @@ artifacts/results/*
 artifacts/figures/*
 artifacts/reports/*
 artifacts/publication/
+artifacts/publication_v2/
 artifacts/smoke/
 !artifacts/processed/.gitkeep
 !artifacts/features/.gitkeep
@@ -24,4 +26,20 @@ artifacts/smoke/
 !artifacts/figures/.gitkeep
 !artifacts/reports/.gitkeep
 !artifacts/logs/.gitkeep
+
+# Large research artifacts remain on the canonical Drive, not in Git.
+*.joblib
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.onnx
+*.npy
+*.npz
+*.parquet
+*.feather
+
+# Local agent/session continuity documents are not repository deliverables.
+AGENTS.md
+PROJECT_HANDOFF.md
 

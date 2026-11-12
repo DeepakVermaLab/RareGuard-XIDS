@@ -1,0 +1,32 @@
+ROBUSTNESS_CONFIRM_START=2026-10-24T03:20:59+00:00
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/gdrive/MyDrive/projects/implementation/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION/src/rareguard/experiments/run_publication_robustness.py", line 138, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/content/gdrive/MyDrive/projects/implementation/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION/src/rareguard/experiments/run_publication_robustness.py", line 92, in main
+    raise RuntimeError(f"Missing unique central model for {dataset} seed={seed} {label}")
+RuntimeError: Missing unique central model for ciciot2023 seed=73 NOVA-XIDS
+ROBUSTNESS_CONFIRM_FAIL dataset=ciciot2023 rc=1 time=2026-10-24T03:21:25+00:00
+ROBUSTNESS_CONFIRM_START=2026-10-24T03:54:45+00:00
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/gdrive/MyDrive/projects/implementation/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION/src/rareguard/experiments/run_publication_robustness.py", line 138, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/content/gdrive/MyDrive/projects/implementation/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION/src/rareguard/experiments/run_publication_robustness.py", line 92, in main
+    raise RuntimeError(f"Missing unique central model for {dataset} seed={seed} {label}")
+RuntimeError: Missing unique central model for ciciot2023 seed=101 NOVA-XIDS
+ROBUSTNESS_CONFIRM_FAIL dataset=ciciot2023 rc=1 time=2026-10-24T03:55:11+00:00
+ROBUSTNESS_CONFIRM_RESUME_START=2026-10-24T05:35:58.549672+00:00
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/gdrive/MyDrive/projects/implementation/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION/src/rareguard/experiments/run_publication_robustness.py", line 138, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/content/gdrive/MyDrive/projects/implementation/RareGuard-XIDS[DeepakSir]/IMPLEMENTATION/src/rareguard/experiments/run_publication_robustness.py", line 92, in main
+    raise RuntimeError(f"Missing unique central model for {dataset} seed={seed} {label}")
+RuntimeError: Missing unique central model for ciciot2023 seed=137 NOVA-XIDS

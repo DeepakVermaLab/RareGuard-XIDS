@@ -1,0 +1,95 @@
+{
+  "status": "NOT_READY",
+  "gates": {
+    "all_data_splits_ready": true,
+    "validation_only_tuning_complete": true,
+    "selected_hyperparameters_frozen": true,
+    "deterministic_confirmatory_device_match": true,
+    "central_complete": true,
+    "classical_baselines_complete": true,
+    "continual_complete": true,
+    "federated_complete": true,
+    "agentic_complete": true,
+    "agent_validation_selection_complete": true,
+    "robustness_complete": true,
+    "confirmation_rareguard_robustness_superiority": false,
+    "confirmation_locked_test_once_per_preregistered_run": true,
+    "confirmation_rareguard_mean_superiority_macro_and_rare": false,
+    "full_model_beats_all_ablations_primary_composite": false,
+    "continual_memory_beats_replay_controls": false,
+    "agent_improves_over_light_with_partial_escalation": false,
+    "joule_energy_claim_supported": false,
+    "full_corpus_reproduction": false
+  },
+  "expected_rows": {
+    "tuning": 72,
+    "baselines": 90,
+    "central": 132,
+    "continual": 54,
+    "federated": 72,
+    "agentic": 90,
+    "agent_validation_selections": 30,
+    "robustness": 240
+  },
+  "observed_rows": {
+    "tuning": 72,
+    "baselines": 90,
+    "central": 132,
+    "continual": 54,
+    "federated": 72,
+    "agentic": 90,
+    "agent_validation_selections": 30,
+    "robustness": 240
+  },
+  "dataset_roles": {
+    "development": [
+      "cic_bccc_nrc_tabulariotattack_2024",
+      "cic_iiot_2025_datasense",
+      "cse_cic_ids2018",
+      "edge_iiotset"
+    ],
+    "external_confirmation": [
+      "ciciot2023",
+      "ton_iot"
+    ]
+  },
+  "data_checks": [
+    {
+      "dataset": "cse_cic_ids2018",
+      "ready": true,
+      "detail": "{'train_val': 0, 'train_test': 0, 'val_test': 0}",
+      "evidence": "remote_range_sample_from_canonical_drive_dataset"
+    },
+    {
+      "dataset": "cic_bccc_nrc_tabulariotattack_2024",
+      "ready": true,
+      "detail": "{'train_val': 0, 'train_test': 0, 'val_test': 0}",
+      "evidence": "remote_range_sample_from_canonical_drive_dataset"
+    },
+    {
+      "dataset": "cic_iiot_2025_datasense",
+      "ready": true,
+      "detail": "{'train_val': 0, 'train_test': 0, 'val_test': 0}",
+      "evidence": "remote_range_sample_from_canonical_drive_dataset"
+    },
+    {
+      "dataset": "edge_iiotset",
+      "ready": true,
+      "detail": "{'train_val': 0, 'train_test': 0, 'val_test': 0}",
+      "evidence": "remote_range_sample_from_canonical_drive_dataset"
+    },
+    {
+      "dataset": "ciciot2023",
+      "ready": true,
+      "detail": "{'train_val': 0, 'train_test': 0, 'val_test': 0}",
+      "evidence": "mounted_drive_range_sample_from_canonical_drive_dataset"
+    },
+    {
+      "dataset": "ton_iot",
+      "ready": true,
+      "detail": "{'train_val': 0, 'train_test': 0, 'val_test': 0}",
+      "evidence": "mounted_drive_range_sample_from_canonical_drive_dataset"
+    }
+  ],
+  "evidence_boundary": "Current experiments use bounded deterministic range samples across canonical Drive CSV files, not every source row. No full-corpus claim is permitted. No energy-in-joules claim is permitted without an external hardware power meter."
+}

@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this research implementation, please cite the associated RareGuard-XIDS manuscript."
+title: "RareGuard-XIDS: Rare-Attack-Aware Agentic and Continual Intrusion Detection"
+type: software
+authors:
+  - family-names: "Verma"
+    given-names: "Deepak"
+repository-code: "https://github.com/DeepakVermaLab/RareGuard-XIDS"
+url: "https://deepakvermalab.github.io/RareGuard-XIDS-Simulation/"
+version: 0.1.0
+date-released: 2026-11-12
+keywords:
+  - intrusion detection
+  - rare attacks
+  - continual learning
+  - federated learning
+  - agentic AI

@@ -1,0 +1,106 @@
+{
+  "dataset": "cse_cic_ids2018",
+  "seed": 42,
+  "rows": 21136,
+  "features": 78,
+  "classes": 13,
+  "class_mapping": {
+    "Benign": 0,
+    "Bot": 1,
+    "Brute Force -Web": 2,
+    "Brute Force -XSS": 3,
+    "DDOS attack-HOIC": 4,
+    "DDOS attack-LOIC-UDP": 5,
+    "DDoS attacks-LOIC-HTTP": 6,
+    "DoS attacks-GoldenEye": 7,
+    "DoS attacks-Hulk": 8,
+    "DoS attacks-SlowHTTPTest": 9,
+    "FTP-BruteForce": 10,
+    "Infilteration": 11,
+    "SQL Injection": 12
+  },
+  "split_rows": {
+    "train": 14794,
+    "validation": 2114,
+    "test": 4228
+  },
+  "split_class_counts": {
+    "train": [
+      2076,
+      1243,
+      385,
+      158,
+      1789,
+      1211,
+      2100,
+      2100,
+      2021,
+      25,
+      21,
+      1611,
+      54
+    ],
+    "validation": [
+      297,
+      177,
+      55,
+      23,
+      255,
+      173,
+      300,
+      300,
+      289,
+      4,
+      3,
+      230,
+      8
+    ],
+    "test": [
+      593,
+      355,
+      110,
+      46,
+      511,
+      346,
+      600,
+      600,
+      578,
+      7,
+      6,
+      460,
+      16
+    ]
+  },
+  "rejected_non_numeric_columns": [
+    "Src_Port"
+  ],
+  "duplicate_decimals": 6,
+  "exact_duplicate_rows_removed": 0,
+  "feature_duplicate_rows_removed": 5089,
+  "conflicting_feature_rows_removed": 2338,
+  "duplicate_hash_overlap": {
+    "train_val": 0,
+    "train_test": 0,
+    "val_test": 0
+  },
+  "transform_fit_scope": "training_only",
+  "post_transform_clip": [
+    -10.0,
+    10.0
+  ],
+  "test_locked": true,
+  "source_sha256": "18a107445f9e3f10d0f5272f13ef135e960e8fc3bd543ef728f9aeed5d2c488c",
+  "array_content_sha256": {
+    "X_train": "cff718df6e5332479209de7b7bc13db44ddf36e7f8d34739e98284af9dc5f58b",
+    "X_val": "09ab0e01e5b6ce4e923b2afdb3bdf367ff0736ebe71c1f0c75ae7aa097c8f0f6",
+    "X_test": "98cbd751c2a7ea56e4902e76a1e48490f1b9af49532e30308608b21722422bd4",
+    "y_train": "63e69b4b951adbe45d26c28342fb166da1ee42ba8282a5146183673a0a7bfcce",
+    "y_val": "8503f580f86205642e3e297997a55f58d8237ee8045a9ee525b477e9194a80f1",
+    "y_test": "99ea919bc8394ea36f4000fbecc3a9b694cdbf1ecd5d8eebe4b219672dd9fc4d",
+    "train_indices": "c1ff1b99c3c45dbd8db07492470835e926cbcde5ec94e29fb8dc0ee709d5a6d4",
+    "val_indices": "6b47efabfac3d4e3e423f6ff453d934abf89439b59bf77446c0b99aa4341ce57",
+    "test_indices": "edab5e00ee4dfa8535b75f570da675689403ccff51cc644dd2ae2943fb5d87ea",
+    "feature_names": "67a47c16665365d17f21e546927a1c5e461ba9edc09946f74f400396a2e2c222"
+  },
+  "ready": true
+}

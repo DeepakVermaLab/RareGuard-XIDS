@@ -1,0 +1,198 @@
+2026-10-24 01:52:56,276 | INFO | rareguard | Starting cse_cic_ids2018 seed=42 RareGuard-FineTune device=cuda
+2026-10-24 01:53:00,761 | INFO | rareguard | cse_cic_ids2018 seed=42 RareGuard-FineTune test_f1_macro=0.4928 rare_f1=0.2089 forgetting=0.0939
+2026-10-24 01:53:00,897 | INFO | rareguard | Starting cse_cic_ids2018 seed=42 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:53:03,843 | INFO | rareguard | cse_cic_ids2018 seed=42 RareGuard-ReservoirReplay test_f1_macro=0.7400 rare_f1=0.2507 forgetting=0.2849
+2026-10-24 01:53:03,979 | INFO | rareguard | Starting cse_cic_ids2018 seed=42 RareGuard-Continual device=cuda
+2026-10-24 01:53:07,896 | INFO | rareguard | cse_cic_ids2018 seed=42 RareGuard-Continual test_f1_macro=0.6437 rare_f1=0.1270 forgetting=0.0564
+2026-10-24 01:53:08,036 | INFO | rareguard | Starting cse_cic_ids2018 seed=73 RareGuard-FineTune device=cuda
+2026-10-24 01:53:10,446 | INFO | rareguard | cse_cic_ids2018 seed=73 RareGuard-FineTune test_f1_macro=0.7092 rare_f1=0.2589 forgetting=0.1753
+2026-10-24 01:53:10,577 | INFO | rareguard | Starting cse_cic_ids2018 seed=73 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:53:13,489 | INFO | rareguard | cse_cic_ids2018 seed=73 RareGuard-ReservoirReplay test_f1_macro=0.7239 rare_f1=0.2711 forgetting=0.4287
+2026-10-24 01:53:13,623 | INFO | rareguard | Starting cse_cic_ids2018 seed=73 RareGuard-Continual device=cuda
+2026-10-24 01:53:17,523 | INFO | rareguard | cse_cic_ids2018 seed=73 RareGuard-Continual test_f1_macro=0.7404 rare_f1=0.2619 forgetting=0.1838
+2026-10-24 01:53:17,654 | INFO | rareguard | Starting cse_cic_ids2018 seed=101 RareGuard-FineTune device=cuda
+2026-10-24 01:53:20,057 | INFO | rareguard | cse_cic_ids2018 seed=101 RareGuard-FineTune test_f1_macro=0.6989 rare_f1=0.2981 forgetting=0.0762
+2026-10-24 01:53:20,204 | INFO | rareguard | Starting cse_cic_ids2018 seed=101 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:53:23,106 | INFO | rareguard | cse_cic_ids2018 seed=101 RareGuard-ReservoirReplay test_f1_macro=0.7646 rare_f1=0.3434 forgetting=0.1196
+2026-10-24 01:53:23,257 | INFO | rareguard | Starting cse_cic_ids2018 seed=101 RareGuard-Continual device=cuda
+2026-10-24 01:53:27,090 | INFO | rareguard | cse_cic_ids2018 seed=101 RareGuard-Continual test_f1_macro=0.6755 rare_f1=0.1306 forgetting=0.3094
+2026-10-24 01:53:30,741 | INFO | rareguard | Starting edge_iiotset seed=42 RareGuard-FineTune device=cuda
+2026-10-24 01:53:35,309 | INFO | rareguard | edge_iiotset seed=42 RareGuard-FineTune test_f1_macro=0.4105 rare_f1=0.0116 forgetting=0.1694
+2026-10-24 01:53:35,444 | INFO | rareguard | Starting edge_iiotset seed=42 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:53:38,151 | INFO | rareguard | edge_iiotset seed=42 RareGuard-ReservoirReplay test_f1_macro=0.8207 rare_f1=0.3226 forgetting=0.2466
+2026-10-24 01:53:38,285 | INFO | rareguard | Starting edge_iiotset seed=42 RareGuard-Continual device=cuda
+2026-10-24 01:53:42,163 | INFO | rareguard | edge_iiotset seed=42 RareGuard-Continual test_f1_macro=0.7364 rare_f1=0.5000 forgetting=0.0848
+2026-10-24 01:53:42,312 | INFO | rareguard | Starting edge_iiotset seed=73 RareGuard-FineTune device=cuda
+2026-10-24 01:53:44,688 | INFO | rareguard | edge_iiotset seed=73 RareGuard-FineTune test_f1_macro=0.2718 rare_f1=0.0637 forgetting=0.1979
+2026-10-24 01:53:44,834 | INFO | rareguard | Starting edge_iiotset seed=73 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:53:47,710 | INFO | rareguard | edge_iiotset seed=73 RareGuard-ReservoirReplay test_f1_macro=0.8380 rare_f1=0.5556 forgetting=0.1937
+2026-10-24 01:53:47,843 | INFO | rareguard | Starting edge_iiotset seed=73 RareGuard-Continual device=cuda
+2026-10-24 01:53:51,713 | INFO | rareguard | edge_iiotset seed=73 RareGuard-Continual test_f1_macro=0.7300 rare_f1=0.2500 forgetting=0.0914
+2026-10-24 01:53:51,857 | INFO | rareguard | Starting edge_iiotset seed=101 RareGuard-FineTune device=cuda
+2026-10-24 01:53:54,363 | INFO | rareguard | edge_iiotset seed=101 RareGuard-FineTune test_f1_macro=0.5069 rare_f1=0.0149 forgetting=0.1216
+2026-10-24 01:53:54,507 | INFO | rareguard | Starting edge_iiotset seed=101 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:53:57,241 | INFO | rareguard | edge_iiotset seed=101 RareGuard-ReservoirReplay test_f1_macro=0.8201 rare_f1=0.3448 forgetting=0.1986
+2026-10-24 01:53:57,379 | INFO | rareguard | Starting edge_iiotset seed=101 RareGuard-Continual device=cuda
+2026-10-24 01:54:01,260 | INFO | rareguard | edge_iiotset seed=101 RareGuard-Continual test_f1_macro=0.6675 rare_f1=0.1389 forgetting=0.0959
+2026-10-24 01:54:05,268 | INFO | rareguard | Starting cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-FineTune device=cuda
+2026-10-24 01:54:10,606 | INFO | rareguard | cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-FineTune test_f1_macro=0.3204 rare_f1=0.0087 forgetting=0.0591
+2026-10-24 01:54:10,755 | INFO | rareguard | Starting cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:54:14,388 | INFO | rareguard | cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-ReservoirReplay test_f1_macro=0.4631 rare_f1=0.1839 forgetting=0.0593
+2026-10-24 01:54:14,533 | INFO | rareguard | Starting cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-Continual device=cuda
+2026-10-24 01:54:19,360 | INFO | rareguard | cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-Continual test_f1_macro=0.4246 rare_f1=0.0224 forgetting=0.0716
+2026-10-24 01:54:19,505 | INFO | rareguard | Starting cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-FineTune device=cuda
+2026-10-24 01:54:22,517 | INFO | rareguard | cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-FineTune test_f1_macro=0.2124 rare_f1=0.0062 forgetting=0.1247
+2026-10-24 01:54:22,659 | INFO | rareguard | Starting cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:54:26,191 | INFO | rareguard | cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-ReservoirReplay test_f1_macro=0.4578 rare_f1=0.0522 forgetting=0.0782
+2026-10-24 01:54:26,332 | INFO | rareguard | Starting cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-Continual device=cuda
+2026-10-24 01:54:30,973 | INFO | rareguard | cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-Continual test_f1_macro=0.4247 rare_f1=0.0237 forgetting=0.0582
+2026-10-24 01:54:31,112 | INFO | rareguard | Starting cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-FineTune device=cuda
+2026-10-24 01:54:34,198 | INFO | rareguard | cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-FineTune test_f1_macro=0.2537 rare_f1=0.0075 forgetting=0.0933
+2026-10-24 01:54:34,342 | INFO | rareguard | Starting cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:54:37,892 | INFO | rareguard | cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-ReservoirReplay test_f1_macro=0.4158 rare_f1=0.0180 forgetting=0.0654
+2026-10-24 01:54:38,033 | INFO | rareguard | Starting cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-Continual device=cuda
+2026-10-24 01:54:42,855 | INFO | rareguard | cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-Continual test_f1_macro=0.4162 rare_f1=0.0331 forgetting=0.0690
+2026-10-24 01:54:46,656 | INFO | rareguard | Starting cic_iiot_2025_datasense seed=42 RareGuard-FineTune device=cuda
+2026-10-24 01:54:50,642 | INFO | rareguard | cic_iiot_2025_datasense seed=42 RareGuard-FineTune test_f1_macro=0.4807 rare_f1=0.4166 forgetting=0.0382
+2026-10-24 01:54:50,776 | INFO | rareguard | Starting cic_iiot_2025_datasense seed=42 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:54:53,157 | INFO | rareguard | cic_iiot_2025_datasense seed=42 RareGuard-ReservoirReplay test_f1_macro=0.5896 rare_f1=0.5617 forgetting=0.2623
+2026-10-24 01:54:53,287 | INFO | rareguard | Starting cic_iiot_2025_datasense seed=42 RareGuard-Continual device=cuda
+2026-10-24 01:54:56,430 | INFO | rareguard | cic_iiot_2025_datasense seed=42 RareGuard-Continual test_f1_macro=0.5589 rare_f1=0.5735 forgetting=0.0335
+2026-10-24 01:54:56,560 | INFO | rareguard | Starting cic_iiot_2025_datasense seed=73 RareGuard-FineTune device=cuda
+2026-10-24 01:54:58,462 | INFO | rareguard | cic_iiot_2025_datasense seed=73 RareGuard-FineTune test_f1_macro=0.5081 rare_f1=0.4406 forgetting=0.0210
+2026-10-24 01:54:58,594 | INFO | rareguard | Starting cic_iiot_2025_datasense seed=73 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:55:00,873 | INFO | rareguard | cic_iiot_2025_datasense seed=73 RareGuard-ReservoirReplay test_f1_macro=0.6424 rare_f1=0.5815 forgetting=0.2652
+2026-10-24 01:55:01,005 | INFO | rareguard | Starting cic_iiot_2025_datasense seed=73 RareGuard-Continual device=cuda
+2026-10-24 01:55:04,210 | INFO | rareguard | cic_iiot_2025_datasense seed=73 RareGuard-Continual test_f1_macro=0.6004 rare_f1=0.6198 forgetting=0.0155
+2026-10-24 01:55:04,347 | INFO | rareguard | Starting cic_iiot_2025_datasense seed=101 RareGuard-FineTune device=cuda
+2026-10-24 01:55:06,301 | INFO | rareguard | cic_iiot_2025_datasense seed=101 RareGuard-FineTune test_f1_macro=0.5283 rare_f1=0.4301 forgetting=0.0132
+2026-10-24 01:55:06,434 | INFO | rareguard | Starting cic_iiot_2025_datasense seed=101 RareGuard-ReservoirReplay device=cuda
+2026-10-24 01:55:08,692 | INFO | rareguard | cic_iiot_2025_datasense seed=101 RareGuard-ReservoirReplay test_f1_macro=0.5994 rare_f1=0.5279 forgetting=0.2500
+2026-10-24 01:55:08,823 | INFO | rareguard | Starting cic_iiot_2025_datasense seed=101 RareGuard-Continual device=cuda
+2026-10-24 01:55:11,875 | INFO | rareguard | cic_iiot_2025_datasense seed=101 RareGuard-Continual test_f1_macro=0.5625 rare_f1=0.5400 forgetting=0.0200
+2026-10-24 01:56:24,357 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=42 RareGuard-FineTune
+2026-10-24 01:56:24,358 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=42 RareGuard-ReservoirReplay
+2026-10-24 01:56:24,358 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=42 RareGuard-Continual
+2026-10-24 01:56:24,358 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=73 RareGuard-FineTune
+2026-10-24 01:56:24,359 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=73 RareGuard-ReservoirReplay
+2026-10-24 01:56:24,359 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=73 RareGuard-Continual
+2026-10-24 01:56:24,359 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=101 RareGuard-FineTune
+2026-10-24 01:56:24,360 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=101 RareGuard-ReservoirReplay
+2026-10-24 01:56:24,360 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=101 RareGuard-Continual
+2026-10-24 01:56:27,500 | INFO | rareguard | Skipping completed edge_iiotset seed=42 RareGuard-FineTune
+2026-10-24 01:56:27,501 | INFO | rareguard | Skipping completed edge_iiotset seed=42 RareGuard-ReservoirReplay
+2026-10-24 01:56:27,501 | INFO | rareguard | Skipping completed edge_iiotset seed=42 RareGuard-Continual
+2026-10-24 01:56:27,502 | INFO | rareguard | Skipping completed edge_iiotset seed=73 RareGuard-FineTune
+2026-10-24 01:56:27,502 | INFO | rareguard | Skipping completed edge_iiotset seed=73 RareGuard-ReservoirReplay
+2026-10-24 01:56:27,502 | INFO | rareguard | Skipping completed edge_iiotset seed=73 RareGuard-Continual
+2026-10-24 01:56:27,503 | INFO | rareguard | Skipping completed edge_iiotset seed=101 RareGuard-FineTune
+2026-10-24 01:56:27,503 | INFO | rareguard | Skipping completed edge_iiotset seed=101 RareGuard-ReservoirReplay
+2026-10-24 01:56:27,503 | INFO | rareguard | Skipping completed edge_iiotset seed=101 RareGuard-Continual
+2026-10-24 01:56:30,614 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-FineTune
+2026-10-24 01:56:30,615 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-ReservoirReplay
+2026-10-24 01:56:30,615 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-Continual
+2026-10-24 01:56:30,615 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-FineTune
+2026-10-24 01:56:30,615 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-ReservoirReplay
+2026-10-24 01:56:30,616 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-Continual
+2026-10-24 01:56:30,616 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-FineTune
+2026-10-24 01:56:30,616 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-ReservoirReplay
+2026-10-24 01:56:30,616 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-Continual
+2026-10-24 01:56:33,863 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=42 RareGuard-FineTune
+2026-10-24 01:56:33,864 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=42 RareGuard-ReservoirReplay
+2026-10-24 01:56:33,864 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=42 RareGuard-Continual
+2026-10-24 01:56:33,865 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=73 RareGuard-FineTune
+2026-10-24 01:56:33,865 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=73 RareGuard-ReservoirReplay
+2026-10-24 01:56:33,865 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=73 RareGuard-Continual
+2026-10-24 01:56:33,865 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=101 RareGuard-FineTune
+2026-10-24 01:56:33,866 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=101 RareGuard-ReservoirReplay
+2026-10-24 01:56:33,866 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=101 RareGuard-Continual
+2026-10-24 02:15:32,619 | INFO | rareguard | Starting ciciot2023 seed=42 RareGuard-FineTune device=cpu
+2026-10-24 02:16:23,306 | INFO | rareguard | ciciot2023 seed=42 RareGuard-FineTune test_f1_macro=0.3514 rare_f1=0.0588 forgetting=0.0480
+2026-10-24 02:16:23,444 | INFO | rareguard | Starting ciciot2023 seed=42 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:17:24,507 | INFO | rareguard | ciciot2023 seed=42 RareGuard-ReservoirReplay test_f1_macro=0.5113 rare_f1=0.1067 forgetting=0.0237
+2026-10-24 02:17:24,641 | INFO | rareguard | Starting ciciot2023 seed=42 RareGuard-Continual device=cpu
+2026-10-24 02:18:40,643 | INFO | rareguard | ciciot2023 seed=42 RareGuard-Continual test_f1_macro=0.4897 rare_f1=0.1180 forgetting=0.0210
+2026-10-24 02:18:40,777 | INFO | rareguard | Starting ciciot2023 seed=73 RareGuard-FineTune device=cpu
+2026-10-24 02:19:30,391 | INFO | rareguard | ciciot2023 seed=73 RareGuard-FineTune test_f1_macro=0.4086 rare_f1=0.0270 forgetting=0.0369
+2026-10-24 02:19:30,530 | INFO | rareguard | Starting ciciot2023 seed=73 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:20:32,959 | INFO | rareguard | ciciot2023 seed=73 RareGuard-ReservoirReplay test_f1_macro=0.5089 rare_f1=0.0770 forgetting=0.0262
+2026-10-24 02:20:33,096 | INFO | rareguard | Starting ciciot2023 seed=73 RareGuard-Continual device=cpu
+2026-10-24 02:21:49,018 | INFO | rareguard | ciciot2023 seed=73 RareGuard-Continual test_f1_macro=0.4693 rare_f1=0.1140 forgetting=0.0318
+2026-10-24 02:21:49,152 | INFO | rareguard | Starting ciciot2023 seed=101 RareGuard-FineTune device=cpu
+2026-10-24 02:22:38,751 | INFO | rareguard | ciciot2023 seed=101 RareGuard-FineTune test_f1_macro=0.4305 rare_f1=0.0917 forgetting=0.0308
+2026-10-24 02:22:38,894 | INFO | rareguard | Starting ciciot2023 seed=101 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:23:40,910 | INFO | rareguard | ciciot2023 seed=101 RareGuard-ReservoirReplay test_f1_macro=0.5238 rare_f1=0.1126 forgetting=0.0241
+2026-10-24 02:23:41,055 | INFO | rareguard | Starting ciciot2023 seed=101 RareGuard-Continual device=cpu
+2026-10-24 02:24:57,271 | INFO | rareguard | ciciot2023 seed=101 RareGuard-Continual test_f1_macro=0.4804 rare_f1=0.0930 forgetting=0.0372
+2026-10-24 02:25:03,595 | INFO | rareguard | Starting ton_iot seed=42 RareGuard-FineTune device=cpu
+2026-10-24 02:25:09,686 | INFO | rareguard | ton_iot seed=42 RareGuard-FineTune test_f1_macro=0.3051 rare_f1=nan forgetting=0.1061
+2026-10-24 02:25:09,821 | INFO | rareguard | Starting ton_iot seed=42 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:25:22,862 | INFO | rareguard | ton_iot seed=42 RareGuard-ReservoirReplay test_f1_macro=0.8608 rare_f1=nan forgetting=0.0511
+2026-10-24 02:25:23,018 | INFO | rareguard | Starting ton_iot seed=42 RareGuard-Continual device=cpu
+2026-10-24 02:25:37,278 | INFO | rareguard | ton_iot seed=42 RareGuard-Continual test_f1_macro=0.8203 rare_f1=nan forgetting=0.0119
+2026-10-24 02:25:37,420 | INFO | rareguard | Starting ton_iot seed=73 RareGuard-FineTune device=cpu
+2026-10-24 02:25:41,552 | INFO | rareguard | ton_iot seed=73 RareGuard-FineTune test_f1_macro=0.3956 rare_f1=nan forgetting=0.1302
+2026-10-24 02:25:41,692 | INFO | rareguard | Starting ton_iot seed=73 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:25:54,482 | INFO | rareguard | ton_iot seed=73 RareGuard-ReservoirReplay test_f1_macro=0.8500 rare_f1=nan forgetting=0.0428
+2026-10-24 02:25:54,618 | INFO | rareguard | Starting ton_iot seed=73 RareGuard-Continual device=cpu
+2026-10-24 02:26:08,937 | INFO | rareguard | ton_iot seed=73 RareGuard-Continual test_f1_macro=0.8692 rare_f1=nan forgetting=0.0000
+2026-10-24 02:26:09,078 | INFO | rareguard | Starting ton_iot seed=101 RareGuard-FineTune device=cpu
+2026-10-24 02:26:13,332 | INFO | rareguard | ton_iot seed=101 RareGuard-FineTune test_f1_macro=0.4630 rare_f1=nan forgetting=0.0463
+2026-10-24 02:26:13,465 | INFO | rareguard | Starting ton_iot seed=101 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:26:26,208 | INFO | rareguard | ton_iot seed=101 RareGuard-ReservoirReplay test_f1_macro=0.8729 rare_f1=nan forgetting=0.0104
+2026-10-24 02:26:26,341 | INFO | rareguard | Starting ton_iot seed=101 RareGuard-Continual device=cpu
+2026-10-24 02:26:40,469 | INFO | rareguard | ton_iot seed=101 RareGuard-Continual test_f1_macro=0.8678 rare_f1=nan forgetting=0.0550
+2026-10-24 04:09:06,476 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=42 RareGuard-FineTune
+2026-10-24 04:09:06,477 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:06,477 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=42 RareGuard-Continual
+2026-10-24 04:09:06,477 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=73 RareGuard-FineTune
+2026-10-24 04:09:06,477 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:06,478 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=73 RareGuard-Continual
+2026-10-24 04:09:06,478 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=101 RareGuard-FineTune
+2026-10-24 04:09:06,478 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:06,478 | INFO | rareguard | Skipping completed cse_cic_ids2018 seed=101 RareGuard-Continual
+2026-10-24 04:09:09,569 | INFO | rareguard | Skipping completed edge_iiotset seed=42 RareGuard-FineTune
+2026-10-24 04:09:09,570 | INFO | rareguard | Skipping completed edge_iiotset seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:09,570 | INFO | rareguard | Skipping completed edge_iiotset seed=42 RareGuard-Continual
+2026-10-24 04:09:09,570 | INFO | rareguard | Skipping completed edge_iiotset seed=73 RareGuard-FineTune
+2026-10-24 04:09:09,571 | INFO | rareguard | Skipping completed edge_iiotset seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:09,571 | INFO | rareguard | Skipping completed edge_iiotset seed=73 RareGuard-Continual
+2026-10-24 04:09:09,571 | INFO | rareguard | Skipping completed edge_iiotset seed=101 RareGuard-FineTune
+2026-10-24 04:09:09,572 | INFO | rareguard | Skipping completed edge_iiotset seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:09,572 | INFO | rareguard | Skipping completed edge_iiotset seed=101 RareGuard-Continual
+2026-10-24 04:09:12,734 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-FineTune
+2026-10-24 04:09:12,735 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:12,735 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=42 RareGuard-Continual
+2026-10-24 04:09:12,735 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-FineTune
+2026-10-24 04:09:12,735 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:12,736 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=73 RareGuard-Continual
+2026-10-24 04:09:12,736 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-FineTune
+2026-10-24 04:09:12,736 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:12,736 | INFO | rareguard | Skipping completed cic_bccc_nrc_tabulariotattack_2024 seed=101 RareGuard-Continual
+2026-10-24 04:09:15,866 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=42 RareGuard-FineTune
+2026-10-24 04:09:15,867 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:15,868 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=42 RareGuard-Continual
+2026-10-24 04:09:15,868 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=73 RareGuard-FineTune
+2026-10-24 04:09:15,868 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:15,868 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=73 RareGuard-Continual
+2026-10-24 04:09:15,869 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=101 RareGuard-FineTune
+2026-10-24 04:09:15,869 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:15,869 | INFO | rareguard | Skipping completed cic_iiot_2025_datasense seed=101 RareGuard-Continual
+2026-10-24 04:09:18,948 | INFO | rareguard | Skipping completed ciciot2023 seed=42 RareGuard-FineTune
+2026-10-24 04:09:18,949 | INFO | rareguard | Skipping completed ciciot2023 seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:18,949 | INFO | rareguard | Skipping completed ciciot2023 seed=42 RareGuard-Continual
+2026-10-24 04:09:18,949 | INFO | rareguard | Skipping completed ciciot2023 seed=73 RareGuard-FineTune
+2026-10-24 04:09:18,950 | INFO | rareguard | Skipping completed ciciot2023 seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:18,950 | INFO | rareguard | Skipping completed ciciot2023 seed=73 RareGuard-Continual
+2026-10-24 04:09:18,950 | INFO | rareguard | Skipping completed ciciot2023 seed=101 RareGuard-FineTune
+2026-10-24 04:09:18,950 | INFO | rareguard | Skipping completed ciciot2023 seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:18,950 | INFO | rareguard | Skipping completed ciciot2023 seed=101 RareGuard-Continual
+2026-10-24 04:09:22,032 | INFO | rareguard | Skipping completed ton_iot seed=42 RareGuard-FineTune
+2026-10-24 04:09:22,033 | INFO | rareguard | Skipping completed ton_iot seed=42 RareGuard-ReservoirReplay
+2026-10-24 04:09:22,033 | INFO | rareguard | Skipping completed ton_iot seed=42 RareGuard-Continual
+2026-10-24 04:09:22,033 | INFO | rareguard | Skipping completed ton_iot seed=73 RareGuard-FineTune
+2026-10-24 04:09:22,034 | INFO | rareguard | Skipping completed ton_iot seed=73 RareGuard-ReservoirReplay
+2026-10-24 04:09:22,034 | INFO | rareguard | Skipping completed ton_iot seed=73 RareGuard-Continual
+2026-10-24 04:09:22,034 | INFO | rareguard | Skipping completed ton_iot seed=101 RareGuard-FineTune
+2026-10-24 04:09:22,035 | INFO | rareguard | Skipping completed ton_iot seed=101 RareGuard-ReservoirReplay
+2026-10-24 04:09:22,035 | INFO | rareguard | Skipping completed ton_iot seed=101 RareGuard-Continual

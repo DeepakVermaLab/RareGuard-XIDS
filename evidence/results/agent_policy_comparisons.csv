@@ -1,0 +1,7 @@
+dataset,metric,value,passed
+ciciot2023,f1_macro_gain_over_light,0.06989592146987056,True
+ciciot2023,rare_f1_gain_over_light,0.032924439512601156,True
+ciciot2023,heavy_call_ratio,0.5769500000000001,True
+ton_iot,f1_macro_gain_over_light,0.022400109981672855,True
+ton_iot,rare_f1_gain_over_light,,False
+ton_iot,heavy_call_ratio,0.2525,True

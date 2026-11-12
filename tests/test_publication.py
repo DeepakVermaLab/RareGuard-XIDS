@@ -3,12 +3,12 @@ from __future__ import annotations
 import numpy as np
 import torch
 
-from rareguard.data.publication import parquet_compatible, source_filename_labels
+from rareguard.data.publication import _cat_range, compact_source_frame, list_remote_csvs, parquet_compatible, sample_remote_csv, source_filename_labels
 from rareguard.evaluation.metrics import classification_metrics
 from rareguard.experiments.audit_publication import agent_policy_value, continual_superiority, full_beats_ablations, holm_adjust, paired_statistical_tests, robustness_superiority, selected_matches_adaptive_tuning
 from rareguard.experiments.run_publication_agentic import projected_seconds, select_policy_thresholds
 from rareguard.experiments.run_publication_central import apply_temperature, fit_temperature
-from rareguard.experiments.run_publication_continual import class_incremental_tasks, update_memory
+from rareguard.experiments.run_publication_continual import class_incremental_tasks, prototype_herding_memory, update_memory
 from rareguard.experiments.run_publication_robustness import perturb_features
 from rareguard.models.publication_models import NovaXIDSNet, RareGuardXIDSNet
 
@@ -23,6 +23,19 @@ def test_publication_models_share_output_contract() -> None:
     assert logits.shape == (6, 3)
     assert vectors.shape == (6, 64)
     assert rareguard_without_direct_path(x)[0].shape == (6, 3)
+
+
+def test_prototype_branch_starts_conservatively() -> None:
+    model = RareGuardXIDSNet(
+        12,
+        3,
+        prototype_initial_scale=1.0,
+        prototype_gate_bias=-2.0,
+    )
+    assert torch.isclose(model.prototype_log_scale.exp(), torch.tensor(1.0))
+    with torch.no_grad():
+        gate = model.gate(torch.zeros(4, 64))
+    assert float(gate.max()) < 0.13
 
 
 def test_publication_metrics_include_rare_and_calibration() -> None:
@@ -106,6 +119,68 @@ def test_selected_configuration_must_match_saved_validation_winner() -> None:
     assert not selected_matches_adaptive_tuning(pd.DataFrame(rows), {"demo": selected}, ["demo"])
 
 
+def test_confirmation_configuration_is_frozen_from_development_only() -> None:
+    import pandas as pd
+
+    rows = []
+    for dataset, offset in (("dev_a", 0.0), ("dev_b", 0.02)):
+        for focal_mix, score in ((0.0, 0.70 + offset), (0.5, 0.80 + offset)):
+            for seed in (42, 73):
+                rows.append(
+                    {
+                        "dataset": dataset,
+                        "seed": seed,
+                        "focal_mix": focal_mix,
+                        "rare_sampler_power": 0.0,
+                        "contrastive_weight": 0.1,
+                        "validation_selection_score": score,
+                        "validation_f1_macro": score + 0.05,
+                        "validation_rare_f1_macro": score - 0.05,
+                        "test_access_count": 0,
+                    }
+                )
+    selected = {
+        dataset: {
+            "dataset": dataset,
+            "focal_mix": 0.5,
+            "rare_sampler_power": 0.0,
+            "contrastive_weight": 0.1,
+            "validation_selection_score": 0.80 + offset,
+            "test_access_count": 0,
+        }
+        for dataset, offset in (("dev_a", 0.0), ("dev_b", 0.02))
+    }
+    selected["confirm"] = {
+        "dataset": "confirm",
+        "focal_mix": 0.5,
+        "rare_sampler_power": 0.0,
+        "contrastive_weight": 0.1,
+        "validation_selection_score": 0.81,
+        "selection_source": "development_datasets_only_global_mean",
+        "selection_datasets": ["dev_a", "dev_b"],
+        "test_access_count": 0,
+    }
+
+    assert selected_matches_adaptive_tuning(
+        pd.DataFrame(rows),
+        selected,
+        ["dev_a", "dev_b", "confirm"],
+        {"dev_a", "dev_b"},
+        {"confirm"},
+    )
+    contaminated = pd.concat(
+        [pd.DataFrame(rows), pd.DataFrame([{**rows[0], "dataset": "confirm"}])],
+        ignore_index=True,
+    )
+    assert not selected_matches_adaptive_tuning(
+        contaminated,
+        selected,
+        ["dev_a", "dev_b", "confirm"],
+        {"dev_a", "dev_b"},
+        {"confirm"},
+    )
+
+
 def test_parquet_compatibility_normalizes_mixed_objects() -> None:
     import pandas as pd
 
@@ -120,6 +195,49 @@ def test_source_filename_labels_preserve_attack_types() -> None:
 
     labels = source_filename_labels(pd.Series(["root/DoS UDP Flood.csv", "root/Benign Traffic.csv"]))
     assert labels.tolist() == ["DoS UDP Flood", "Benign Traffic"]
+
+
+def test_mounted_drive_backend_lists_and_reads_csv_ranges(tmp_path) -> None:
+    source = tmp_path / "Demo" / "csv" / "sample.csv"
+    source.parent.mkdir(parents=True)
+    source.write_bytes(b"label,value\nbenign,1\nattack,2\n")
+    (source.parent / "._ignored.csv").write_bytes(b"metadata")
+
+    remote = tmp_path.as_uri()
+    files = list_remote_csvs(remote, "Demo", "unused-for-file-backend", "csv")
+
+    assert [(item.path, item.size) for item in files] == [("Demo/csv/sample.csv", source.stat().st_size)]
+    assert _cat_range(remote, files[0].path, "unused-for-file-backend", 6, 5) == b"value"
+
+
+def test_source_frame_compaction_is_balanced_and_deterministic() -> None:
+    import pandas as pd
+
+    frame = pd.DataFrame(
+        {
+            "feature": np.arange(300),
+            "Label": ["common"] * 240 + ["rare_a"] * 45 + ["rare_b"] * 15,
+        }
+    )
+    first = compact_source_frame(frame, ["Label"], 30, 42)
+    second = compact_source_frame(frame, ["Label"], 30, 42)
+
+    assert first.index.tolist() == second.index.tolist()
+    assert first["Label"].value_counts().to_dict() == {"common": 10, "rare_a": 10, "rare_b": 10}
+
+
+def test_full_file_sampling_reads_each_csv_row_once(tmp_path) -> None:
+    source = tmp_path / "Demo" / "sample.csv"
+    source.parent.mkdir(parents=True)
+    source.write_text("label,value\nbenign,1\nattack,2\n", encoding="utf-8")
+    remote_file = list_remote_csvs(tmp_path.as_uri(), "Demo", "unused")[0]
+
+    sampled = sample_remote_csv(tmp_path.as_uri(), remote_file, "unused", 8, 4, full_file=True)
+
+    assert sampled[["label", "value"]].to_dict("records") == [
+        {"label": "benign", "value": 1},
+        {"label": "attack", "value": 2},
+    ]
 
 
 def test_feature_hash_duplicates_are_removed_before_split() -> None:
@@ -160,6 +278,17 @@ def test_continual_tasks_and_balanced_memory() -> None:
     memory = update_memory("RareGuard-Continual", np.arange(len(labels)), labels, 8, np.random.default_rng(42))
     counts = np.bincount(labels[memory], minlength=4)
     assert counts.tolist() == [2, 2, 2, 2]
+
+
+def test_prototype_herding_memory_is_balanced_and_deterministic() -> None:
+    rng = np.random.default_rng(9)
+    x = rng.normal(size=(24, 12)).astype(np.float32)
+    y = np.repeat(np.arange(3), 8)
+    model = RareGuardXIDSNet(12, 3, prototype_initial_scale=1.0, prototype_gate_bias=-2.0)
+    first = prototype_herding_memory(model, x, y, np.arange(24), 9, 8, "cpu")
+    second = prototype_herding_memory(model, x, y, np.arange(24), 9, 8, "cpu")
+    assert np.array_equal(first, second)
+    assert np.bincount(y[first], minlength=3).tolist() == [3, 3, 3]
 
 
 def test_continual_superiority_requires_better_rare_f1_and_forgetting() -> None:

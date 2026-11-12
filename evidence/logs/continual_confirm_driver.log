@@ -1,0 +1,38 @@
+CONTINUAL_CONFIRM_START=2026-10-24T02:15:27+00:00
+2026-10-24 02:15:32,619 | INFO | rareguard | Starting ciciot2023 seed=42 RareGuard-FineTune device=cpu
+2026-10-24 02:16:23,306 | INFO | rareguard | ciciot2023 seed=42 RareGuard-FineTune test_f1_macro=0.3514 rare_f1=0.0588 forgetting=0.0480
+2026-10-24 02:16:23,444 | INFO | rareguard | Starting ciciot2023 seed=42 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:17:24,507 | INFO | rareguard | ciciot2023 seed=42 RareGuard-ReservoirReplay test_f1_macro=0.5113 rare_f1=0.1067 forgetting=0.0237
+2026-10-24 02:17:24,641 | INFO | rareguard | Starting ciciot2023 seed=42 RareGuard-Continual device=cpu
+2026-10-24 02:18:40,643 | INFO | rareguard | ciciot2023 seed=42 RareGuard-Continual test_f1_macro=0.4897 rare_f1=0.1180 forgetting=0.0210
+2026-10-24 02:18:40,777 | INFO | rareguard | Starting ciciot2023 seed=73 RareGuard-FineTune device=cpu
+2026-10-24 02:19:30,391 | INFO | rareguard | ciciot2023 seed=73 RareGuard-FineTune test_f1_macro=0.4086 rare_f1=0.0270 forgetting=0.0369
+2026-10-24 02:19:30,530 | INFO | rareguard | Starting ciciot2023 seed=73 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:20:32,959 | INFO | rareguard | ciciot2023 seed=73 RareGuard-ReservoirReplay test_f1_macro=0.5089 rare_f1=0.0770 forgetting=0.0262
+2026-10-24 02:20:33,096 | INFO | rareguard | Starting ciciot2023 seed=73 RareGuard-Continual device=cpu
+2026-10-24 02:21:49,018 | INFO | rareguard | ciciot2023 seed=73 RareGuard-Continual test_f1_macro=0.4693 rare_f1=0.1140 forgetting=0.0318
+2026-10-24 02:21:49,152 | INFO | rareguard | Starting ciciot2023 seed=101 RareGuard-FineTune device=cpu
+2026-10-24 02:22:38,751 | INFO | rareguard | ciciot2023 seed=101 RareGuard-FineTune test_f1_macro=0.4305 rare_f1=0.0917 forgetting=0.0308
+2026-10-24 02:22:38,894 | INFO | rareguard | Starting ciciot2023 seed=101 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:23:40,910 | INFO | rareguard | ciciot2023 seed=101 RareGuard-ReservoirReplay test_f1_macro=0.5238 rare_f1=0.1126 forgetting=0.0241
+2026-10-24 02:23:41,055 | INFO | rareguard | Starting ciciot2023 seed=101 RareGuard-Continual device=cpu
+2026-10-24 02:24:57,271 | INFO | rareguard | ciciot2023 seed=101 RareGuard-Continual test_f1_macro=0.4804 rare_f1=0.0930 forgetting=0.0372
+2026-10-24 02:25:03,595 | INFO | rareguard | Starting ton_iot seed=42 RareGuard-FineTune device=cpu
+2026-10-24 02:25:09,686 | INFO | rareguard | ton_iot seed=42 RareGuard-FineTune test_f1_macro=0.3051 rare_f1=nan forgetting=0.1061
+2026-10-24 02:25:09,821 | INFO | rareguard | Starting ton_iot seed=42 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:25:22,862 | INFO | rareguard | ton_iot seed=42 RareGuard-ReservoirReplay test_f1_macro=0.8608 rare_f1=nan forgetting=0.0511
+2026-10-24 02:25:23,018 | INFO | rareguard | Starting ton_iot seed=42 RareGuard-Continual device=cpu
+2026-10-24 02:25:37,278 | INFO | rareguard | ton_iot seed=42 RareGuard-Continual test_f1_macro=0.8203 rare_f1=nan forgetting=0.0119
+2026-10-24 02:25:37,420 | INFO | rareguard | Starting ton_iot seed=73 RareGuard-FineTune device=cpu
+2026-10-24 02:25:41,552 | INFO | rareguard | ton_iot seed=73 RareGuard-FineTune test_f1_macro=0.3956 rare_f1=nan forgetting=0.1302
+2026-10-24 02:25:41,692 | INFO | rareguard | Starting ton_iot seed=73 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:25:54,482 | INFO | rareguard | ton_iot seed=73 RareGuard-ReservoirReplay test_f1_macro=0.8500 rare_f1=nan forgetting=0.0428
+2026-10-24 02:25:54,618 | INFO | rareguard | Starting ton_iot seed=73 RareGuard-Continual device=cpu
+2026-10-24 02:26:08,937 | INFO | rareguard | ton_iot seed=73 RareGuard-Continual test_f1_macro=0.8692 rare_f1=nan forgetting=0.0000
+2026-10-24 02:26:09,078 | INFO | rareguard | Starting ton_iot seed=101 RareGuard-FineTune device=cpu
+2026-10-24 02:26:13,332 | INFO | rareguard | ton_iot seed=101 RareGuard-FineTune test_f1_macro=0.4630 rare_f1=nan forgetting=0.0463
+2026-10-24 02:26:13,465 | INFO | rareguard | Starting ton_iot seed=101 RareGuard-ReservoirReplay device=cpu
+2026-10-24 02:26:26,208 | INFO | rareguard | ton_iot seed=101 RareGuard-ReservoirReplay test_f1_macro=0.8729 rare_f1=nan forgetting=0.0104
+2026-10-24 02:26:26,341 | INFO | rareguard | Starting ton_iot seed=101 RareGuard-Continual device=cpu
+2026-10-24 02:26:40,469 | INFO | rareguard | ton_iot seed=101 RareGuard-Continual test_f1_macro=0.8678 rare_f1=nan forgetting=0.0550
+CONTINUAL_CONFIRM_EXIT=0 time=2026-10-24T02:26:41+00:00

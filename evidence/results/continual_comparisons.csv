@@ -1,0 +1,9 @@
+dataset,baseline,metric,direction,rareguard_continual_mean,baseline_mean,difference,passed
+ciciot2023,RareGuard-FineTune,rare_f1_macro,higher,0.10835899683642053,0.059165023912051494,0.049193972924369035,True
+ciciot2023,RareGuard-FineTune,mean_validation_forgetting,lower,0.02999071934668257,0.038576127827271135,-0.008585408480588565,True
+ciciot2023,RareGuard-ReservoirReplay,rare_f1_macro,higher,0.10835899683642053,0.09878089124739636,0.009578105589024166,True
+ciciot2023,RareGuard-ReservoirReplay,mean_validation_forgetting,lower,0.02999071934668257,0.0246862179616361,0.00530450138504647,False
+ton_iot,RareGuard-FineTune,rare_f1_macro,higher,,,,False
+ton_iot,RareGuard-FineTune,mean_validation_forgetting,lower,0.022304150235736734,0.09419678709091134,-0.07189263685517461,True
+ton_iot,RareGuard-ReservoirReplay,rare_f1_macro,higher,,,,False
+ton_iot,RareGuard-ReservoirReplay,mean_validation_forgetting,lower,0.022304150235736734,0.0347858050719267,-0.012481654836189963,True

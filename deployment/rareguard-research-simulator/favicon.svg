@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="RareGuard-XIDS">
+  <rect width="64" height="64" rx="14" fill="#0f2f40"/>
+  <path d="M16 17h16c9 0 14 5 14 12 0 5-3 9-8 11l10 8H37l-8-7h-4v7h-9V17Zm9 8v9h7c3 0 5-2 5-5s-2-4-5-4h-7Z" fill="#f5f8f7"/>
+  <circle cx="48" cy="17" r="5" fill="#19a38c"/>
+</svg>
